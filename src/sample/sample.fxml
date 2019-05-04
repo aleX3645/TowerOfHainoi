@@ -7,18 +7,15 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane id="AnchorPane" maxHeight="327.0" maxWidth="500" minHeight="260.0" minWidth="237.0" prefHeight="262.0" prefWidth="238.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
-   <children>
-      <VBox alignment="CENTER" layoutX="46.0" layoutY="70.0" maxHeight="1.7976931348623157E308" maxWidth="300.0" minHeight="-Infinity" minWidth="-Infinity" AnchorPane.leftAnchor="46.0" AnchorPane.rightAnchor="46.0" AnchorPane.topAnchor="72.0">
-         <children>
-            <Button maxHeight="1.7976931348623157E308" maxWidth="500.0" mnemonicParsing="false" prefHeight="40.0" text="Новая игра" />
-            <Button maxHeight="1.7976931348623157E308" maxWidth="500.0" mnemonicParsing="false" prefHeight="40.0" text="Продолжить игру" />
-            <Button maxHeight="1.7976931348623157E308" maxWidth="500.0" mnemonicParsing="false" prefHeight="40.0" text="Таблица рекордов" />
-            <Button maxHeight="1.7976931348623157E308" maxWidth="500.0" mnemonicParsing="false" prefHeight="40.0" text="Выйти из игры" />
-         </children>
+
+      <VBox alignment="CENTER" layoutX="46.0" layoutY="51.0" maxHeight="1.7976931348623157E308" maxWidth="300.0" minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="51.0" AnchorPane.leftAnchor="46.0" AnchorPane.rightAnchor="46.0" AnchorPane.topAnchor="51.0">
+            <Button fx:id="newButton" maxHeight="1.7976931348623157E308" maxWidth="500.0" mnemonicParsing="false" onAction="#onClickNew" prefHeight="40.0" text="Новая игра" />
+            <Button maxHeight="1.7976931348623157E308" maxWidth="500.0" mnemonicParsing="false" onAction="#onClickContinue" prefHeight="40.0" text="Продолжить игру" />
+            <Button maxHeight="1.7976931348623157E308" maxWidth="500.0" mnemonicParsing="false" onAction="#onClickTable" prefHeight="40.0" text="Таблица рекордов" />
+            <Button maxHeight="1.7976931348623157E308" maxWidth="500.0" mnemonicParsing="false" onAction="#onClickExit" prefHeight="40.0" text="Выйти из игры" />
       </VBox>
-      <Label alignment="CENTER" layoutX="34.0" layoutY="28.0" prefHeight="27.0" prefWidth="170.0" text="Хайнойские башни" textAlignment="CENTER" AnchorPane.leftAnchor="34.0" AnchorPane.rightAnchor="34.0" AnchorPane.topAnchor="28.0">
+      <Label id="mainLabel" alignment="CENTER" layoutX="34.0" layoutY="14.0" prefHeight="27.0" prefWidth="170.0" text="Хайнойские башни" textAlignment="CENTER" AnchorPane.bottomAnchor="221.0" AnchorPane.leftAnchor="34.0" AnchorPane.rightAnchor="34.0" AnchorPane.topAnchor="14.0">
          <font>
             <Font size="18.0" />
          </font></Label>
-   </children>
 </AnchorPane>
