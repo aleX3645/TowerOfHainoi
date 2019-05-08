@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -21,7 +22,6 @@ public class Controller {
 
     private void closeStage()
     {
-        newButton.setText("dddd");
         Stage stage = (Stage) newButton.getScene().getWindow();
         stage.close();
     }
@@ -29,12 +29,18 @@ public class Controller {
     @FXML
     public void onClickNew(ActionEvent event) throws Exception{
 
-        closeStage();
+
 
         Stage stage = new Stage();
         stage.setTitle("Хайнойские башни");
-        Parent root = FXMLLoader.load(getClass().getResource("mainScene.fxml"));
-        stage.setScene(new Scene(root));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("mainScene.fxml"));
+
+        Parent root = loader.load();
+        stage.setScene(new Scene(root, 1400, 1000));
+        ControllerMain controller = loader.getController();
+        controller.Init(8);
+
+        closeStage();
         stage.show();
 
     }
