@@ -38,7 +38,7 @@ public class Controller {
         Parent root = loader.load();
         stage.setScene(new Scene(root, 1400, 1000));
         ControllerMain controller = loader.getController();
-        controller.Init(8);
+        controller.Init(3);
 
         closeStage();
         stage.show();
