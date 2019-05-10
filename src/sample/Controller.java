@@ -4,15 +4,14 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.scene.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
 public class Controller {
@@ -25,23 +24,21 @@ public class Controller {
         Stage stage = (Stage) newButton.getScene().getWindow();
         stage.close();
     }
-
+    int difficulty = 8;
     @FXML
     public void onClickNew(ActionEvent event) throws Exception{
 
-
-
         Stage stage = new Stage();
         stage.setTitle("Хайнойские башни");
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("mainScene.fxml"));
-
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("difficultyScene.fxml"));
         Parent root = loader.load();
-        stage.setScene(new Scene(root, 1400, 1000));
-        ControllerMain controller = loader.getController();
-        controller.Init(3);
+        stage.setScene(new Scene(root, 600, 400));
+
+        DifficultyScene controller = loader.getController();
+        controller.Init();
+        stage.show();
 
         closeStage();
-        stage.show();
 
     }
 

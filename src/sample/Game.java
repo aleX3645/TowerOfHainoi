@@ -9,13 +9,13 @@ import java.util.Stack;
 
 public class Game {
 
-    private int difficulty;
-    private final int maxSize = 200;
-    final int blockSize = 40;
-    int xLeft = 250;
-    int xRight = 1150;
-    int xCenter = 700;
-    int topR = 30;
+    private double difficulty;
+    private final double maxSize = 200;
+    private final double blockSize = 40;
+    private final double xLeft = 250;
+    private final double xRight = 1150;
+    private final double xCenter = 700;
+    private final double topR = 30;
     private Stack<Integer>[] field = new Stack[3];
     private Stack<Cylinder>[] pField = new Stack[3];
 
@@ -29,6 +29,8 @@ public class Game {
             //tempPointer.push(new Cylinder())
         }
         field[0] = temp;
+        field[1] = new Stack<>();
+        field[2] = new Stack<>();
 
         Stack<Cylinder> tempPointer = new Stack<>();
         for(int j=1;j<= difficulty; ++j){
@@ -40,6 +42,8 @@ public class Game {
             tempPointer.push(block);
         }
         pField[0] = tempPointer;
+        pField[1] = new Stack<>();
+        pField[2] = new Stack<>();
 
 
     }
@@ -53,16 +57,16 @@ public class Game {
 
             Cylinder bottom = new Cylinder();
             bottom.setRadius(maxSize);
-            bottom.setHeight(24);
+            bottom.setHeight(24.0);
             bottom.translateXProperty().set(xCenter);
-            bottom.translateYProperty().set(500+(difficulty+1.5)*blockSize/2+12);
+            bottom.translateYProperty().set(500.0+(difficulty+1.5)*blockSize/2+12);
             temp.add(bottom);
 
             Cylinder top = new Cylinder();
             top.setRadius(topR);
             top.setHeight((difficulty+1.5)*blockSize);
             top.translateXProperty().set(xCenter);
-            top.translateYProperty().set(500);
+            top.translateYProperty().set(500.0);
             temp.add(top);
 
             stractField.add(temp);
@@ -86,8 +90,8 @@ public class Game {
         }
 
         for(int i = 0; i< 3; i++){
-            Stack<Cylinder> temp = pField[i];
-            if(temp == null){
+            Stack<Cylinder> temp = (Stack<Cylinder>) pField[i].clone();
+            if(temp.size() == 0){
                 continue;
             }
             while( temp.size() != 0){
@@ -125,20 +129,24 @@ public class Game {
     }
 
     private void pMove(int from, int to){
+        double yStart = 500+(difficulty+1.5)*blockSize/2+20;
+
         Cylinder temp = pField[from].pop();
         pField[to].push(temp);
 
-        if(to == 0){
-            temp.translateXProperty().set(xLeft);
-        }else{
-            if(to == 1){
-                temp.translateXProperty().set(xCenter);
-            }else{
+        switch (to) {
+            case 0:
                 temp.translateXProperty().set(xLeft);
+                break;
+            case 1:
+                temp.translateXProperty().set(xCenter);
+                break;
+            case 2:
+                temp.translateXProperty().set(xRight);
+                break;
             }
-        }
 
-        temp.translateYProperty().set(maxSize-pField[to].size()*(maxSize-topR)/( pField[to].size()+1));
+        temp.translateYProperty().set(yStart-pField[to].size()*blockSize);
     }
 
 }
