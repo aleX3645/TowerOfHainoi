@@ -16,18 +16,20 @@ public class Game {
     private final double xRight = 1150;
     private final double xCenter = 700;
     private final double topR = 30;
+
     private Stack<Integer>[] field = new Stack[3];
     private Stack<Cylinder>[] pField = new Stack[3];
 
     public Game(int difficulty){
-        double yStart = 500+(difficulty+1.5)*blockSize/2+20;
 
+        double yStart = 500+(difficulty+1.5)*blockSize/2+20;
         this.difficulty = difficulty;
         Stack<Integer> temp = new Stack<>();
+
         for(int i = difficulty; i > 0; i--){
             temp.push(i);
-            //tempPointer.push(new Cylinder())
         }
+
         field[0] = temp;
         field[1] = new Stack<>();
         field[2] = new Stack<>();
@@ -41,18 +43,19 @@ public class Game {
             block.translateYProperty().set(yStart-j*blockSize);
             tempPointer.push(block);
         }
+
         pField[0] = tempPointer;
         pField[1] = new Stack<>();
         pField[2] = new Stack<>();
-
-
     }
 
 
     public Group returnGameField(){
+
         ArrayList<ArrayList<Cylinder>> stractField = new ArrayList<>();
 
         for(int i = 0; i< 3; ++i){
+
             ArrayList<Cylinder> temp = new ArrayList<>();
 
             Cylinder bottom = new Cylinder();
@@ -82,6 +85,7 @@ public class Game {
     }
 
     private Group getGroup(ArrayList<ArrayList<Cylinder>> field){
+
         Group group = new Group();
         for (int i = 0; i< 3; ++i){
             for(int j = 0; j<2;++j){
@@ -90,10 +94,12 @@ public class Game {
         }
 
         for(int i = 0; i< 3; i++){
+
             Stack<Cylinder> temp = (Stack<Cylinder>) pField[i].clone();
             if(temp.size() == 0){
                 continue;
             }
+
             while( temp.size() != 0){
                 group.getChildren().add(temp.pop());
             }
@@ -102,12 +108,14 @@ public class Game {
     }
 
     public int Move(int from, int to){
+
         if(field[from].size() == 0){
             return -1;
         }
+
         if(field[to].size() == 0 || field[to].peek() > field[from].peek()){
-            int temp = field[from].pop();
-            field[to].push(temp);
+            //logicError
+            field[to].push(field[from].pop());
             pMove(from, to);
 
             if(field[2].size() == difficulty){
@@ -118,17 +126,15 @@ public class Game {
                 System.out.println("can");
                 return 1;
             }
-
         }
         else{
             System.out.println("cannot");
             return -1;
         }
-
-
     }
 
     private void pMove(int from, int to){
+
         double yStart = 500+(difficulty+1.5)*blockSize/2+20;
 
         Cylinder temp = pField[from].pop();

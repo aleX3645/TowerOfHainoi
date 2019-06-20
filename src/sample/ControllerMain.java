@@ -1,100 +1,120 @@
 package sample;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.*;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Cylinder;
 import javafx.scene.control.Label;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-
-import java.awt.*;
-import java.net.URL;
-import java.util.ResourceBundle;
-import java.util.Stack;
 
 public class ControllerMain{
 
     private Game game;
-    PerspectiveCamera camera;
+    private PerspectiveCamera camera;
     private int from = -1;
 
+    double mouseStartPosX, mouseStartPosY;
     private double mousePosX, mousePosY;
     private double mouseOldX, mouseOldY;
-    private final Rotate rotateX = new Rotate(0, Rotate.X_AXIS);
-    private final Rotate rotateY = new Rotate(0, Rotate.Y_AXIS);
+    double mouseDeltaX, mouseDeltaY;
+    private static double MOUSE_SPEED = 0.1;
+    private static double ROTATION_SPEED = 2.0;
+
+    private Rotate rotateX = new Rotate(0, Rotate.X_AXIS);
+    private Rotate rotateY = new Rotate(0, Rotate.Y_AXIS);
+
+    XGroup root3d = new XGroup();
 
     public void Init(int difficulty){
+
         Stage stage = new Stage();
         stage.setTitle("Хайнойские башни");
 
-        game = new Game(difficulty);
-        camera = setCamera();
-
-        Group root3d = new Group(game.returnGameField());
-        root3d.getChildren().add(camera);
-
-        SubScene sub = new SubScene(root3d,1920,1080,true,SceneAntialiasing.BALANCED);
-        sub.setFill(Color.AQUAMARINE);
-        sub.setCamera(camera);
+        Scene scene = new Scene( buildPane(difficulty) );
         addKeyEvent(stage);
-
-        BorderPane pane = new BorderPane();
-        pane.setCenter(sub);
-        Label timeLabel = new Label("text");
-        timeLabel.setTextAlignment(TextAlignment.CENTER);
-        pane.setTop(timeLabel);
-
-        Scene scene = new Scene(pane);
-
-        scene.setOnMousePressed((MouseEvent me) -> {
-            mouseOldX = me.getSceneX();
-            mouseOldY = me.getSceneY();
-        });
-        scene.setOnMouseDragged((MouseEvent me) -> {
-            mousePosX = me.getSceneX();
-            mousePosY = me.getSceneY();
-            rotateX.setAngle(rotateX.getAngle()-(mousePosY - mouseOldY));
-            rotateY.setAngle(rotateY.getAngle()+(mousePosX - mouseOldX));
-            mouseOldX = mousePosX;
-            mouseOldY = mousePosY;
-        });
-
-        scene.addEventHandler(ScrollEvent.SCROLL, event -> {
-            //here need to implement scrolling
-        });
+        addMouseEvent(scene);
 
         stage.setScene(scene);
         stage.show();
     }
 
+    private Pane buildPane(int difficulty){
+
+        game = new Game(difficulty);
+        camera = setCamera();
+
+        root3d = new XGroup(game.returnGameField());
+        root3d.getChildren().add(camera);
+
+        SubScene sub = new SubScene(root3d,1920,1080,true,SceneAntialiasing.BALANCED);
+        sub.setFill(Color.AQUAMARINE);
+
+        BorderPane pane = new BorderPane();
+        pane.setCenter(sub);
+        Label timeLabel = new Label("text");
+
+        timeLabel.setTextAlignment(TextAlignment.CENTER);
+        pane.setTop(timeLabel);
+
+        return  pane;
+    }
+
     private PerspectiveCamera setCamera(){
-        PerspectiveCamera camera = new PerspectiveCamera(true);
+
+        PerspectiveCamera camera = new PerspectiveCamera(false);
+
         camera.translateXProperty().set(700);
         camera.translateYProperty().set(500);
-        camera.translateZProperty().set(-1500);
+        camera.translateZProperty().set(-500);
 
         camera.getTransforms().addAll (rotateX, rotateY, new Translate(0, 0, 0));
         camera.setNearClip(0.1);
         camera.setFarClip(5000);
+
         return camera;
     }
 
+    private void addMouseEvent(Scene scene) {
+
+        scene.setOnMousePressed(me -> {
+            mouseStartPosX = me.getSceneX();
+            mouseStartPosY = me.getSceneY();
+
+            mousePosX = me.getSceneX();
+            mousePosY = me.getSceneY();
+            mouseOldX = me.getSceneX();
+            mouseOldY = me.getSceneY();
+        });
+
+        scene.setOnMouseDragged(me -> {
+            mouseOldX = mousePosX;
+            mouseOldY = mousePosY;
+
+            mousePosX = me.getSceneX();
+            mousePosY = me.getSceneY();
+
+            mouseDeltaX = (mousePosX - mouseOldX);
+            mouseDeltaY = (mousePosY - mouseOldY);
+
+            if (me.isPrimaryButtonDown()) {
+                root3d.addRotation(-mouseDeltaX * MOUSE_SPEED * ROTATION_SPEED, Rotate.Y_AXIS);
+                root3d.addRotation(mouseDeltaY * MOUSE_SPEED * ROTATION_SPEED, Rotate.X_AXIS);
+            }
+        });
+
+        /*
+        scene.addEventHandler(ScrollEvent.SCROLL, event -> {
+            //here need to implement scrolling
+        });*/
+    }
+
+
     private void addKeyEvent(Stage myStage){
+
         myStage.addEventHandler(KeyEvent.KEY_RELEASED, event -> {
 
             switch (event.getCode()){

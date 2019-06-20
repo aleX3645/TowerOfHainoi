@@ -9,6 +9,7 @@ import javafx.scene.control.RadioButton;
 import javafx.stage.Stage;
 
 public class DifficultyScene {
+
     @FXML
     private RadioButton easyBtn;
 
@@ -24,9 +25,15 @@ public class DifficultyScene {
     @FXML
     private Button playButton;
 
-    int difficulty = 3;
 
     public void Init(){
+        addButtonEvents();
+    }
+
+
+    int difficulty = 3;
+    private void addButtonEvents(){
+
         easyBtn.setOnAction(event -> {
             midBtn.setSelected(false);
             hardBtn.setSelected(false);
@@ -57,12 +64,13 @@ public class DifficultyScene {
         });
 
         playButton.setOnAction(event -> {
-
             ControllerMain controller = new ControllerMain();
             controller.Init(difficulty);
             closeStage();
         });
+
     }
+
 
     private void closeStage()
     {
