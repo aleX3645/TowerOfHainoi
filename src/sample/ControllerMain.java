@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
@@ -10,6 +11,8 @@ import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class ControllerMain{
 
@@ -32,9 +35,13 @@ public class ControllerMain{
     public void Init(int difficulty){
 
         Stage stage = new Stage();
+        stage.setFullScreen(true);
         stage.setTitle("Хайнойские башни");
 
-        Scene scene = new Scene( buildPane(difficulty) );
+        game = new Game(difficulty,this);
+
+
+        Scene scene = new Scene(buildPane());
         addKeyEvent(stage);
         addMouseEvent(scene);
 
@@ -42,9 +49,9 @@ public class ControllerMain{
         stage.show();
     }
 
-    private Pane buildPane(int difficulty){
+    private Pane buildPane(){
 
-        game = new Game(difficulty);
+
         camera = setCamera();
 
         root3d = new XGroup(game.returnGameField());
@@ -55,27 +62,48 @@ public class ControllerMain{
 
         BorderPane pane = new BorderPane();
         pane.setCenter(sub);
+
         Label timeLabel = new Label("text");
 
         timeLabel.setTextAlignment(TextAlignment.CENTER);
-        pane.setTop(timeLabel);
+
+        pane.setLeft(timeLabel);
 
         return  pane;
     }
 
     private PerspectiveCamera setCamera(){
 
-        PerspectiveCamera camera = new PerspectiveCamera(false);
+        PerspectiveCamera camera = new PerspectiveCamera(true);
 
         camera.translateXProperty().set(700);
         camera.translateYProperty().set(500);
         camera.translateZProperty().set(-500);
 
-        camera.getTransforms().addAll (rotateX, rotateY, new Translate(0, 0, 0));
+        camera.getTransforms().addAll (rotateX, rotateY);
+
         camera.setNearClip(0.1);
         camera.setFarClip(5000);
 
         return camera;
+    }
+
+    private void moveHandler(int state) throws IOException {
+
+        switch(state){
+            case 1:
+                break;
+            case -1:
+                break;
+            case 0:
+                Parent root = FXMLLoader.load(getClass().getResource("WinnerScene.fxml"));
+                Stage winStage = new Stage();
+                winStage.setTitle("Хайнойские башни");
+                winStage.setScene(new Scene(root, 600, 600));
+                winStage.show();
+                break;
+        }
+
     }
 
     private void addMouseEvent(Scene scene) {
@@ -113,7 +141,7 @@ public class ControllerMain{
     }
 
 
-    private void addKeyEvent(Stage myStage){
+    private void addKeyEvent(Stage myStage) {
 
         myStage.addEventHandler(KeyEvent.KEY_RELEASED, event -> {
 
@@ -122,7 +150,11 @@ public class ControllerMain{
                     if(from == -1){
                         from = 0;
                     }else{
-                        game.Move(from,0);
+                        try {
+                            moveHandler(game.Move(from,0));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         from = -1;
                     }
                     break;
@@ -131,7 +163,11 @@ public class ControllerMain{
 
                         from = 1;
                     }else{
-                        game.Move(from,1);
+                        try {
+                            moveHandler(game.Move(from,1));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         from = -1;
                     }
                     break;
@@ -139,7 +175,11 @@ public class ControllerMain{
                     if(from == -1){
                         from = 2;
                     }else{
-                        game.Move(from,2);
+                        try {
+                            moveHandler(game.Move(from,2));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         from = -1;
                     }
                     break;

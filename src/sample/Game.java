@@ -1,13 +1,15 @@
 package sample;
 
+import javafx.event.ActionEvent;
 import javafx.scene.Group;
 import javafx.scene.shape.Cylinder;
 
 
 import java.util.ArrayList;
+import java.util.EventObject;
 import java.util.Stack;
 
-public class Game {
+public class Game extends EventObject {
 
     private double difficulty;
     private final double maxSize = 200;
@@ -20,7 +22,9 @@ public class Game {
     private Stack<Integer>[] field = new Stack[3];
     private Stack<Cylinder>[] pField = new Stack[3];
 
-    public Game(int difficulty){
+    public Game(int difficulty, Object o){
+
+        super(o);
 
         double yStart = 500+(difficulty+1.5)*blockSize/2+20;
         this.difficulty = difficulty;
