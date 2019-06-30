@@ -17,7 +17,6 @@ import java.io.IOException;
 public class ControllerMain{
 
     private Game game;
-    private PerspectiveCamera camera;
     private int from = -1;
 
     double mouseStartPosX, mouseStartPosY;
@@ -52,12 +51,13 @@ public class ControllerMain{
     private Pane buildPane(){
 
 
-        camera = setCamera();
+        PerspectiveCamera camera = setCamera();
 
         root3d = new XGroup(game.returnGameField());
-        root3d.getChildren().add(camera);
+        //root3d.getChildren().add(camera);
 
         SubScene sub = new SubScene(root3d,1920,1080,true,SceneAntialiasing.BALANCED);
+        sub.setCamera(camera);
         sub.setFill(Color.AQUAMARINE);
 
         BorderPane pane = new BorderPane();
@@ -78,7 +78,8 @@ public class ControllerMain{
 
         camera.translateXProperty().set(700);
         camera.translateYProperty().set(500);
-        camera.translateZProperty().set(-500);
+        camera.translateZProperty().set(-1500);
+
 
         camera.getTransforms().addAll (rotateX, rotateY);
 
