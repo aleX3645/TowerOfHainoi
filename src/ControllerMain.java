@@ -1,5 +1,3 @@
-package sample;
-
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
 import javafx.scene.input.KeyEvent;
@@ -9,7 +7,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.control.Label;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Rotate;
-import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -19,17 +16,17 @@ public class ControllerMain{
     private Game game;
     private int from = -1;
 
-    double mouseStartPosX, mouseStartPosY;
+    private double mouseStartPosX, mouseStartPosY;
     private double mousePosX, mousePosY;
     private double mouseOldX, mouseOldY;
-    double mouseDeltaX, mouseDeltaY;
+    private double mouseDeltaX, mouseDeltaY;
     private static double MOUSE_SPEED = 0.1;
     private static double ROTATION_SPEED = 2.0;
 
     private Rotate rotateX = new Rotate(0, Rotate.X_AXIS);
     private Rotate rotateY = new Rotate(0, Rotate.Y_AXIS);
 
-    XGroup root3d = new XGroup();
+    private XGroup root3d = new XGroup();
 
     public void Init(int difficulty){
 
@@ -80,8 +77,7 @@ public class ControllerMain{
         camera.translateYProperty().set(500);
         camera.translateZProperty().set(-1500);
 
-
-        camera.getTransforms().addAll (rotateX, rotateY);
+        camera.getTransforms().addAll (rotateX, rotateY);//Math.asin(250/1500);
 
         camera.setNearClip(0.1);
         camera.setFarClip(5000);
@@ -97,11 +93,16 @@ public class ControllerMain{
             case -1:
                 break;
             case 0:
-                Parent root = FXMLLoader.load(getClass().getResource("WinnerScene.fxml"));
-                Stage winStage = new Stage();
-                winStage.setTitle("Хайнойские башни");
-                winStage.setScene(new Scene(root, 600, 600));
-                winStage.show();
+                Stage stage = new Stage();
+                stage.setTitle("Хайнойские башни");
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("WinnerScene.fxml"));
+                Parent root = loader.load();
+                stage.setScene(new Scene(root, 600, 400));
+
+                WinnerController controller = loader.getController();
+                controller.Init();
+                stage.show();
+
                 break;
         }
 
@@ -131,7 +132,7 @@ public class ControllerMain{
 
             if (me.isPrimaryButtonDown()) {
                 root3d.addRotation(-mouseDeltaX * MOUSE_SPEED * ROTATION_SPEED, Rotate.Y_AXIS);
-                root3d.addRotation(mouseDeltaY * MOUSE_SPEED * ROTATION_SPEED, Rotate.X_AXIS);
+                //root3d.addRotation(mouseDeltaY * MOUSE_SPEED * ROTATION_SPEED, Rotate.X_AXIS);
             }
         });
 

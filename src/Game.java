@@ -1,6 +1,3 @@
-package sample;
-
-import javafx.event.ActionEvent;
 import javafx.scene.Group;
 import javafx.scene.shape.Cylinder;
 
@@ -18,6 +15,7 @@ public class Game extends EventObject {
     private final double xRight = 1150;
     private final double xCenter = 700;
     private final double topR = 30;
+
 
     private Stack<Integer>[] field = new Stack[3];
     private Stack<Cylinder>[] pField = new Stack[3];

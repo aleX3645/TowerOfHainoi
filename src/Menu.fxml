@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" maxHeight="327.0" maxWidth="500" minHeight="260.0" minWidth="237.0" prefHeight="262.0" prefWidth="238.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<AnchorPane id="AnchorPane" maxHeight="327.0" maxWidth="500" minHeight="260.0" minWidth="237.0" prefHeight="262.0" prefWidth="238.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MenuController">
 
       <VBox alignment="CENTER" layoutX="46.0" layoutY="51.0" maxHeight="1.7976931348623157E308" maxWidth="300.0" minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="51.0" AnchorPane.leftAnchor="46.0" AnchorPane.rightAnchor="46.0" AnchorPane.topAnchor="51.0">
             <Button fx:id="newButton" maxHeight="1.7976931348623157E308" maxWidth="500.0" mnemonicParsing="false" onAction="#onClickNew" prefHeight="40.0" text="Новая игра" />

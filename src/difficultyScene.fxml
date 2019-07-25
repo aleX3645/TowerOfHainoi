@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.DifficultyScene">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DifficultyScene">
    <children>
       <Button fx:id="playButton" layoutX="249.0" layoutY="361.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="70.0" text="Играть" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="249.0" AnchorPane.rightAnchor="265.0" />
       <Label layoutX="201.0" layoutY="64.0" maxWidth="300.0" text="Правила игры: Для победы в игре необходимо переместить диски с одной крайней пирамидки на другую крайнюю пирамидку. Перекладывать можно только по одному диску за ход. Складывать диски можно только меньший на больший." textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="200.0" AnchorPane.leftAnchor="201.0" AnchorPane.rightAnchor="199.0" AnchorPane.topAnchor="64.0" />

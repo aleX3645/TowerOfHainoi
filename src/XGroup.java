@@ -1,5 +1,3 @@
-package sample;
-
 import javafx.geometry.Point3D;
 import javafx.scene.Group;
 import javafx.scene.transform.Affine;
