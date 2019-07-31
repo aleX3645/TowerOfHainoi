@@ -1,8 +1,10 @@
+package main.Difficulty;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.stage.Stage;
-
+import main.MainGame.ControllerMain;
 
 
 public class DifficultyScene {

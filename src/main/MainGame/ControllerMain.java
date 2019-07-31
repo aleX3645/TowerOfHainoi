@@ -1,15 +1,24 @@
+package main.MainGame;
+
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.control.Label;
+import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
+import main.MainGame.Time.Time;
+import main.Winner.WinnerController;
 
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ControllerMain{
 
@@ -28,13 +37,20 @@ public class ControllerMain{
 
     private XGroup root3d = new XGroup();
 
+    private Label timeLabel;
+    private Label movesLabel;
+
+    private int moves = 0;
+
+    Timer timer;
+
     public void Init(int difficulty){
 
         Stage stage = new Stage();
         stage.setFullScreen(true);
         stage.setTitle("Хайнойские башни");
 
-        game = new Game(difficulty,this);
+        game = new Game(difficulty);
 
 
         Scene scene = new Scene(buildPane());
@@ -43,12 +59,20 @@ public class ControllerMain{
 
         stage.setScene(scene);
         stage.show();
+
+        timer = new Timer();
+        myTimerTask myTask = new myTimerTask();
+        timer.schedule(myTask, 0,10);
+
+
     }
 
     private Pane buildPane(){
 
-
+        AnchorPane pane = new AnchorPane();
         PerspectiveCamera camera = setCamera();
+
+        Font f = new Font(40);
 
         root3d = new XGroup(game.returnGameField());
         //root3d.getChildren().add(camera);
@@ -57,14 +81,28 @@ public class ControllerMain{
         sub.setCamera(camera);
         sub.setFill(Color.AQUAMARINE);
 
-        BorderPane pane = new BorderPane();
-        pane.setCenter(sub);
+        pane.setTopAnchor(sub, 0.0);
+        pane.setLeftAnchor(sub, 0.0);
+        pane.setRightAnchor(sub, 0.0);
+        pane.setBottomAnchor(sub, 0.0);
 
-        Label timeLabel = new Label("text");
+        timeLabel = new Label("text");
 
-        timeLabel.setTextAlignment(TextAlignment.CENTER);
+        timeLabel.setFont(f);
 
-        pane.setLeft(timeLabel);
+        pane.setTopAnchor(timeLabel, 0.0);
+        pane.setLeftAnchor(timeLabel,10.0);
+
+        movesLabel = new Label("0");
+
+        movesLabel.setFont(f);
+
+        pane.setTopAnchor(movesLabel, 0.0);
+        pane.setRightAnchor(movesLabel,10.0);
+
+        pane.getChildren().add(sub);
+        pane.getChildren().add(timeLabel);
+        pane.getChildren().add(movesLabel);
 
         return  pane;
     }
@@ -89,18 +127,24 @@ public class ControllerMain{
 
         switch(state){
             case 1:
+                moves++;
+                movesLabel.setText(Integer.toString(moves));
                 break;
             case -1:
                 break;
             case 0:
+                moves++;
+                movesLabel.setText(String.valueOf(moves));
+                timer.cancel();
+
                 Stage stage = new Stage();
                 stage.setTitle("Хайнойские башни");
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("WinnerScene.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/main/Winner/WinnerScene.fxml"));
                 Parent root = loader.load();
                 stage.setScene(new Scene(root, 600, 400));
 
                 WinnerController controller = loader.getController();
-                controller.Init();
+                controller.Init(moves,time);
                 stage.show();
 
                 break;
@@ -187,6 +231,26 @@ public class ControllerMain{
                     break;
             }
         });
+    }
+
+    Time time = new Time();
+    private void addTime(){
+        time.addTime(10);
+        timeLabel.setText(time.toString());
+    }
+
+
+    class myTimerTask extends TimerTask{
+
+        @Override
+        public void run(){
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    addTime();
+                }
+            });
+        }
     }
 
 }
