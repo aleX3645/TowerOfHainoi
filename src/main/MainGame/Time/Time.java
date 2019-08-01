@@ -1,8 +1,11 @@
 package main.MainGame.Time;
 
-public class Time {
+import java.io.Serializable;
+
+public class Time implements Serializable {
 
     public Time() {
+
     }
 
     public Time(String time) {

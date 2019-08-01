@@ -1,6 +1,7 @@
 package main.MainGame;
 
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
 import javafx.scene.input.KeyEvent;
@@ -13,14 +14,24 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import main.MainGame.Time.Time;
 import main.Winner.WinnerController;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class ControllerMain{
+    public ControllerMain(){}
+
+    public ControllerMain(Game game){
+        this.game = game;
+        time = game.getTime();
+        moves = game.getMoves();
+    }
 
     private Game game;
     private int from = -1;
@@ -44,13 +55,17 @@ public class ControllerMain{
 
     Timer timer;
 
+    Stage stage = new Stage();
     public void Init(int difficulty){
 
-        Stage stage = new Stage();
+        stage = new Stage();
         stage.setFullScreen(true);
         stage.setTitle("Хайнойские башни");
 
-        game = new Game(difficulty);
+        if (game == null) {
+            game = new Game(difficulty);
+        }
+
 
 
         Scene scene = new Scene(buildPane());
@@ -59,6 +74,28 @@ public class ControllerMain{
 
         stage.setScene(scene);
         stage.show();
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                try {
+                    timer.cancel();
+                    game.save(time, moves);
+                    FileOutputStream fos = new FileOutputStream("save.ser");
+                    ObjectOutputStream oos = new ObjectOutputStream(fos);
+
+                    oos.writeObject(game);
+
+                    oos.flush();
+                    oos.close();
+                    fos.close();
+
+                    stage.close();
+                }catch(Exception ex){
+                    ex.printStackTrace();
+                }
+                event.consume();
+            }
+        });
 
         timer = new Timer();
         myTimerTask myTask = new myTimerTask();
@@ -86,14 +123,14 @@ public class ControllerMain{
         pane.setRightAnchor(sub, 0.0);
         pane.setBottomAnchor(sub, 0.0);
 
-        timeLabel = new Label("text");
+        timeLabel = new Label("0");
 
         timeLabel.setFont(f);
 
         pane.setTopAnchor(timeLabel, 0.0);
         pane.setLeftAnchor(timeLabel,10.0);
 
-        movesLabel = new Label("0");
+        movesLabel = new Label(Integer.toString(moves));
 
         movesLabel.setFont(f);
 
@@ -233,13 +270,6 @@ public class ControllerMain{
         });
     }
 
-    Time time = new Time();
-    private void addTime(){
-        time.addTime(10);
-        timeLabel.setText(time.toString());
-    }
-
-
     class myTimerTask extends TimerTask{
 
         @Override
@@ -251,6 +281,12 @@ public class ControllerMain{
                 }
             });
         }
+    }
+
+    Time time = new Time();
+    private void addTime(){
+        time.addTime(10);
+        timeLabel.setText(time.toString());
     }
 
 }

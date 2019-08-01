@@ -7,8 +7,12 @@ import javafx.scene.*;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import main.Difficulty.DifficultyScene;
+import main.MainGame.ControllerMain;
+import main.MainGame.Game;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 
 public class MenuController {
 
@@ -16,7 +20,25 @@ public class MenuController {
     private Button newButton;
 
     @FXML
-    public void onClickContinue(){System.out.println("continue");}
+    public void onClickContinue(){
+
+        Game game;
+        try{
+            FileInputStream fis = new FileInputStream("save.ser");
+            ObjectInputStream oin = new ObjectInputStream(fis);
+            game = (Game) oin.readObject();
+            game.buildCylinders();
+        }catch(Exception ex){
+            //here with exception need message and interrupt
+            ex.printStackTrace();
+            game = new Game(3);
+        }
+
+
+        ControllerMain controller = new ControllerMain(game);
+        controller.Init(0);
+        closeStage();
+    }
 
     @FXML
     public void onClickTable() throws IOException {

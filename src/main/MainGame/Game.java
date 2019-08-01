@@ -2,12 +2,14 @@ package main.MainGame;
 
 import javafx.scene.Group;
 import javafx.scene.shape.Cylinder;
+import main.MainGame.Time.Time;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Stack;
 
-public class Game{
+public class Game implements Serializable{
 
     private double difficulty;
     private final double maxSize = 200;
@@ -18,23 +20,23 @@ public class Game{
     private final double topR = 30;
 
 
-    private Stack<Integer>[] field = new Stack[3];
-    private Stack<Cylinder>[] pField = new Stack[3];
+    private ArrayList<Integer>[] field = new ArrayList[3];
+    private transient Stack<Cylinder>[] pField = new Stack[3];
 
     public Game(int difficulty){
 
 
         double yStart = 500+(difficulty+1.5)*blockSize/2+20;
         this.difficulty = difficulty;
-        Stack<Integer> temp = new Stack<>();
+        ArrayList<Integer> temp = new ArrayList<>();
 
         for(int i = difficulty; i > 0; i--){
-            temp.push(i);
+            temp.add(i);
         }
 
         field[0] = temp;
-        field[1] = new Stack<>();
-        field[2] = new Stack<>();
+        field[1] = new ArrayList<>();
+        field[2] = new ArrayList<>();
 
         Stack<Cylinder> tempPointer = new Stack<>();
         for(int j=1;j<= difficulty; ++j){
@@ -114,10 +116,10 @@ public class Game{
         if(field[from].size() == 0){
             return -1;
         }
-
-        if(field[to].size() == 0 || field[to].peek() > field[from].peek()){
-            //logicError
-            field[to].push(field[from].pop());
+        //hmm
+        if(field[to].size() == 0 || field[to].get(field[to].size()-1) > field[from].get(field[from].size()-1)){
+            field[to].add(field[from].get(field[from].size()-1));
+            field[from].remove(field[from].size()-1);
             pMove(from, to);
 
             if(field[2].size() == difficulty){
@@ -157,4 +159,62 @@ public class Game{
         temp.translateYProperty().set(yStart-pField[to].size()*blockSize);
     }
 
+    private Time time;
+    private int moves;
+    public void save(Time time, int moves){
+        this.time = time;
+        this.moves = moves;
+
+    }
+
+    public Time getTime() {
+        return time;
+    }
+
+    public int getMoves() {
+        return moves;
+    }
+
+    public void buildCylinders(){
+
+        double yStart = 500+(difficulty+1.5)*blockSize/2+20;
+
+        Stack<Cylinder>[] tempField = new Stack[3];
+        Stack<Cylinder> temp = new Stack<>();
+        for (int i = 0; i< field[0].size(); i++){
+            Cylinder block = new Cylinder();
+            block.setHeight(blockSize);
+            block.setRadius(maxSize-(difficulty-field[0].get(i)+1)*(maxSize-topR)/(difficulty+1));
+            block.translateXProperty().set(xLeft);
+            block.translateYProperty().set(yStart-(i+1)*blockSize);
+            temp.push(block);
+        }
+
+        tempField[0] = temp;
+
+
+        Stack<Cylinder> temp1 = new Stack<>();
+        for (int i = 0; i< field[1].size(); i++){
+            Cylinder block = new Cylinder();
+            block.setHeight(blockSize);
+            block.setRadius(maxSize-(difficulty-field[1].get(i)+1)*(maxSize-topR)/(difficulty+1));
+            block.translateXProperty().set(xCenter);
+            block.translateYProperty().set(yStart-(i+1)*blockSize);
+            temp1.push(block);
+        }
+        tempField[1] = temp1;
+
+        Stack<Cylinder> temp2 = new Stack<>();
+        for (int i = 0; i< field[2].size(); i++){
+            Cylinder block = new Cylinder();
+            block.setHeight(blockSize);
+            block.setRadius(maxSize-(difficulty-field[2].get(i)+1)*(maxSize-topR)/(difficulty+1));
+            block.translateXProperty().set(xRight);
+            block.translateYProperty().set(yStart-(i+1)*blockSize);
+            temp2.push(block);
+        }
+        tempField[2] = temp2;
+
+        pField = tempField;
+    }
 }
