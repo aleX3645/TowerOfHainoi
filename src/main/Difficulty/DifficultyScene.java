@@ -1,10 +1,15 @@
 package main.Difficulty;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.stage.Stage;
 import main.MainGame.ControllerMain;
+
+import java.io.IOException;
 
 
 public class DifficultyScene {
@@ -23,6 +28,9 @@ public class DifficultyScene {
 
     @FXML
     private Button playButton;
+
+    @FXML
+    private Button backButton;
 
 
     public void Init(){
@@ -65,6 +73,24 @@ public class DifficultyScene {
         playButton.setOnAction(event -> {
             ControllerMain controller = new ControllerMain();
             controller.Init(difficulty);
+            closeStage();
+        });
+
+        backButton.setOnAction(event -> {
+            Parent root = null;
+
+            try {
+                root = FXMLLoader.load(getClass().getResource("/main/Menu/Menu.fxml"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            Stage stage = new Stage();
+            stage.setTitle("Хайнойские башни");
+            stage.setScene(new Scene(root, 310, 310));
+            stage.setMinWidth(300);
+            stage.setMinHeight(300);
+            stage.show();
             closeStage();
         });
 

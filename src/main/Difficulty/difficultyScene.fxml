@@ -6,18 +6,19 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Difficulty.DifficultyScene">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Difficulty.DifficultyScene">
    <children>
-      <Button fx:id="playButton" layoutX="249.0" layoutY="361.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="70.0" text="Играть" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="249.0" AnchorPane.rightAnchor="265.0" />
+      <Button fx:id="playButton" layoutX="223.0" layoutY="332.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="139.0" text="Играть" AnchorPane.bottomAnchor="58.0" AnchorPane.leftAnchor="223.0" AnchorPane.rightAnchor="238.0" />
       <Label layoutX="201.0" layoutY="64.0" maxWidth="300.0" text="Правила игры: Для победы в игре необходимо переместить диски с одной крайней пирамидки на другую крайнюю пирамидку. Перекладывать можно только по одному диску за ход. Складывать диски можно только меньший на больший." textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="200.0" AnchorPane.leftAnchor="201.0" AnchorPane.rightAnchor="199.0" AnchorPane.topAnchor="64.0" />
-      <Label alignment="CENTER" layoutX="201.0" layoutY="234.0" maxWidth="200.0" text="Выберите сложность" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="166.0" AnchorPane.leftAnchor="201.0" AnchorPane.rightAnchor="199.0" AnchorPane.topAnchor="234.0" />
-      <HBox layoutX="133.0" layoutY="251.0" prefHeight="25.0" prefWidth="319.0" style="-fx-background-color: TRANSPARENT; -fx-spacing: 5;" AnchorPane.bottomAnchor="141.0" AnchorPane.leftAnchor="133.0" AnchorPane.rightAnchor="148.0">
+      <Label alignment="CENTER" layoutX="201.0" layoutY="234.0" maxWidth="200.0" text="Выберите сложность" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="166.0" AnchorPane.leftAnchor="201.0" AnchorPane.rightAnchor="199.0" />
+      <HBox alignment="TOP_CENTER" layoutX="100.0" layoutY="250.0" prefHeight="25.0" prefWidth="443.0" style="-fx-background-color: TRANSPARENT; -fx-spacing: 5;" AnchorPane.bottomAnchor="141.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="57.0">
          <children>
-            <RadioButton fx:id="easyBtn" mnemonicParsing="false" selected="true" text="Легкая" />
-            <RadioButton fx:id="midBtn" mnemonicParsing="false" text="Средняя" />
-            <RadioButton fx:id="hardBtn" mnemonicParsing="false" text="Сложная" />
+            <RadioButton fx:id="easyBtn" mnemonicParsing="false" prefHeight="18.0" prefWidth="85.0" selected="true" text="Легкая" />
+            <RadioButton fx:id="midBtn" mnemonicParsing="false" prefHeight="18.0" prefWidth="92.0" text="Средняя" />
+            <RadioButton fx:id="hardBtn" mnemonicParsing="false" prefHeight="18.0" prefWidth="95.0" text="Сложная" />
             <RadioButton fx:id="insaneBtn" mnemonicParsing="false" text="Очень сложно" />
          </children>
       </HBox>
+      <Button fx:id="backButton" layoutX="250.0" layoutY="366.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="62.0" text="Назад" AnchorPane.bottomAnchor="24.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="264.0" />
    </children>
 </AnchorPane>
