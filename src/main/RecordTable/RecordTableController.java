@@ -61,6 +61,11 @@ public class RecordTableController {
 
     }
 
+    public void Refresh(){
+        RecordTableData recordTableData = new RecordTableData();
+        recordTable.setItems(recordTableData.getList());
+    }
+
     private void closeStage()
     {
         Stage stage = (Stage) toMenuButton.getScene().getWindow();

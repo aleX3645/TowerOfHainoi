@@ -15,7 +15,7 @@ public class RecordTableData {
 
             String temp;
             while((temp = reader.readLine())!=null){
-                String[] stringPlayer = temp.split("::");
+                String[] stringPlayer = temp.split("-");
 
                 Data cell = new Data(stringPlayer[0],Integer.parseInt(stringPlayer[1]),new Time(stringPlayer[2]));
                 table.add(cell);
@@ -83,13 +83,13 @@ public class RecordTableData {
     public String toString(){
         String stringTable = "";
 
-        stringTable += table.get(0).getName() + "::";
-        stringTable += table.get(0).getMoves() + "::";
+        stringTable += table.get(0).getName() + "-";
+        stringTable += table.get(0).getMoves() + "-";
         stringTable += table.get(0).getTime().toString();
         for(int i = 1; i < table.size(); i++){
             stringTable += "\n";
-            stringTable += table.get(i).getName() + "::";
-            stringTable += table.get(i).getMoves() + "::";
+            stringTable += table.get(i).getName() + "-";
+            stringTable += table.get(i).getMoves() + "-";
             stringTable += table.get(i).getTime().toString();
         }
 

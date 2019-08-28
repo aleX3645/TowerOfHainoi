@@ -58,11 +58,12 @@ public class MenuController {
     @FXML
     public void onClickNew(ActionEvent event) throws Exception{
 
-        Stage stage = new Stage();
+        Stage stage = (Stage) newButton.getScene().getWindow();
         stage.setTitle("Хайнойские башни");
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/main/Difficulty/difficultyScene.fxml"));
         Parent root = loader.load();
         stage.setScene(new Scene(root, 600, 400));
+
 
         DifficultyScene controller = loader.getController();
         controller.Init();

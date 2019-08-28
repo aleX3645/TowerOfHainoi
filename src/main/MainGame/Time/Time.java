@@ -13,9 +13,8 @@ public class Time implements Serializable {
         String[] temp = time.split(":");
         minutes = Integer.parseInt(temp[0]);
 
-        temp = temp[1].split("\\.");
-        seconds = Integer.parseInt(temp[0]);
-        mseconds = Integer.parseInt(temp[1]);
+        seconds = Integer.parseInt(temp[1]);
+        mseconds = Integer.parseInt(temp[2]);
 
     }
 
@@ -50,6 +49,6 @@ public class Time implements Serializable {
 
     @Override
     public String toString(){
-        return minutes + ":" + seconds + "." + mseconds;
+        return minutes + ":" + seconds + ":" + mseconds;
     }
 }

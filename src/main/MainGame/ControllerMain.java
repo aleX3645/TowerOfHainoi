@@ -16,6 +16,7 @@ import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import main.MainGame.Time.Time;
+import main.RecordTable.RecordTableController;
 import main.Winner.WinnerController;
 
 import java.io.FileOutputStream;
@@ -174,16 +175,26 @@ public class ControllerMain{
                 movesLabel.setText(String.valueOf(moves));
                 timer.cancel();
 
+                Stage recordStage = new Stage();
+                recordStage.setTitle("Хайнойские башни");
+                FXMLLoader recordLoader = new FXMLLoader(getClass().getResource("/main/RecordTable/RecordTable.fxml"));
+                Parent recordRoot = recordLoader.load();
+                recordStage.setScene(new Scene(recordRoot, 600, 400));
+                RecordTableController recordController = recordLoader.getController();
+
+                recordStage.show();
+
                 Stage stage = new Stage();
                 stage.setTitle("Хайнойские башни");
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/main/Winner/WinnerScene.fxml"));
                 Parent root = loader.load();
                 stage.setScene(new Scene(root, 600, 400));
 
-                WinnerController controller = loader.getController();
-                controller.Init(moves,time);
+                WinnerController winController = loader.getController();
+                winController.Init(moves,time, recordController);
                 stage.show();
 
+                closeStage();
                 break;
         }
 
@@ -287,6 +298,11 @@ public class ControllerMain{
     private void addTime(){
         time.addTime(10);
         timeLabel.setText(time.toString());
+    }
+
+    private void closeStage()
+    {
+        stage.close();
     }
 
 }

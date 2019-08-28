@@ -7,15 +7,15 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Winner.WinnerController">
+<AnchorPane prefHeight="145.0" prefWidth="292.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Winner.WinnerController">
    <children>
       <VBox layoutX="35.0" layoutY="17.0" prefHeight="145.0" prefWidth="226.0" AnchorPane.leftAnchor="35.0" AnchorPane.rightAnchor="339.0" AnchorPane.topAnchor="17.0" />
-      <Label alignment="CENTER" layoutX="235.0" layoutY="236.0" prefHeight="30.0" prefWidth="158.0" text="Введите имя" textAlignment="CENTER" textOverrun="CLIP">
+      <Label alignment="CENTER" layoutX="111.0" layoutY="35.0" prefHeight="30.0" prefWidth="158.0" text="Введите имя" textAlignment="CENTER" textOverrun="CLIP" AnchorPane.leftAnchor="111.0" AnchorPane.rightAnchor="105.0" AnchorPane.topAnchor="35.0">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Button fx:id="saveButton" layoutX="73.0" layoutY="176.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="95.0" text="Сохранить" />
-      <TextField fx:id="NameTextField" layoutX="148.0" layoutY="136.0" prefWidth="148.0" />
+      <Button fx:id="saveButton" layoutX="140.0" layoutY="97.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="95.0" text="Сохранить" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="140.0" AnchorPane.rightAnchor="139.0" />
+      <TextField fx:id="NameTextField" layoutX="116.0" layoutY="65.0" prefWidth="148.0" AnchorPane.bottomAnchor="72.0" AnchorPane.leftAnchor="116.0" AnchorPane.rightAnchor="110.0" AnchorPane.topAnchor="65.0" />
    </children>
 </AnchorPane>
