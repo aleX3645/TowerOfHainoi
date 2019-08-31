@@ -66,6 +66,11 @@ public class RecordTableData {
         }
     }
 
+    public void Reset(){
+        table = FXCollections.observableArrayList();
+        Save();
+    }
+
     private boolean compare(Time time1, Time time2){
         if(time1.getMinutes()<time2.getMinutes() || time1.getMinutes()==time2.getMinutes() && time1.getSeconds() < time2.getSeconds()
                 || time1.getMinutes() == time2.getMinutes() && time1.getSeconds() == time2.getSeconds() && time1.getMseconds()<time2.getMseconds()){
@@ -82,6 +87,10 @@ public class RecordTableData {
     @Override
     public String toString(){
         String stringTable = "";
+
+        if(table.size() == 0){
+            return stringTable;
+        }
 
         stringTable += table.get(0).getName() + "-";
         stringTable += table.get(0).getMoves() + "-";

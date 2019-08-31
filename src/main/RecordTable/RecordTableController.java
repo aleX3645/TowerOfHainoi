@@ -29,6 +29,7 @@ public class RecordTableController {
     @FXML
     Button toMenuButton;
 
+
     RecordTableData recordTableData = new RecordTableData();
 
     @FXML
@@ -59,6 +60,12 @@ public class RecordTableController {
         stage.show();
         closeStage();
 
+    }
+
+    @FXML
+    public void onClickReset(){
+        recordTableData.Reset();
+        Refresh();
     }
 
     public void Refresh(){

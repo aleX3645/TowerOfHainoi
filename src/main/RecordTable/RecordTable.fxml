@@ -20,7 +20,7 @@
       </TableView>
       <VBox alignment="TOP_CENTER" layoutX="113.0" layoutY="334.0" prefHeight="52.0" prefWidth="374.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="113.0" AnchorPane.rightAnchor="113.0">
          <children>
-            <Button fx:id="resetButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="420.0" text="Сброс" />
+            <Button fx:id="resetButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="420.0" onAction="#onClickReset" text="Сброс" />
             <Button fx:id="toMenuButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="420.0" onAction="#onClickToMenu" text="В меню" />
          </children>
       </VBox>
