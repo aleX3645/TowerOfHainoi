@@ -57,6 +57,7 @@ public class Game implements Serializable{
 
     public Group returnGameField(){
 
+        MaterialsGenerator materialsGenerator= new MaterialsGenerator();
         ArrayList<ArrayList<Cylinder>> stractField = new ArrayList<>();
 
         for(int i = 0; i< 3; ++i){
@@ -68,6 +69,7 @@ public class Game implements Serializable{
             bottom.setHeight(24.0);
             bottom.translateXProperty().set(xCenter);
             bottom.translateYProperty().set(500.0+(difficulty+1.5)*blockSize/2+12);
+            bottom.setMaterial(materialsGenerator.getFieldTexture());
             temp.add(bottom);
 
             Cylinder top = new Cylinder();
@@ -75,6 +77,7 @@ public class Game implements Serializable{
             top.setHeight((difficulty+1.5)*blockSize);
             top.translateXProperty().set(xCenter);
             top.translateYProperty().set(500.0);
+            top.setMaterial(materialsGenerator.getFieldTexture());
             temp.add(top);
 
             stractField.add(temp);

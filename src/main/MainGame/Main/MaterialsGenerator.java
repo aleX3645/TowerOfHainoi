@@ -1,5 +1,6 @@
 package main.MainGame.Main;
 
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 
@@ -100,5 +101,11 @@ public class MaterialsGenerator {
             return materials.get(0);
         }
         return materials.get(id);
+    }
+
+    public PhongMaterial getFieldTexture(){
+        PhongMaterial material = new PhongMaterial();
+        material.setDiffuseMap(new Image(getClass().getResourceAsStream("/Resources/wooden-texture.jpg")));
+        return material;
     }
 }
