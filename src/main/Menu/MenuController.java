@@ -8,7 +8,7 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import main.Difficulty.DifficultyScene;
 import main.MainGame.ControllerMain;
-import main.MainGame.Game;
+import main.MainGame.Main.Game;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -58,7 +58,7 @@ public class MenuController {
     @FXML
     public void onClickNew(ActionEvent event) throws Exception{
 
-        Stage stage = (Stage) newButton.getScene().getWindow();
+        Stage stage = new Stage();
         stage.setTitle("Хайнойские башни");
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/main/Difficulty/difficultyScene.fxml"));
         Parent root = loader.load();

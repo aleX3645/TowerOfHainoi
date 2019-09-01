@@ -1,19 +1,19 @@
-package main.MainGame;
+package main.MainGame.Main;
 
 import javafx.geometry.Point3D;
 import javafx.scene.Group;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Rotate;
 
-class XGroup extends Group {
+public class XGroup extends Group {
 
-    XGroup() {
+    public XGroup() {
         super();
         getTransforms().add(new Affine());
 
     }
 
-    XGroup(Group g) {
+    public XGroup(Group g) {
         super(g);
         getTransforms().add(new Affine());
     }

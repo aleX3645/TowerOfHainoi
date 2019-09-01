@@ -1,4 +1,4 @@
-package main.MainGame;
+package main.MainGame.Main;
 
 import javafx.scene.Group;
 import javafx.scene.shape.Cylinder;
@@ -25,7 +25,7 @@ public class Game implements Serializable{
 
     public Game(int difficulty){
 
-
+        MaterialsGenerator materialsGenerator= new MaterialsGenerator();
         double yStart = 500+(difficulty+1.5)*blockSize/2+20;
         this.difficulty = difficulty;
         ArrayList<Integer> temp = new ArrayList<>();
@@ -45,6 +45,7 @@ public class Game implements Serializable{
             block.setRadius(maxSize-j*(maxSize-topR)/(difficulty+1));
             block.translateXProperty().set(xLeft);
             block.translateYProperty().set(yStart-j*blockSize);
+            block.setMaterial(materialsGenerator.GetNextMaterial());
             tempPointer.push(block);
         }
 
@@ -177,6 +178,7 @@ public class Game implements Serializable{
 
     public void buildCylinders(){
 
+        MaterialsGenerator materialsGenerator= new MaterialsGenerator();
         double yStart = 500+(difficulty+1.5)*blockSize/2+20;
 
         Stack<Cylinder>[] tempField = new Stack[3];
@@ -187,6 +189,7 @@ public class Game implements Serializable{
             block.setRadius(maxSize-(difficulty-field[0].get(i)+1)*(maxSize-topR)/(difficulty+1));
             block.translateXProperty().set(xLeft);
             block.translateYProperty().set(yStart-(i+1)*blockSize);
+            block.setMaterial(materialsGenerator.GetMAterialById((int)difficulty-field[0].get(i)));
             temp.push(block);
         }
 
@@ -200,6 +203,7 @@ public class Game implements Serializable{
             block.setRadius(maxSize-(difficulty-field[1].get(i)+1)*(maxSize-topR)/(difficulty+1));
             block.translateXProperty().set(xCenter);
             block.translateYProperty().set(yStart-(i+1)*blockSize);
+            block.setMaterial(materialsGenerator.GetMAterialById((int)difficulty-field[1].get(i)));
             temp1.push(block);
         }
         tempField[1] = temp1;
@@ -211,6 +215,7 @@ public class Game implements Serializable{
             block.setRadius(maxSize-(difficulty-field[2].get(i)+1)*(maxSize-topR)/(difficulty+1));
             block.translateXProperty().set(xRight);
             block.translateYProperty().set(yStart-(i+1)*blockSize);
+            block.setMaterial(materialsGenerator.GetMAterialById((int)difficulty-field[2].get(i)));
             temp2.push(block);
         }
         tempField[2] = temp2;
