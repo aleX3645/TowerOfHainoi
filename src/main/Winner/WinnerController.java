@@ -15,17 +15,19 @@ public class WinnerController {
     @FXML
     private TextField NameTextField;
 
-    private RecordTableData recordTableData = new RecordTableData();
+    private RecordTableData recordTableData = new RecordTableData(0);
     RecordTableController recordController;
 
     int moves = 0;
     Time time;
 
-    public void Init(int moves, Time time, RecordTableController recordController){
+    public void Init(int difficulty, int moves, Time time, RecordTableController recordController){
 
         this.moves = moves;
         this.time = time;
         this.recordController = recordController;
+
+        recordTableData = new RecordTableData(difficulty);
 
         saveButton.setOnAction(event -> {
 

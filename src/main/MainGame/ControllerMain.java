@@ -57,11 +57,15 @@ public class ControllerMain{
     Timer timer;
 
     Stage stage = new Stage();
+    int difficulty = 0;
     public void Init(int difficulty){
 
         stage = new Stage();
         stage.setFullScreen(true);
         stage.setTitle("Хайнойские башни");
+
+        this.difficulty = difficulty;
+
 
         if (game == null) {
             game = new Game(difficulty);
@@ -182,6 +186,8 @@ public class ControllerMain{
                 recordStage.setScene(new Scene(recordRoot, 600, 400));
                 RecordTableController recordController = recordLoader.getController();
 
+                RecordTableController  controller = recordLoader.getController();
+                controller.Init(codeToInt(difficulty));
                 recordStage.show();
 
                 Stage stage = new Stage();
@@ -191,7 +197,7 @@ public class ControllerMain{
                 stage.setScene(new Scene(root, 600, 400));
 
                 WinnerController winController = loader.getController();
-                winController.Init(moves,time, recordController);
+                winController.Init(codeToInt(difficulty), moves,time, recordController);
                 stage.show();
 
                 closeStage();
@@ -279,6 +285,20 @@ public class ControllerMain{
                     break;
             }
         });
+    }
+
+    private int codeToInt(int code){
+        switch(code){
+            case(5):
+                return 1;
+            case(8):
+                return 2;
+            case(15):
+                return 3;
+            case(3):
+            default:
+                return 0;
+        }
     }
 
     class myTimerTask extends TimerTask{

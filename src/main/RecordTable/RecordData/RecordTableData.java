@@ -10,8 +10,9 @@ import java.util.ArrayList;
 
 public class RecordTableData {
 
-    public RecordTableData(){
-        try(BufferedReader reader = new BufferedReader(new FileReader("recordTable.txt"))){
+    public RecordTableData(int difficulty){
+        this.difficulty = difficulty;
+        try(BufferedReader reader = new BufferedReader(new FileReader("recordTable" + this.difficulty + ".txt"))){
 
             String temp;
             while((temp = reader.readLine())!=null){
@@ -25,6 +26,8 @@ public class RecordTableData {
             ioException.printStackTrace();
         }
     }
+
+    int difficulty;
 
     private ObservableList<Data> table = FXCollections.observableArrayList();
 
@@ -58,7 +61,7 @@ public class RecordTableData {
 
 
     private void Save(){
-        try(FileWriter writer = new FileWriter("recordTable.txt",false)){
+        try(FileWriter writer = new FileWriter("recordTable" + this.difficulty + ".txt",false)){
             writer.write(toString());
         }
         catch (IOException ioException){

@@ -1,11 +1,14 @@
 package main.RecordTable;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -28,12 +31,22 @@ public class RecordTableController {
     TableColumn timeColumn;
     @FXML
     Button toMenuButton;
-
-
-    RecordTableData recordTableData = new RecordTableData();
-
     @FXML
-    private void initialize(){
+    ChoiceBox<String> choiceBox;
+
+    int difficulty = 0;
+
+    RecordTableData recordTableData = new RecordTableData(0);
+
+    final ObservableList<String> forChoiceBox = FXCollections.observableArrayList("Легкий", "Средний", "Сложный", "Очень сложный");
+
+    public void Init(int difficulty){
+        this.difficulty = difficulty;
+        recordTableData = new RecordTableData(this.difficulty);
+
+        choiceBox.setItems(forChoiceBox);
+        choiceBox.setValue(intToChoice(difficulty));
+
         nameColumn.setCellValueFactory(new PropertyValueFactory<Data, String>("name"));
         movesColumn.setCellValueFactory(new PropertyValueFactory<Data, String>("moves"));
         timeColumn.setCellValueFactory(new PropertyValueFactory<Data, String>("time"));
@@ -68,9 +81,43 @@ public class RecordTableController {
         Refresh();
     }
 
+    @FXML
+    public void onClickChoice(){
+        difficulty = choiceToInt(choiceBox.getValue());
+        Refresh();
+    }
+
     public void Refresh(){
-        RecordTableData recordTableData = new RecordTableData();
+        RecordTableData recordTableData = new RecordTableData(difficulty);
         recordTable.setItems(recordTableData.getList());
+    }
+
+    private int choiceToInt(String choice){
+        switch(choice){
+            case("Средний"):
+                return 1;
+            case("Сложный"):
+                return 2;
+            case("Очень сложный"):
+                return 3;
+            case("Легкий"):
+            default:
+                return 0;
+        }
+    }
+
+    private String intToChoice(int code){
+        switch(code){
+            case(1):
+                return "Средний";
+            case(2):
+                return "Сложный";
+            case(3):
+                return "Очень сложный";
+            case(0):
+            default:
+                return "Легкий";
+        }
     }
 
     private void closeStage()

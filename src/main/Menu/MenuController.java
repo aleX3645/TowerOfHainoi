@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import main.Difficulty.DifficultyScene;
 import main.MainGame.ControllerMain;
 import main.MainGame.Main.Game;
+import main.RecordTable.RecordTableController;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -47,6 +48,10 @@ public class MenuController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/main/RecordTable/RecordTable.fxml"));
         Parent root = loader.load();
         stage.setScene(new Scene(root, 600, 400));
+
+        RecordTableController controller = loader.getController();
+        controller.Init(0);
+
         stage.show();
 
         closeStage();
