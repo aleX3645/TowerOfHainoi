@@ -5,12 +5,14 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.control.Label;
 import javafx.scene.text.Font;
 import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import main.MainGame.Main.Game;
@@ -150,15 +152,22 @@ public class ControllerMain{
         return  pane;
     }
 
+    PerspectiveCamera camera;
     private PerspectiveCamera setCamera(){
 
-        PerspectiveCamera camera = new PerspectiveCamera(true);
+        camera = new PerspectiveCamera(true);
 
-        camera.translateXProperty().set(700);
-        camera.translateYProperty().set(500);
-        camera.translateZProperty().set(-1500);
+        pivot.setX(700);
+        pivot.setY(500);
+        pivot.setZ(0);
 
-        camera.getTransforms().addAll (rotateX, rotateY);//Math.asin(250/1500);
+        camera.getTransforms().addAll (
+                pivot,
+                rotateX,
+                rotateY,
+                new Rotate(-10, Rotate.X_AXIS),
+                new Translate(0, 0, -1500)
+        );
 
         camera.setNearClip(0.1);
         camera.setFarClip(5000);
@@ -218,6 +227,9 @@ public class ControllerMain{
 
     }
 
+    Translate pivot = new Translate();
+    int cameraDelta = 0;
+
     private void addMouseEvent(Scene scene) {
 
         scene.setOnMousePressed(me -> {
@@ -241,15 +253,28 @@ public class ControllerMain{
             mouseDeltaY = (mousePosY - mouseOldY);
 
             if (me.isPrimaryButtonDown()) {
-                root3d.addRotation(-mouseDeltaX * MOUSE_SPEED * ROTATION_SPEED, Rotate.Y_AXIS);
-                //root3d.addRotation(mouseDeltaY * MOUSE_SPEED * ROTATION_SPEED, Rotate.X_AXIS);
+                //root3d.addRotation(-mouseDeltaX * MOUSE_SPEED * ROTATION_SPEED, Rotate.Y_AXIS);
+                rotateY.angleProperty().setValue(rotateY.angleProperty().getValue() + mouseDeltaX * MOUSE_SPEED * ROTATION_SPEED); //root3d.addRotation(mouseDeltaY * MOUSE_SPEED * ROTATION_SPEED, Rotate.X_AXIS);
             }
         });
 
-        /*
         scene.addEventHandler(ScrollEvent.SCROLL, event -> {
-            //here need to implement scrolling
-        });*/
+            System.out.println(cameraDelta);
+            double delta = event.getDeltaY();
+            System.out.println(delta);
+            if(delta <0 && cameraDelta != -5){
+                cameraDelta--;
+                camera.getTransforms().addAll (
+                        new Translate(0, 0, delta*3)
+                );
+            }
+            if(delta>0 && cameraDelta != 7){
+                cameraDelta++;
+                camera.getTransforms().addAll (
+                        new Translate(0, 0, delta*3)
+                );
+            }
+        });
     }
 
     private int codeToInt(int code){
