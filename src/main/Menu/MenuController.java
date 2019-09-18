@@ -24,13 +24,13 @@ public class MenuController {
     public void onClickContinue(){
 
         Game game;
+
         try{
             FileInputStream fis = new FileInputStream("save.ser");
             ObjectInputStream oin = new ObjectInputStream(fis);
             game = (Game) oin.readObject();
             game.buildCylinders();
         }catch(Exception ex){
-            //here with exception need message and interrupt
             ex.printStackTrace();
             game = new Game(3);
         }

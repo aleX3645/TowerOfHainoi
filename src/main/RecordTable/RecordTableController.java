@@ -88,7 +88,7 @@ public class RecordTableController {
     }
 
     public void Refresh(){
-        RecordTableData recordTableData = new RecordTableData(difficulty);
+        recordTableData = new RecordTableData(difficulty);
         recordTable.setItems(recordTableData.getList());
     }
 

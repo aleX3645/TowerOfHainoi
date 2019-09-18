@@ -29,7 +29,10 @@ public class ControllerMain{
     public ControllerMain(){}
 
     public ControllerMain(Game game){
+
         this.game = game;
+        game.setControllerMain(this);
+
         time = game.getTime();
         moves = game.getMoves();
     }
@@ -66,15 +69,13 @@ public class ControllerMain{
 
         this.difficulty = difficulty;
 
-
         if (game == null) {
             game = new Game(difficulty);
         }
 
-
+        game.setControllerMain(this);
 
         Scene scene = new Scene(buildPane());
-        addKeyEvent(stage);
         addMouseEvent(scene);
 
         stage.setScene(scene);
@@ -165,7 +166,7 @@ public class ControllerMain{
         return camera;
     }
 
-    private void moveHandler(int state) throws IOException {
+    public void MoveHandler(int state){
 
         switch(state){
             case 1:
@@ -182,8 +183,14 @@ public class ControllerMain{
                 Stage recordStage = new Stage();
                 recordStage.setTitle("Хайнойские башни");
                 FXMLLoader recordLoader = new FXMLLoader(getClass().getResource("/main/RecordTable/RecordTable.fxml"));
-                Parent recordRoot = recordLoader.load();
-                recordStage.setScene(new Scene(recordRoot, 600, 400));
+
+                try {
+                    Parent recordRoot = recordLoader.load();
+                    recordStage.setScene(new Scene(recordRoot, 600, 400));
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                }
+
                 RecordTableController recordController = recordLoader.getController();
 
                 RecordTableController  controller = recordLoader.getController();
@@ -193,8 +200,13 @@ public class ControllerMain{
                 Stage stage = new Stage();
                 stage.setTitle("Хайнойские башни");
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/main/Winner/WinnerScene.fxml"));
-                Parent root = loader.load();
-                stage.setScene(new Scene(root, 600, 400));
+
+                try {
+                    Parent root = loader.load();
+                    stage.setScene(new Scene(root, 600, 400));
+                }catch(Exception ex){
+                    ex.printStackTrace();
+                }
 
                 WinnerController winController = loader.getController();
                 winController.Init(codeToInt(difficulty), moves,time, recordController);
@@ -238,53 +250,6 @@ public class ControllerMain{
         scene.addEventHandler(ScrollEvent.SCROLL, event -> {
             //here need to implement scrolling
         });*/
-    }
-
-
-    private void addKeyEvent(Stage myStage) {
-
-        myStage.addEventHandler(KeyEvent.KEY_RELEASED, event -> {
-
-            switch (event.getCode()){
-                case DIGIT1:
-                    if(from == -1){
-                        from = 0;
-                    }else{
-                        try {
-                            moveHandler(game.Move(from,0));
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        from = -1;
-                    }
-                    break;
-                case DIGIT2:
-                    if(from == -1){
-
-                        from = 1;
-                    }else{
-                        try {
-                            moveHandler(game.Move(from,1));
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        from = -1;
-                    }
-                    break;
-                case DIGIT3:
-                    if(from == -1){
-                        from = 2;
-                    }else{
-                        try {
-                            moveHandler(game.Move(from,2));
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        from = -1;
-                    }
-                    break;
-            }
-        });
     }
 
     private int codeToInt(int code){

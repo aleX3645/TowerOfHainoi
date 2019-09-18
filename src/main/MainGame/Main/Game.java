@@ -1,7 +1,9 @@
 package main.MainGame.Main;
 
 import javafx.scene.Group;
+import javafx.scene.input.PickResult;
 import javafx.scene.shape.Cylinder;
+import main.MainGame.ControllerMain;
 import main.MainGame.Time.Time;
 
 
@@ -22,6 +24,9 @@ public class Game implements Serializable{
 
     private ArrayList<Integer>[] field = new ArrayList[3];
     private transient Stack<Cylinder>[] pField = new Stack[3];
+    private transient ArrayList<ArrayList<Cylinder>> stractField = new ArrayList<>();
+    private transient int tempStackNumber = -1;
+    private transient ControllerMain controllerMain = new ControllerMain();
 
     public Game(int difficulty){
 
@@ -46,19 +51,79 @@ public class Game implements Serializable{
             block.translateXProperty().set(xLeft);
             block.translateYProperty().set(yStart-j*blockSize);
             block.setMaterial(materialsGenerator.GetNextMaterial());
+
+            block.setOnMouseClicked(e->{
+                PickResult pr = e.getPickResult();
+                clickHandler((Cylinder)pr.getIntersectedNode());
+            });
+
             tempPointer.push(block);
         }
 
         pField[0] = tempPointer;
         pField[1] = new Stack<>();
         pField[2] = new Stack<>();
+
+    }
+
+    public void setControllerMain(ControllerMain controllerMain){
+        this.controllerMain = controllerMain;
+    }
+
+    private void clickHandler(Cylinder cylinder){
+        if(tempStackNumber == -1){
+            if(pField[0].contains(cylinder)){
+                tempStackNumber = 0;
+            }else{
+                if(pField[1].contains(cylinder)){
+                    tempStackNumber = 1;
+                }else{
+                    if(pField[2].contains(cylinder)){
+                        tempStackNumber = 2;
+                    }else{
+                        tempStackNumber = returnStructNumber(cylinder);
+                    }
+                }
+            }
+        }else{
+            if(pField[0].contains(cylinder)){
+                Move(tempStackNumber,0);
+                tempStackNumber = -1;
+            }else{
+                if(pField[1].contains(cylinder)){
+                    Move(tempStackNumber,1);
+                    tempStackNumber = -1;
+                }else{
+                    if(pField[2].contains(cylinder)){
+                        Move(tempStackNumber,2);
+                        tempStackNumber = -1;
+                    }else{
+                        Move(tempStackNumber,returnStructNumber(cylinder));
+                        tempStackNumber = -1;
+                    }
+                }
+            }
+        }
+    }
+
+    private int returnStructNumber(Cylinder cylinder){
+        System.out.println("here");
+        if(stractField.get(0).contains(cylinder)){
+            return 1;
+        }else{
+            if(stractField.get(1).contains(cylinder)){
+                return 0;
+            }else{
+                return 2;
+            }
+        }
     }
 
 
     public Group returnGameField(){
 
         MaterialsGenerator materialsGenerator= new MaterialsGenerator();
-        ArrayList<ArrayList<Cylinder>> stractField = new ArrayList<>();
+        stractField = new ArrayList<>();
 
         for(int i = 0; i< 3; ++i){
 
@@ -70,6 +135,12 @@ public class Game implements Serializable{
             bottom.translateXProperty().set(xCenter);
             bottom.translateYProperty().set(500.0+(difficulty+1.5)*blockSize/2+12);
             bottom.setMaterial(materialsGenerator.getFieldTexture());
+
+            bottom.setOnMouseClicked(e->{
+                PickResult pr = e.getPickResult();
+                clickHandler((Cylinder)pr.getIntersectedNode());
+            });
+
             temp.add(bottom);
 
             Cylinder top = new Cylinder();
@@ -78,6 +149,12 @@ public class Game implements Serializable{
             top.translateXProperty().set(xCenter);
             top.translateYProperty().set(500.0);
             top.setMaterial(materialsGenerator.getFieldTexture());
+
+            top.setOnMouseClicked(e->{
+                PickResult pr = e.getPickResult();
+                clickHandler((Cylinder)pr.getIntersectedNode());
+            });
+
             temp.add(top);
 
             stractField.add(temp);
@@ -115,10 +192,10 @@ public class Game implements Serializable{
         return group;
     }
 
-    public int Move(int from, int to){
+    public void Move(int from, int to){
 
         if(field[from].size() == 0){
-            return -1;
+            return;
         }
         //hmm
         if(field[to].size() == 0 || field[to].get(field[to].size()-1) > field[from].get(field[from].size()-1)){
@@ -128,16 +205,16 @@ public class Game implements Serializable{
 
             if(field[2].size() == difficulty){
                 System.out.println("win");
-                return 0;
+                controllerMain.MoveHandler(0);
             }
             else{
                 System.out.println("can");
-                return 1;
+                controllerMain.MoveHandler(1);
             }
         }
         else{
             System.out.println("cannot");
-            return -1;
+            controllerMain.MoveHandler(-1);
         }
     }
 
@@ -180,6 +257,7 @@ public class Game implements Serializable{
     }
 
     public void buildCylinders(){
+        tempStackNumber = -1;
 
         MaterialsGenerator materialsGenerator= new MaterialsGenerator();
         double yStart = 500+(difficulty+1.5)*blockSize/2+20;
