@@ -16,11 +16,17 @@ import java.util.Stack;
  * */
 public class Game implements Serializable{
 
+    /**Сложность игры*/
     private double difficulty;
+    /**Хранит номер шеста с которого идет перенос, tempStackNumber = -1, когда никакой шест не выбран.*/
     private transient int tempStackNumber = -1;
 
+    /**Содержит целочислинные переменные, где чем больше номер тем больше размер кольца(дублирует стек с кольцами, но вместо радиуса используется целые числа),
+     * необходимо для сравнения колец*/
     private ArrayList<Integer>[] field = new ArrayList[3];
+    /**Содержит стеки с кольцами, где номер стека соответствует левому, правому, и центральному шесту в такой последовательности в массиве*/
     private transient Stack<Cylinder>[] pField = new Stack[3];
+    /**Содержит шесты*/
     private transient ArrayList<ArrayList<Cylinder>> stractField = new ArrayList<>();
 
 
@@ -44,10 +50,11 @@ public class Game implements Serializable{
         buildCylinders();
     }
 
+    /**Содержит контроллер игры*/
+    private transient ControllerMain controllerMain = new ControllerMain();
     /**
      * Передает ссылку на контроллер игры.
      * */
-    private transient ControllerMain controllerMain = new ControllerMain();
     public void setControllerMain(ControllerMain controllerMain){
         this.controllerMain = controllerMain;
     }
@@ -111,15 +118,16 @@ public class Game implements Serializable{
     }
 
 
-    /**
-     * Возвращает группу со всеми элементами для добавления на сцену
-     * */
+
     private final double maxSize = 200;
     private final double blockSize = 40;
     private final double xLeft = 250;
     private final double xRight = 1150;
     private final double xCenter = 700;
     private final double topR = 30;
+    /**
+     * Возвращает группу со всеми элементами для добавления на сцену
+     * */
     public Group returnGameField(){
 
         MaterialsGenerator materialsGenerator= new MaterialsGenerator();
@@ -253,11 +261,13 @@ public class Game implements Serializable{
         temp.translateYProperty().set(yStart-pField[to].size()*blockSize);
     }
 
+    /**Затраченное время (для сохранения)*/
+    private Time time = new Time();
+    /**Количество ходов (для сохранения)*/
+    private int moves = 0;
     /**
      * Сохраняет время и количество шагов для дальнейшей сериализации.
      * */
-    private Time time = new Time();
-    private int moves = 0;
     public void save(Time time, int moves){
         this.time = time;
         this.moves = moves;

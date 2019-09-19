@@ -19,12 +19,13 @@ public class Time implements Serializable {
 
     }
 
-    /**
-     * Добавляет переданное время к общему затраченному времени
-     * */
+
     int minutes = 0;
     int seconds = 0;
     int mseconds = 0;
+    /**
+     * Добавляет переданное время к общему затраченному времени
+     * */
     public void addTime(int time){
         mseconds+=time;
         if(mseconds >= 100){

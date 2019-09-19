@@ -37,9 +37,12 @@ public class DifficultyScene {
     }
 
     /**
-     * Добавляет события кнопок.
+     * Сложность игры
      * */
     int difficulty = 3;
+    /**
+     * Добавляет события кнопок.
+     * */
     private void addButtonEvents(){
 
         easyBtn.setOnAction(event -> {

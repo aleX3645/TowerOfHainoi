@@ -38,14 +38,16 @@ public class RecordTableController {
     ChoiceBox<String> choiceBox;
 
 
-
+    /**Таблица рекордов*/
     RecordTableData recordTableData = new RecordTableData(3);
+    /**Лист со словестным выбором сложности для ChoiceBox*/
     final ObservableList<String> forChoiceBox = FXCollections.observableArrayList("Легкий", "Средний", "Сложный", "Очень сложный");
 
+    /**Сложность*/
+    int difficulty = 0;
     /**
      * Загружает нужную таблицу по сложности.
      * */
-    int difficulty = 0;
     public void Init(int difficulty){
         this.difficulty = difficulty;
         recordTableData = new RecordTableData(this.difficulty);

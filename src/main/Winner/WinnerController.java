@@ -19,14 +19,18 @@ public class WinnerController {
     @FXML
     private TextField NameTextField;
 
-    private RecordTableData recordTableData = new RecordTableData(0);
+    /**Таблица рекордов*/
+    private RecordTableData recordTableData = new RecordTableData(3);
+    /**Ссылка на контроллер таблицы ркордов*/
     RecordTableController recordController;
 
+    /**Количество ходов*/
+    int moves = 0;
+    /**Затраченное время*/
+    Time time;
     /**
      * инициализирует контроллер по сложности, количеству шагов и времени
      * */
-    int moves = 0;
-    Time time;
     public void Init(int difficulty, int moves, Time time, RecordTableController recordController){
 
         this.moves = moves;

@@ -4,7 +4,6 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -20,9 +19,7 @@ import main.MainGame.Main.XGroup;
 import main.MainGame.Time.Time;
 import main.RecordTable.RecordTableController;
 import main.Winner.WinnerController;
-
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -42,31 +39,19 @@ public class ControllerMain{
         moves = game.getMoves();
     }
 
+    /**Класс игры*/
     private Game game;
-
-    private double mousePosX, mousePosY;
-    private double mouseOldX;
-    private double mouseDeltaX;
-    private static double MOUSE_SPEED = 0.1;
-    private static double ROTATION_SPEED = 2.0;
-
-    private Rotate rotateX = new Rotate(0, Rotate.X_AXIS);
-    private Rotate rotateY = new Rotate(0, Rotate.Y_AXIS);
-
-    private XGroup root3d = new XGroup();
-
-    private Label timeLabel;
-    private Label movesLabel;
-
+    /**Затраченные шаги*/
     private int moves = 0;
-
+    /**Затраченное время*/
     Timer timer;
-
+    /**Главная сцена*/
+    Stage stage = new Stage();
+    /**Сложность*/
+    int difficulty = 0;
     /**
      * Инициализирует и создает view с полем по переданному количеству колец.
      * */
-    Stage stage = new Stage();
-    int difficulty = 0;
     public void Init(int difficulty){
 
         stage = new Stage();
@@ -116,6 +101,11 @@ public class ControllerMain{
 
     }
 
+    /**Группа со всеми элементами*/
+    private XGroup root3d = new XGroup();
+
+    private Label timeLabel;
+    private Label movesLabel;
     /**
      * Создает AnchorPane и добавляет на него элементы
      * */
@@ -159,11 +149,15 @@ public class ControllerMain{
         return  pane;
     }
 
+    /**Камера для сцены*/
+    PerspectiveCamera camera;
+    /**Точка вокруг которой вращается камера*/
+    Translate pivot = new Translate();
+    /**Класс вращения вокруг Y*/
+    private Rotate rotateY = new Rotate(0, Rotate.Y_AXIS);
     /**
      * Возвращает камеру с выставленными параметрами.
      * */
-    PerspectiveCamera camera;
-    Translate pivot = new Translate();
     private PerspectiveCamera setCamera(){
 
         camera = new PerspectiveCamera(true);
@@ -174,7 +168,6 @@ public class ControllerMain{
 
         camera.getTransforms().addAll (
                 pivot,
-                rotateX,
                 rotateY,
                 new Rotate(-10, Rotate.X_AXIS),
                 new Translate(0, 0, -1500)
@@ -244,30 +237,31 @@ public class ControllerMain{
 
     }
 
-
+    /**Позиция мыши*/
+    private double mousePosX;
+    /**Позиция мыши до начало передвижения*/
+    private double mouseOldX;
+    /**Смещение мыши*/
+    private double mouseDeltaX;
+    private static double MOUSE_SPEED = 0.2;
+    int scrollCounter = 0;
     /**
      * Добавляет события для мыши
      * */
-    int scrollCounter = 0;
     private void addMouseEvent(Scene scene) {
 
         scene.setOnMousePressed(me -> {
             mousePosX = me.getSceneX();
-            mousePosY = me.getSceneY();
             mouseOldX = me.getSceneX();
         });
 
         scene.setOnMouseDragged(me -> {
             mouseOldX = mousePosX;
-
             mousePosX = me.getSceneX();
-            mousePosY = me.getSceneY();
-
             mouseDeltaX = (mousePosX - mouseOldX);
 
             if (me.isPrimaryButtonDown()) {
-                //root3d.addRotation(-mouseDeltaX * MOUSE_SPEED * ROTATION_SPEED, Rotate.Y_AXIS);
-                rotateY.angleProperty().setValue(rotateY.angleProperty().getValue() + mouseDeltaX * MOUSE_SPEED * ROTATION_SPEED); //root3d.addRotation(mouseDeltaY * MOUSE_SPEED * ROTATION_SPEED, Rotate.X_AXIS);
+                rotateY.angleProperty().setValue(rotateY.angleProperty().getValue() + mouseDeltaX * MOUSE_SPEED);
             }
         });
 
@@ -290,10 +284,11 @@ public class ControllerMain{
         });
     }
 
+    /**Лист для таблицы рекордов*/
+    Time time = new Time();
     /**
      * Класс для потока секундамера
      * */
-    Time time = new Time();
     class myTimerTask extends TimerTask{
 
         @Override

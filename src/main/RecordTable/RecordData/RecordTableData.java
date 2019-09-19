@@ -3,10 +3,7 @@ package main.RecordTable.RecordData;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import main.MainGame.Time.Time;
-import main.RecordTable.RecordData.Data;
-
 import java.io.*;
-import java.util.ArrayList;
 
 /**
  * Класс таблицы рекордов
@@ -30,7 +27,9 @@ public class RecordTableData {
         }
     }
 
+    /**Сложность*/
     int difficulty;
+    /**Лист для таблицы рекордов*/
     private ObservableList<Data> table = FXCollections.observableArrayList();
 
     /**
@@ -96,6 +95,9 @@ public class RecordTableData {
         }
     }
 
+    /**
+     * Возвращает лист для таблицы
+     * */
     public ObservableList<Data> getList(){
         return table;
     }
