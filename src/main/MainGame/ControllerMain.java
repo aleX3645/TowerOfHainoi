@@ -15,7 +15,6 @@ import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import main.MainGame.Main.Game;
-import main.MainGame.Main.XGroup;
 import main.MainGame.Time.Time;
 import main.RecordTable.RecordTableController;
 import main.Winner.WinnerController;
@@ -102,7 +101,7 @@ public class ControllerMain{
     }
 
     /**Группа со всеми элементами*/
-    private XGroup root3d = new XGroup();
+    private Group root3d = new Group();
 
     private Label timeLabel;
     private Label movesLabel;
@@ -116,7 +115,7 @@ public class ControllerMain{
 
         Font f = new Font(40);
 
-        root3d = new XGroup(game.returnGameField());
+        root3d = game.returnGameField();
         //root3d.getChildren().add(camera);
 
         SubScene sub = new SubScene(root3d,1920,1080,true,SceneAntialiasing.BALANCED);
