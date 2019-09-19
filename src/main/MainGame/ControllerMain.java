@@ -27,9 +27,12 @@ import java.io.ObjectOutputStream;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * Главный контроллер игры
+ * */
 public class ControllerMain{
-    public ControllerMain(){}
 
+    public ControllerMain(){}
     public ControllerMain(Game game){
 
         this.game = game;
@@ -40,12 +43,10 @@ public class ControllerMain{
     }
 
     private Game game;
-    private int from = -1;
 
-    private double mouseStartPosX, mouseStartPosY;
     private double mousePosX, mousePosY;
-    private double mouseOldX, mouseOldY;
-    private double mouseDeltaX, mouseDeltaY;
+    private double mouseOldX;
+    private double mouseDeltaX;
     private static double MOUSE_SPEED = 0.1;
     private static double ROTATION_SPEED = 2.0;
 
@@ -61,6 +62,9 @@ public class ControllerMain{
 
     Timer timer;
 
+    /**
+     * Инициализирует и создает view с полем по переданному количеству колец.
+     * */
     Stage stage = new Stage();
     int difficulty = 0;
     public void Init(int difficulty){
@@ -107,11 +111,14 @@ public class ControllerMain{
 
         timer = new Timer();
         myTimerTask myTask = new myTimerTask();
-        timer.schedule(myTask, 0,10);
+        timer.schedule(myTask, 0,9);
 
 
     }
 
+    /**
+     * Создает AnchorPane и добавляет на него элементы
+     * */
     private Pane buildPane(){
 
         AnchorPane pane = new AnchorPane();
@@ -152,7 +159,11 @@ public class ControllerMain{
         return  pane;
     }
 
+    /**
+     * Возвращает камеру с выставленными параметрами.
+     * */
     PerspectiveCamera camera;
+    Translate pivot = new Translate();
     private PerspectiveCamera setCamera(){
 
         camera = new PerspectiveCamera(true);
@@ -175,6 +186,12 @@ public class ControllerMain{
         return camera;
     }
 
+    /**
+     * Получает из класса game результат передвижения элемента:
+     * 1 - Передвинуть можно. Просто передвигает элемент
+     * -1 - Передвинуть нельзя.
+     * 0 - Победа пользователя. Вызывает победное view
+     * */
     public void MoveHandler(int state){
 
         switch(state){
@@ -203,7 +220,7 @@ public class ControllerMain{
                 RecordTableController recordController = recordLoader.getController();
 
                 RecordTableController  controller = recordLoader.getController();
-                controller.Init(codeToInt(difficulty));
+                controller.Init(difficulty);
                 recordStage.show();
 
                 Stage stage = new Stage();
@@ -212,13 +229,13 @@ public class ControllerMain{
 
                 try {
                     Parent root = loader.load();
-                    stage.setScene(new Scene(root, 600, 400));
+                    stage.setScene(new Scene(root, 300, 200));
                 }catch(Exception ex){
                     ex.printStackTrace();
                 }
 
                 WinnerController winController = loader.getController();
-                winController.Init(codeToInt(difficulty), moves,time, recordController);
+                winController.Init(difficulty, moves,time, recordController);
                 stage.show();
 
                 closeStage();
@@ -227,30 +244,26 @@ public class ControllerMain{
 
     }
 
-    Translate pivot = new Translate();
-    int scrollCounter = 0;
 
+    /**
+     * Добавляет события для мыши
+     * */
+    int scrollCounter = 0;
     private void addMouseEvent(Scene scene) {
 
         scene.setOnMousePressed(me -> {
-            mouseStartPosX = me.getSceneX();
-            mouseStartPosY = me.getSceneY();
-
             mousePosX = me.getSceneX();
             mousePosY = me.getSceneY();
             mouseOldX = me.getSceneX();
-            mouseOldY = me.getSceneY();
         });
 
         scene.setOnMouseDragged(me -> {
             mouseOldX = mousePosX;
-            mouseOldY = mousePosY;
 
             mousePosX = me.getSceneX();
             mousePosY = me.getSceneY();
 
             mouseDeltaX = (mousePosX - mouseOldX);
-            mouseDeltaY = (mousePosY - mouseOldY);
 
             if (me.isPrimaryButtonDown()) {
                 //root3d.addRotation(-mouseDeltaX * MOUSE_SPEED * ROTATION_SPEED, Rotate.Y_AXIS);
@@ -277,20 +290,10 @@ public class ControllerMain{
         });
     }
 
-    private int codeToInt(int code){
-        switch(code){
-            case(5):
-                return 1;
-            case(8):
-                return 2;
-            case(15):
-                return 3;
-            case(3):
-            default:
-                return 0;
-        }
-    }
-
+    /**
+     * Класс для потока секундамера
+     * */
+    Time time = new Time();
     class myTimerTask extends TimerTask{
 
         @Override
@@ -298,18 +301,16 @@ public class ControllerMain{
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
-                    addTime();
+                    time.addTime(1);
+                    timeLabel.setText(time.toString());
                 }
             });
         }
     }
 
-    Time time = new Time();
-    private void addTime(){
-        time.addTime(10);
-        timeLabel.setText(time.toString());
-    }
-
+    /**
+     * Закрывает окно
+     * */
     private void closeStage()
     {
         stage.close();

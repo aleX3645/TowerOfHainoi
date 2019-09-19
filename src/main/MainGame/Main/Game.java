@@ -11,28 +11,26 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Stack;
 
+/**
+ * Класс игры. В конструктор передается общее количество колец и по ним генерируется поле игры.
+ * */
 public class Game implements Serializable{
 
     private double difficulty;
-    private final double maxSize = 200;
-    private final double blockSize = 40;
-    private final double xLeft = 250;
-    private final double xRight = 1150;
-    private final double xCenter = 700;
-    private final double topR = 30;
-
+    private transient int tempStackNumber = -1;
 
     private ArrayList<Integer>[] field = new ArrayList[3];
     private transient Stack<Cylinder>[] pField = new Stack[3];
     private transient ArrayList<ArrayList<Cylinder>> stractField = new ArrayList<>();
-    private transient int tempStackNumber = -1;
-    private transient ControllerMain controllerMain = new ControllerMain();
+
 
     public Game(int difficulty){
 
         MaterialsGenerator materialsGenerator= new MaterialsGenerator();
+
         double yStart = 500+(difficulty+1.5)*blockSize/2+20;
         this.difficulty = difficulty;
+
         ArrayList<Integer> temp = new ArrayList<>();
 
         for(int i = difficulty; i > 0; i--){
@@ -43,33 +41,21 @@ public class Game implements Serializable{
         field[1] = new ArrayList<>();
         field[2] = new ArrayList<>();
 
-        Stack<Cylinder> tempPointer = new Stack<>();
-        for(int j=1;j<= difficulty; ++j){
-            Cylinder block = new Cylinder();
-            block.setHeight(blockSize);
-            block.setRadius(maxSize-j*(maxSize-topR)/(difficulty+1));
-            block.translateXProperty().set(xLeft);
-            block.translateYProperty().set(yStart-j*blockSize);
-            block.setMaterial(materialsGenerator.GetNextMaterial());
-
-            block.setOnMouseClicked(e->{
-                PickResult pr = e.getPickResult();
-                clickHandler((Cylinder)pr.getIntersectedNode());
-            });
-
-            tempPointer.push(block);
-        }
-
-        pField[0] = tempPointer;
-        pField[1] = new Stack<>();
-        pField[2] = new Stack<>();
-
+        buildCylinders();
     }
 
+    /**
+     * Передает ссылку на контроллер игры.
+     * */
+    private transient ControllerMain controllerMain = new ControllerMain();
     public void setControllerMain(ControllerMain controllerMain){
         this.controllerMain = controllerMain;
     }
 
+    /**
+     * Метод вызывается при нажатии на игровые фигуры.
+     * Определяется с какого и на какой шпиль переносятся кольца.
+     * */
     private void clickHandler(Cylinder cylinder){
         if(tempStackNumber == -1){
             System.out.println("here -1");
@@ -108,6 +94,10 @@ public class Game implements Serializable{
         }
     }
 
+    /**
+     * Вспомогательный метод для clickHandler.
+     * Возвращает номер шеста на который нажимает пользователь
+     * */
     private int returnStructNumber(Cylinder cylinder){
         if(stractField.get(0).contains(cylinder)){
             return 1;
@@ -121,6 +111,15 @@ public class Game implements Serializable{
     }
 
 
+    /**
+     * Возвращает группу со всеми элементами для добавления на сцену
+     * */
+    private final double maxSize = 200;
+    private final double blockSize = 40;
+    private final double xLeft = 250;
+    private final double xRight = 1150;
+    private final double xCenter = 700;
+    private final double topR = 30;
     public Group returnGameField(){
 
         MaterialsGenerator materialsGenerator= new MaterialsGenerator();
@@ -170,6 +169,9 @@ public class Game implements Serializable{
         return getGroup(stractField);
     }
 
+    /**
+     * Составляет группу на основе листа элементов
+     * */
     private Group getGroup(ArrayList<ArrayList<Cylinder>> field){
 
         Group group = new Group();
@@ -193,12 +195,19 @@ public class Game implements Serializable{
         return group;
     }
 
+    /**
+     * проверяет можно ли передвинуть кольцо с одного шеста на другой,
+     * если можно передвигает и передает в главный контроллер результат передвижения.
+     * 1 - Передвинуть можно.
+     * -1 - Передвинуть нельзя.
+     * 0 - Победа пользователя.
+     * */
     public void Move(int from, int to){
 
         if(field[from].size() == 0){
             return;
         }
-        //hmm
+
         if(field[to].size() == 0 || field[to].get(field[to].size()-1) > field[from].get(field[from].size()-1)){
             field[to].add(field[from].get(field[from].size()-1));
             field[from].remove(field[from].size()-1);
@@ -219,6 +228,9 @@ public class Game implements Serializable{
         }
     }
 
+    /**
+     * Передвигает кольцо с одного шеста на другой
+     * */
     private void pMove(int from, int to){
 
         double yStart = 500+(difficulty+1.5)*blockSize/2+20;
@@ -241,22 +253,34 @@ public class Game implements Serializable{
         temp.translateYProperty().set(yStart-pField[to].size()*blockSize);
     }
 
-    private Time time;
-    private int moves;
+    /**
+     * Сохраняет время и количество шагов для дальнейшей сериализации.
+     * */
+    private Time time = new Time();
+    private int moves = 0;
     public void save(Time time, int moves){
         this.time = time;
         this.moves = moves;
 
     }
 
+    /**
+     * Возвращает сохраненное время
+     * */
     public Time getTime() {
         return time;
     }
 
+    /**
+     * Возвращает сохраненное количество шагов
+     * */
     public int getMoves() {
         return moves;
     }
 
+    /**
+     * Создает кольца
+     * */
     public void buildCylinders(){
         tempStackNumber = -1;
 
@@ -264,9 +288,11 @@ public class Game implements Serializable{
         double yStart = 500+(difficulty+1.5)*blockSize/2+20;
 
         Stack<Cylinder>[] tempField = new Stack[3];
+
         Stack<Cylinder> temp = new Stack<>();
         for (int i = 0; i< field[0].size(); i++){
             Cylinder block = new Cylinder();
+
             block.setHeight(blockSize);
             block.setRadius(maxSize-(difficulty-field[0].get(i)+1)*(maxSize-topR)/(difficulty+1));
             block.translateXProperty().set(xLeft);
@@ -277,12 +303,9 @@ public class Game implements Serializable{
                 PickResult pr = e.getPickResult();
                 clickHandler((Cylinder)pr.getIntersectedNode());
             });
-
             temp.push(block);
         }
-
         tempField[0] = temp;
-
 
         Stack<Cylinder> temp1 = new Stack<>();
         for (int i = 0; i< field[1].size(); i++){
@@ -297,7 +320,6 @@ public class Game implements Serializable{
                 PickResult pr = e.getPickResult();
                 clickHandler((Cylinder)pr.getIntersectedNode());
             });
-
             temp1.push(block);
         }
         tempField[1] = temp1;
@@ -315,7 +337,6 @@ public class Game implements Serializable{
                 PickResult pr = e.getPickResult();
                 clickHandler((Cylinder)pr.getIntersectedNode());
             });
-
             temp2.push(block);
         }
         tempField[2] = temp2;

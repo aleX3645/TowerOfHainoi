@@ -9,7 +9,11 @@ import main.RecordTable.RecordData.Data;
 import main.RecordTable.RecordData.RecordTableData;
 import main.RecordTable.RecordTableController;
 
+/**
+ * Контроллер победного окна
+ * */
 public class WinnerController {
+
     @FXML
     private Button saveButton;
     @FXML
@@ -18,9 +22,11 @@ public class WinnerController {
     private RecordTableData recordTableData = new RecordTableData(0);
     RecordTableController recordController;
 
+    /**
+     * инициализирует контроллер по сложности, количеству шагов и времени
+     * */
     int moves = 0;
     Time time;
-
     public void Init(int difficulty, int moves, Time time, RecordTableController recordController){
 
         this.moves = moves;
@@ -39,6 +45,9 @@ public class WinnerController {
         });
     }
 
+    /**
+     * Закрывает окно
+     * */
     private void closeStage()
     {
         Stage stage = (Stage) saveButton.getScene().getWindow();

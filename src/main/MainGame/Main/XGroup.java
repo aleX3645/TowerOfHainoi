@@ -5,6 +5,9 @@ import javafx.scene.Group;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Rotate;
 
+/**
+ * Группа в которой определены афинные преобразования.
+ * */
 public class XGroup extends Group {
 
     public XGroup() {
@@ -16,16 +19,5 @@ public class XGroup extends Group {
     public XGroup(Group g) {
         super(g);
         getTransforms().add(new Affine());
-    }
-
-
-    public void addRotation(double angle, Point3D axis) {
-        Rotate r = new Rotate(angle,700,500,0,axis);
-        getTransforms().set(0, r.createConcatenation(getTransforms().get(0)));
-    }
-
-    public void reset() {
-
-        getTransforms().set(0, new Affine());
     }
 }

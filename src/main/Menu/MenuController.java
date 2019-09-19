@@ -15,16 +15,21 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
+/**
+ * Контроллер для меню
+ * */
 public class MenuController {
 
     @FXML
     private Button newButton;
 
+    /**
+     * Событие нажатия на продолжить, десериализует класс game и отправляет в контроллер
+     * */
     @FXML
     public void onClickContinue(){
 
         Game game;
-
         try{
             FileInputStream fis = new FileInputStream("save.ser");
             ObjectInputStream oin = new ObjectInputStream(fis);
@@ -35,12 +40,14 @@ public class MenuController {
             game = new Game(3);
         }
 
-
         ControllerMain controller = new ControllerMain(game);
         controller.Init(0);
         closeStage();
     }
 
+    /**
+     * Событие нажатия на таблицу рекордов.
+     * */
     @FXML
     public void onClickTable() throws IOException {
         Stage stage = new Stage();
@@ -50,16 +57,22 @@ public class MenuController {
         stage.setScene(new Scene(root, 600, 400));
 
         RecordTableController controller = loader.getController();
-        controller.Init(0);
+        controller.Init(3);
 
         stage.show();
 
         closeStage();
     }
 
+    /**
+     * Событие нажатия на выход.
+     * */
     @FXML
     public void onClickExit(){System.exit(0);}
 
+    /**
+     * Событие нажатия на "новая игра".
+     * */
     @FXML
     public void onClickNew(ActionEvent event) throws Exception{
 
@@ -78,7 +91,9 @@ public class MenuController {
 
     }
 
-
+    /**
+     * Закрывает окно
+     * */
     private void closeStage()
     {
         Stage stage = (Stage) newButton.getScene().getWindow();

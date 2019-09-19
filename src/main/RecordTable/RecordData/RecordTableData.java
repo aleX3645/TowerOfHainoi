@@ -8,6 +8,9 @@ import main.RecordTable.RecordData.Data;
 import java.io.*;
 import java.util.ArrayList;
 
+/**
+ * Класс таблицы рекордов
+ * */
 public class RecordTableData {
 
     public RecordTableData(int difficulty){
@@ -28,9 +31,11 @@ public class RecordTableData {
     }
 
     int difficulty;
-
     private ObservableList<Data> table = FXCollections.observableArrayList();
 
+    /**
+     * Добавляет новую ячейку
+     * */
     public void addNewRecord(Data newCell){
         if(table.size() == 0){
             table.add(newCell);
@@ -59,7 +64,9 @@ public class RecordTableData {
     }
 
 
-
+    /**
+     * Сохраняет таблицу рекордов
+     * */
     private void Save(){
         try(FileWriter writer = new FileWriter("recordTable" + this.difficulty + ".txt",false)){
             writer.write(toString());
@@ -69,11 +76,17 @@ public class RecordTableData {
         }
     }
 
+    /**
+     * Сбрасывает таблицу рекордов
+     * */
     public void Reset(){
         table = FXCollections.observableArrayList();
         Save();
     }
 
+    /**
+     * Сравнивает 2 времени, возвращает true, если первое больше второго
+     * */
     private boolean compare(Time time1, Time time2){
         if(time1.getMinutes()<time2.getMinutes() || time1.getMinutes()==time2.getMinutes() && time1.getSeconds() < time2.getSeconds()
                 || time1.getMinutes() == time2.getMinutes() && time1.getSeconds() == time2.getSeconds() && time1.getMseconds()<time2.getMseconds()){
@@ -87,6 +100,9 @@ public class RecordTableData {
         return table;
     }
 
+    /**
+     * Приводит таблицу к строке
+     * */
     @Override
     public String toString(){
         String stringTable = "";

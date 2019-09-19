@@ -19,6 +19,9 @@ import main.RecordTable.RecordData.RecordTableData;
 
 import java.io.IOException;
 
+/**
+ * Контроллер таблицы рекордов
+ * */
 public class RecordTableController {
 
     @FXML
@@ -34,12 +37,15 @@ public class RecordTableController {
     @FXML
     ChoiceBox<String> choiceBox;
 
-    int difficulty = 0;
 
-    RecordTableData recordTableData = new RecordTableData(0);
 
+    RecordTableData recordTableData = new RecordTableData(3);
     final ObservableList<String> forChoiceBox = FXCollections.observableArrayList("Легкий", "Средний", "Сложный", "Очень сложный");
 
+    /**
+     * Загружает нужную таблицу по сложности.
+     * */
+    int difficulty = 0;
     public void Init(int difficulty){
         this.difficulty = difficulty;
         recordTableData = new RecordTableData(this.difficulty);
@@ -54,6 +60,9 @@ public class RecordTableController {
         recordTable.setItems(recordTableData.getList());
     }
 
+    /**
+     * Событие нажатия на меню
+     * */
     @FXML
     public void onClickToMenu(ActionEvent event) throws Exception{
 
@@ -75,56 +84,73 @@ public class RecordTableController {
 
     }
 
+    /**
+     * Событие нажатия на сброс, сбрасывает таблицу.
+     * */
     @FXML
     public void onClickReset(){
         recordTableData.Reset();
         Refresh();
     }
 
+    /**
+     * Событие выбора сложности
+     * */
     @FXML
     public void onClickChoice(){
         difficulty = choiceToInt(choiceBox.getValue());
         Refresh();
     }
 
+    /**
+     * Обновление таблицы
+     * */
     public void Refresh(){
         recordTableData = new RecordTableData(difficulty);
         recordTable.setItems(recordTableData.getList());
     }
 
+    /**
+     * Переводит слово в сложность
+     * */
     private int choiceToInt(String choice){
         switch(choice){
             case("Средний"):
-                return 1;
+                return 5;
             case("Сложный"):
-                return 2;
+                return 8;
             case("Очень сложный"):
-                return 3;
+                return 15;
             case("Легкий"):
             default:
-                return 0;
+                return 3;
         }
     }
 
+    /**
+     * Переводит сложность в слово
+     * */
     private String intToChoice(int code){
         switch(code){
-            case(1):
+            case(5):
                 return "Средний";
-            case(2):
+            case(8):
                 return "Сложный";
-            case(3):
+            case(15):
                 return "Очень сложный";
-            case(0):
+            case(3):
             default:
                 return "Легкий";
         }
     }
 
+    /**
+     * Закрывает окно
+     * */
     private void closeStage()
     {
         Stage stage = (Stage) toMenuButton.getScene().getWindow();
         stage.close();
     }
-
 }
 

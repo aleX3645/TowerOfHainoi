@@ -6,8 +6,12 @@ import javafx.scene.paint.PhongMaterial;
 
 import java.util.ArrayList;
 
+/**
+ * Генератор материалов для колец
+ * */
 public class MaterialsGenerator {
 
+    ArrayList<PhongMaterial> materials = new ArrayList<>();
     public MaterialsGenerator(){
 
         final PhongMaterial blackMaterial = new PhongMaterial();
@@ -86,16 +90,9 @@ public class MaterialsGenerator {
         materials.add(redMaterial);
     }
 
-    ArrayList<PhongMaterial> materials = new ArrayList<>();
-    int index = 0;
-
-    public PhongMaterial GetNextMaterial(){
-        if(index >= materials.size()){
-            return materials.get(0);
-        }
-        return materials.get(index++);
-    }
-
+    /**
+     * Возвращает элемент по id
+     * */
     public PhongMaterial GetMAterialById(int id){
         if(id >= materials.size()){
             return materials.get(0);
@@ -103,6 +100,9 @@ public class MaterialsGenerator {
         return materials.get(id);
     }
 
+    /**
+     * Возвращает текстуру для шестов
+     * */
     public PhongMaterial getFieldTexture(){
         PhongMaterial material = new PhongMaterial();
         material.setDiffuseMap(new Image(getClass().getResourceAsStream("/Resources/wooden-texture.jpg")));
