@@ -72,6 +72,7 @@ public class Game implements Serializable{
 
     private void clickHandler(Cylinder cylinder){
         if(tempStackNumber == -1){
+            System.out.println("here -1");
             if(pField[0].contains(cylinder)){
                 tempStackNumber = 0;
             }else{
@@ -86,6 +87,7 @@ public class Game implements Serializable{
                 }
             }
         }else{
+            System.out.println(tempStackNumber);
             if(pField[0].contains(cylinder)){
                 Move(tempStackNumber,0);
                 tempStackNumber = -1;
@@ -107,7 +109,6 @@ public class Game implements Serializable{
     }
 
     private int returnStructNumber(Cylinder cylinder){
-        System.out.println("here");
         if(stractField.get(0).contains(cylinder)){
             return 1;
         }else{
@@ -271,6 +272,12 @@ public class Game implements Serializable{
             block.translateXProperty().set(xLeft);
             block.translateYProperty().set(yStart-(i+1)*blockSize);
             block.setMaterial(materialsGenerator.GetMAterialById((int)difficulty-field[0].get(i)));
+
+            block.setOnMouseClicked(e->{
+                PickResult pr = e.getPickResult();
+                clickHandler((Cylinder)pr.getIntersectedNode());
+            });
+
             temp.push(block);
         }
 
@@ -285,6 +292,12 @@ public class Game implements Serializable{
             block.translateXProperty().set(xCenter);
             block.translateYProperty().set(yStart-(i+1)*blockSize);
             block.setMaterial(materialsGenerator.GetMAterialById((int)difficulty-field[1].get(i)));
+
+            block.setOnMouseClicked(e->{
+                PickResult pr = e.getPickResult();
+                clickHandler((Cylinder)pr.getIntersectedNode());
+            });
+
             temp1.push(block);
         }
         tempField[1] = temp1;
@@ -297,6 +310,12 @@ public class Game implements Serializable{
             block.translateXProperty().set(xRight);
             block.translateYProperty().set(yStart-(i+1)*blockSize);
             block.setMaterial(materialsGenerator.GetMAterialById((int)difficulty-field[2].get(i)));
+
+            block.setOnMouseClicked(e->{
+                PickResult pr = e.getPickResult();
+                clickHandler((Cylinder)pr.getIntersectedNode());
+            });
+
             temp2.push(block);
         }
         tempField[2] = temp2;

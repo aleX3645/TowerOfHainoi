@@ -228,7 +228,7 @@ public class ControllerMain{
     }
 
     Translate pivot = new Translate();
-    int cameraDelta = 0;
+    int scrollCounter = 0;
 
     private void addMouseEvent(Scene scene) {
 
@@ -259,17 +259,17 @@ public class ControllerMain{
         });
 
         scene.addEventHandler(ScrollEvent.SCROLL, event -> {
-            System.out.println(cameraDelta);
+            System.out.println(scrollCounter);
             double delta = event.getDeltaY();
             System.out.println(delta);
-            if(delta <0 && cameraDelta != -5){
-                cameraDelta--;
+            if(delta <0 && scrollCounter != -5){
+                scrollCounter--;
                 camera.getTransforms().addAll (
                         new Translate(0, 0, delta*3)
                 );
             }
-            if(delta>0 && cameraDelta != 7){
-                cameraDelta++;
+            if(delta>0 && scrollCounter != 7){
+                scrollCounter++;
                 camera.getTransforms().addAll (
                         new Translate(0, 0, delta*3)
                 );
