@@ -118,12 +118,17 @@ public class Game implements Serializable{
     }
 
 
-
+    /**Максимальный размер(размер низа шеста)*/
     private final double maxSize = 200;
+    /**Высота кольцп*/
     private final double blockSize = 40;
+    /**Координата x левого шеста*/
     private final double xLeft = 250;
+    /**Координата x правого шеста*/
     private final double xRight = 1150;
+    /**Координата x центра*/
     private final double xCenter = 700;
+    /**Радиус шеста*/
     private final double topR = 30;
     /**
      * Возвращает группу со всеми элементами для добавления на сцену
