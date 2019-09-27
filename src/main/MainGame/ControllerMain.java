@@ -46,8 +46,8 @@ public class ControllerMain{
     Timer timer;
     /**Главная сцена*/
     Stage stage = new Stage();
-    /**Сложность*/
-    int difficulty = 0;
+    /**Сложность, означает количество колец*/
+    int difficulty = 3;
     /**
      * Инициализирует и создает view с полем по переданному количеству колец.
      * */
@@ -70,27 +70,24 @@ public class ControllerMain{
 
         stage.setScene(scene);
         stage.show();
-        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent event) {
-                try {
-                    timer.cancel();
-                    game.save(time, moves);
-                    FileOutputStream fos = new FileOutputStream("save.ser");
-                    ObjectOutputStream oos = new ObjectOutputStream(fos);
+        stage.setOnCloseRequest(event -> {
+            try {
+                timer.cancel();
+                game.save(time, moves);
+                FileOutputStream fos = new FileOutputStream("save.ser");
+                ObjectOutputStream oos = new ObjectOutputStream(fos);
 
-                    oos.writeObject(game);
+                oos.writeObject(game);
 
-                    oos.flush();
-                    oos.close();
-                    fos.close();
+                oos.flush();
+                oos.close();
+                fos.close();
 
-                    stage.close();
-                }catch(Exception ex){
-                    ex.printStackTrace();
-                }
-                event.consume();
+                stage.close();
+            }catch(Exception ex){
+                ex.printStackTrace();
             }
+            event.consume();
         });
 
         timer = new Timer();
@@ -265,9 +262,7 @@ public class ControllerMain{
         });
 
         scene.addEventHandler(ScrollEvent.SCROLL, event -> {
-            System.out.println(scrollCounter);
             double delta = event.getDeltaY();
-            System.out.println(delta);
             if(delta <0 && scrollCounter != -5){
                 scrollCounter--;
                 camera.getTransforms().addAll (

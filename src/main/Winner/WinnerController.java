@@ -37,6 +37,8 @@ public class WinnerController {
         this.time = time;
         this.recordController = recordController;
 
+        System.out.println(difficulty);
+
         recordTableData = new RecordTableData(difficulty);
 
         saveButton.setOnAction(event -> {

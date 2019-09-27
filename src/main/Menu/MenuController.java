@@ -34,14 +34,14 @@ public class MenuController {
             FileInputStream fis = new FileInputStream("save.ser");
             ObjectInputStream oin = new ObjectInputStream(fis);
             game = (Game) oin.readObject();
-            game.buildCylinders();
+            game.buildTorus();
         }catch(Exception ex){
             ex.printStackTrace();
             game = new Game(3);
         }
 
         ControllerMain controller = new ControllerMain(game);
-        controller.Init(0);
+        controller.Init(game.getDifficulty());
         closeStage();
     }
 

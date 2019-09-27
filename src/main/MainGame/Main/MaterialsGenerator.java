@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * */
 public class MaterialsGenerator {
 
-    /**Лист для материалов*/
+    /**Лист для материало*/
     ArrayList<PhongMaterial> materials = new ArrayList<>();
     public MaterialsGenerator(){
 

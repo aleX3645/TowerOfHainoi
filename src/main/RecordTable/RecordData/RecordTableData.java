@@ -71,6 +71,7 @@ public class RecordTableData {
             writer.write(toString());
         }
         catch (IOException ioException){
+            System.out.println("hehere");
             ioException.printStackTrace();
         }
     }

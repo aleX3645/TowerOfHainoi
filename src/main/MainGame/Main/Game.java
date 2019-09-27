@@ -1,9 +1,11 @@
 package main.MainGame.Main;
 
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.input.PickResult;
 import javafx.scene.shape.Cylinder;
 import main.MainGame.ControllerMain;
+import main.MainGame.Shapes.Toroid;
 import main.MainGame.Time.Time;
 
 
@@ -17,7 +19,7 @@ import java.util.Stack;
 public class Game implements Serializable{
 
     /**Сложность игры*/
-    private double difficulty;
+    private float difficulty;
     /**Хранит номер шеста с которого идет перенос, tempStackNumber = -1, когда никакой шест не выбран.*/
     private transient int tempStackNumber = -1;
 
@@ -25,7 +27,7 @@ public class Game implements Serializable{
      * необходимо для сравнения колец*/
     private ArrayList<Integer>[] field = new ArrayList[3];
     /**Содержит стеки с кольцами, где номер стека соответствует левому, правому, и центральному шесту в такой последовательности в массиве*/
-    private transient Stack<Cylinder>[] pField = new Stack[3];
+    private transient Stack<Toroid>[] pField = new Stack[3];
     /**Содержит шесты*/
     private transient ArrayList<ArrayList<Cylinder>> stractField = new ArrayList<>();
 
@@ -47,7 +49,7 @@ public class Game implements Serializable{
         field[1] = new ArrayList<>();
         field[2] = new ArrayList<>();
 
-        buildCylinders();
+        buildTorus();
     }
 
     /**Содержит контроллер игры*/
@@ -63,39 +65,47 @@ public class Game implements Serializable{
      * Метод вызывается при нажатии на игровые фигуры.
      * Определяется с какого и на какой шпиль переносятся кольца.
      * */
-    private void clickHandler(Cylinder cylinder){
+    private void clickHandler(Node node){
+
         if(tempStackNumber == -1){
+            Toroid toroid;
+            if(node instanceof Cylinder){
+                tempStackNumber = returnStructNumber((Cylinder)node);
+                return;
+            }else{
+                toroid = (Toroid) node;
+            }
+
             System.out.println("here -1");
-            if(pField[0].contains(cylinder)){
+            if(pField[0].contains(toroid)){
                 tempStackNumber = 0;
             }else{
-                if(pField[1].contains(cylinder)){
+                if(pField[1].contains(toroid)){
                     tempStackNumber = 1;
                 }else{
-                    if(pField[2].contains(cylinder)){
-                        tempStackNumber = 2;
-                    }else{
-                        tempStackNumber = returnStructNumber(cylinder);
-                    }
+                    tempStackNumber = 2;
                 }
             }
         }else{
+            Toroid toroid;
+            if(node instanceof Cylinder){
+                Move(tempStackNumber,returnStructNumber((Cylinder)node));
+                tempStackNumber = -1;
+                return;
+            }else{
+                toroid = (Toroid) node;
+            }
             System.out.println(tempStackNumber);
-            if(pField[0].contains(cylinder)){
+            if(pField[0].contains(toroid)){
                 Move(tempStackNumber,0);
                 tempStackNumber = -1;
             }else{
-                if(pField[1].contains(cylinder)){
+                if(pField[1].contains(toroid)){
                     Move(tempStackNumber,1);
                     tempStackNumber = -1;
                 }else{
-                    if(pField[2].contains(cylinder)){
-                        Move(tempStackNumber,2);
-                        tempStackNumber = -1;
-                    }else{
-                        Move(tempStackNumber,returnStructNumber(cylinder));
-                        tempStackNumber = -1;
-                    }
+                    Move(tempStackNumber,2);
+                    tempStackNumber = -1;
                 }
             }
         }
@@ -119,17 +129,17 @@ public class Game implements Serializable{
 
 
     /**Максимальный размер(размер низа шеста)*/
-    private final double maxSize = 200;
-    /**Высота кольцп*/
-    private final double blockSize = 40;
+    private final float maxSize = 200;
+    /**Высота кольца(диаметр)*/
+    private final float blockSize = 40;
     /**Координата x левого шеста*/
-    private final double xLeft = 250;
+    private final float xLeft = 250;
     /**Координата x правого шеста*/
-    private final double xRight = 1150;
+    private final float xRight = 1150;
     /**Координата x центра*/
-    private final double xCenter = 700;
+    private final float xCenter = 700;
     /**Радиус шеста*/
-    private final double topR = 30;
+    private final float topR = 30;
     /**
      * Возвращает группу со всеми элементами для добавления на сцену
      * */
@@ -151,7 +161,7 @@ public class Game implements Serializable{
 
             bottom.setOnMouseClicked(e->{
                 PickResult pr = e.getPickResult();
-                clickHandler((Cylinder)pr.getIntersectedNode());
+                clickHandler(pr.getIntersectedNode());
             });
 
             temp.add(bottom);
@@ -165,7 +175,7 @@ public class Game implements Serializable{
 
             top.setOnMouseClicked(e->{
                 PickResult pr = e.getPickResult();
-                clickHandler((Cylinder)pr.getIntersectedNode());
+                clickHandler(pr.getIntersectedNode());
             });
 
             temp.add(top);
@@ -179,18 +189,18 @@ public class Game implements Serializable{
         stractField.get(2).get(0).translateXProperty().set(xRight);
         stractField.get(2).get(1).translateXProperty().set(xRight);
 
-        return getGroup(stractField);
+        return getGroup();
     }
 
     /**
-     * Составляет группу на основе листа элементов
+     * Возвращает группу построенную на основе всех элементов
      * */
-    private Group getGroup(ArrayList<ArrayList<Cylinder>> field){
+    private Group getGroup(){
 
         Group group = new Group();
         for (int i = 0; i< 3; ++i){
             for(int j = 0; j<2;++j){
-                group.getChildren().add(field.get(i).get(j));
+                group.getChildren().add(stractField.get(i).get(j));
             }
         }
 
@@ -248,7 +258,7 @@ public class Game implements Serializable{
 
         double yStart = 500+(difficulty+1.5)*blockSize/2+20;
 
-        Cylinder temp = pField[from].pop();
+        Toroid temp = pField[from].pop();
         pField[to].push(temp);
 
         switch (to) {
@@ -280,77 +290,89 @@ public class Game implements Serializable{
     }
 
     /**
-     * Возвращает сохраненное время
+     * Возвращает сохраненное время, необходимо для передачи в winnerController
      * */
     public Time getTime() {
         return time;
     }
 
     /**
-     * Возвращает сохраненное количество шагов
+     * Возвращает сохраненное количество шагов, необходимо для передачи в winnerController
      * */
     public int getMoves() {
         return moves;
     }
 
     /**
+     * Возвращает сохраненную сложность, необходимо для передачи в winnerController, если объект сериализовался
+     * */
+    public int getDifficulty() {
+        return  (int)difficulty;
+    }
+
+    /**
      * Создает кольца
      * */
-    public void buildCylinders(){
+    public void buildTorus(){
         tempStackNumber = -1;
 
         MaterialsGenerator materialsGenerator= new MaterialsGenerator();
         double yStart = 500+(difficulty+1.5)*blockSize/2+20;
 
-        Stack<Cylinder>[] tempField = new Stack[3];
+        Stack<Toroid>[] tempField = new Stack[3];
 
-        Stack<Cylinder> temp = new Stack<>();
+        Stack<Toroid> temp = new Stack<>();
         for (int i = 0; i< field[0].size(); i++){
-            Cylinder block = new Cylinder();
+            Toroid block = new Toroid((maxSize-(difficulty-field[0].get(i)+1)*(maxSize-topR)/(difficulty+1)-topR)/2+topR,
+                    (maxSize-(difficulty-field[0].get(i)+1)*(maxSize-topR)/(difficulty+1)-topR)/2,
+                    blockSize/2,
+                    45);
 
-            block.setHeight(blockSize);
-            block.setRadius(maxSize-(difficulty-field[0].get(i)+1)*(maxSize-topR)/(difficulty+1));
             block.translateXProperty().set(xLeft);
             block.translateYProperty().set(yStart-(i+1)*blockSize);
             block.setMaterial(materialsGenerator.GetMAterialById((int)difficulty-field[0].get(i)));
 
             block.setOnMouseClicked(e->{
                 PickResult pr = e.getPickResult();
-                clickHandler((Cylinder)pr.getIntersectedNode());
+                clickHandler(pr.getIntersectedNode());
             });
             temp.push(block);
         }
         tempField[0] = temp;
 
-        Stack<Cylinder> temp1 = new Stack<>();
+        Stack<Toroid> temp1 = new Stack<>();
         for (int i = 0; i< field[1].size(); i++){
-            Cylinder block = new Cylinder();
-            block.setHeight(blockSize);
-            block.setRadius(maxSize-(difficulty-field[1].get(i)+1)*(maxSize-topR)/(difficulty+1));
+            Toroid block = new Toroid((maxSize-(difficulty-field[1].get(i)+1)*(maxSize-topR)/(difficulty+1)-topR)/2+topR,
+                    (maxSize-(difficulty-field[1].get(i)+1)*(maxSize-topR)/(difficulty+1)-topR)/2,
+                    blockSize/2,
+                    45);
+
             block.translateXProperty().set(xCenter);
             block.translateYProperty().set(yStart-(i+1)*blockSize);
             block.setMaterial(materialsGenerator.GetMAterialById((int)difficulty-field[1].get(i)));
 
             block.setOnMouseClicked(e->{
                 PickResult pr = e.getPickResult();
-                clickHandler((Cylinder)pr.getIntersectedNode());
+                clickHandler(pr.getIntersectedNode());
             });
             temp1.push(block);
         }
         tempField[1] = temp1;
 
-        Stack<Cylinder> temp2 = new Stack<>();
+        Stack<Toroid> temp2 = new Stack<>();
         for (int i = 0; i< field[2].size(); i++){
-            Cylinder block = new Cylinder();
-            block.setHeight(blockSize);
-            block.setRadius(maxSize-(difficulty-field[2].get(i)+1)*(maxSize-topR)/(difficulty+1));
+            Toroid block = new Toroid((maxSize-(difficulty-field[2].get(i)+1)*(maxSize-topR)/(difficulty+1)-topR)/2+topR,
+                    (maxSize-(difficulty-field[2].get(i)+1)*(maxSize-topR)/(difficulty+1)-topR)/2,
+                    blockSize/2,
+                    45);
+
             block.translateXProperty().set(xRight);
             block.translateYProperty().set(yStart-(i+1)*blockSize);
             block.setMaterial(materialsGenerator.GetMAterialById((int)difficulty-field[2].get(i)));
 
             block.setOnMouseClicked(e->{
                 PickResult pr = e.getPickResult();
-                clickHandler((Cylinder)pr.getIntersectedNode());
+                clickHandler(pr.getIntersectedNode());
             });
             temp2.push(block);
         }
