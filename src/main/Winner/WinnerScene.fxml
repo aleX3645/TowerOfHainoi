@@ -51,7 +51,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <TextField fx:id="nameTextField" alignment="CENTER" prefHeight="35.0" prefWidth="159.0" promptText="Введите имя">
+            <TextField fx:id="nameTextField" focusTraversable="false" prefHeight="35.0" prefWidth="159.0" promptText="Введите имя">
                <VBox.margin>
                   <Insets left="30.0" right="30.0" />
                </VBox.margin>
