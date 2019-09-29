@@ -96,7 +96,7 @@ public class MenuController {
     /**
      * Закрывает окно
      * */
-    private void closeStage()
+    public void closeStage()
     {
         Stage stage = (Stage) newButton.getScene().getWindow();
         stage.close();

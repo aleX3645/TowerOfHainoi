@@ -458,6 +458,9 @@ public class Game implements Serializable{
             if(win && !auto){
                 Platform.runLater(() -> controllerMain.MoveHandler(0));
             }
+            if(win && auto){
+                Platform.runLater(() -> controllerMain.MoveHandler(2));
+            }
             animationInProcces = false;
         });
         animation.start();

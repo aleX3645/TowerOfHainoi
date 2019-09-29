@@ -64,6 +64,7 @@ public class WinnerController {
         System.out.println(nameTextField.getText());
         saveButton.setOnAction(event -> {
 
+            data = new Data(nameTextField.getText(),moves,time);
             recordTableData.addNewRecord(data);
             recordController.Refresh();
 
@@ -87,6 +88,7 @@ public class WinnerController {
             stage.setMinHeight(300);
             stage.show();
 
+            recordController.CloseStage();
             closeStage();
         });
     }
@@ -94,7 +96,7 @@ public class WinnerController {
     /**
      * Закрывает окно
      * */
-    private void closeStage()
+    public void closeStage()
     {
         Stage stage = (Stage) saveButton.getScene().getWindow();
         stage.close();

@@ -15,11 +15,13 @@ import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import main.Difficulty.DifficultyScene;
 import main.MainGame.Main.Game;
 import main.MainGame.Time.Time;
 import main.RecordTable.RecordTableController;
 import main.Winner.WinnerController;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -232,7 +234,7 @@ public class ControllerMain{
 
                 try {
                     Parent root = loader.load();
-                    stage.setScene(new Scene(root, 280, 260));
+                    stage.setScene(new Scene(root, 400, 270));
                 }catch(Exception ex){
                     ex.printStackTrace();
                 }
@@ -243,6 +245,31 @@ public class ControllerMain{
                 stage.show();
 
                 closeStage();
+                break;
+            case 2:
+                moves++;
+                Parent rootForWin = null;
+                FXMLLoader load = new FXMLLoader(getClass().getResource("/main/Difficulty/difficultyScene.fxml"));
+
+                try {
+                    rootForWin = load.load();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                Stage difStage = new Stage();
+                difStage.setTitle("Хайнойские башни");
+                difStage.setScene(new Scene(rootForWin, 600, 400));
+                difStage.setResizable(false);
+
+
+                DifficultyScene controller1 = load.getController();
+                controller1.Init();
+                difStage.show();
+
+                Stage autoWinStage = (Stage) timeLabel.getScene().getWindow();
+                autoWinStage.close();
+
                 break;
         }
 
@@ -302,12 +329,9 @@ public class ControllerMain{
 
         @Override
         public void run(){
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    time.addTime(1);
-                    timeLabel.setText(time.toString());
-                }
+            Platform.runLater(() -> {
+                time.addTime(1);
+                timeLabel.setText(time.toString());
             });
         }
     }

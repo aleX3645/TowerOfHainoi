@@ -82,7 +82,7 @@ public class RecordTableController {
         stage.setMinWidth(300);
         stage.setMinHeight(300);
         stage.show();
-        closeStage();
+        CloseStage();
 
     }
 
@@ -149,7 +149,7 @@ public class RecordTableController {
     /**
      * Закрывает окно
      * */
-    private void closeStage()
+    public void CloseStage()
     {
         Stage stage = (Stage) toMenuButton.getScene().getWindow();
         stage.close();
