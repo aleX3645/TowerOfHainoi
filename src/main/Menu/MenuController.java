@@ -59,6 +59,7 @@ public class MenuController {
         RecordTableController controller = loader.getController();
         controller.Init(3);
 
+        stage.setResizable(false);
         stage.show();
 
         closeStage();
@@ -81,6 +82,7 @@ public class MenuController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/main/Difficulty/difficultyScene.fxml"));
         Parent root = loader.load();
         stage.setScene(new Scene(root, 600, 400));
+        stage.setResizable(false);
 
 
         DifficultyScene controller = loader.getController();

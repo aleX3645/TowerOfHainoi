@@ -1,21 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="145.0" prefWidth="292.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Winner.WinnerController">
+<AnchorPane prefHeight="268.0" prefWidth="403.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Winner.WinnerController">
    <children>
-      <VBox layoutX="35.0" layoutY="17.0" prefHeight="145.0" prefWidth="226.0" AnchorPane.leftAnchor="35.0" AnchorPane.rightAnchor="339.0" AnchorPane.topAnchor="17.0" />
-      <Label alignment="CENTER" layoutX="111.0" layoutY="35.0" prefHeight="30.0" prefWidth="158.0" text="Введите имя" textAlignment="CENTER" textOverrun="CLIP" AnchorPane.leftAnchor="111.0" AnchorPane.rightAnchor="105.0" AnchorPane.topAnchor="35.0">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Label>
-      <Button fx:id="saveButton" layoutX="140.0" layoutY="97.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="95.0" text="Сохранить" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="140.0" AnchorPane.rightAnchor="139.0" />
-      <TextField fx:id="NameTextField" layoutX="116.0" layoutY="65.0" prefWidth="148.0" AnchorPane.bottomAnchor="72.0" AnchorPane.leftAnchor="116.0" AnchorPane.rightAnchor="110.0" AnchorPane.topAnchor="65.0" />
+      <VBox layoutX="70.0" layoutY="5.0" prefHeight="258.0" prefWidth="280.0" spacing="5.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="5.0">
+         <children>
+            <Label alignment="CENTER" prefHeight="40.0" prefWidth="432.0" text="Ваш результат">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <HBox alignment="CENTER" prefHeight="33.0" prefWidth="156.0">
+               <children>
+                  <Label prefHeight="33.0" prefWidth="145.0" text="Затраченно шагов:">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="moveLabel" contentDisplay="CENTER" prefHeight="33.0" prefWidth="41.0" text="0000" textAlignment="CENTER" textOverrun="CLIP">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="33.0" prefWidth="156.0">
+               <children>
+                  <Label prefHeight="33.0" prefWidth="161.0" text="Затраченно времени:">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="timeLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="29.0" prefWidth="70.0" text="00:00.00" textAlignment="CENTER" textOverrun="CLIP">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <Label fx:id="winnerPlace" alignment="CENTER" prefHeight="33.0" prefWidth="434.0" text="Вы заняли 100-е место.">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="nameTextField" alignment="CENTER" prefHeight="35.0" prefWidth="159.0" promptText="Введите имя">
+               <VBox.margin>
+                  <Insets left="30.0" right="30.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </TextField>
+            <VBox alignment="CENTER" prefHeight="60.0" prefWidth="264.0" spacing="5.0">
+               <children>
+                  <Button fx:id="saveButton" alignment="CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="210.0" text="Сохранить" />
+                  <Button fx:id="toMenuButton" alignment="CENTER" mnemonicParsing="false" prefHeight="15.0" prefWidth="210.0" text="В меню" />
+               </children>
+            </VBox>
+         </children>
+      </VBox>
    </children>
 </AnchorPane>

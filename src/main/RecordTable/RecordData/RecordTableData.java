@@ -62,6 +62,22 @@ public class RecordTableData {
         Save();
     }
 
+    public int getPlace(Data data){
+        if(table.size() == 0){
+            return 1;
+        }
+        for(int i = 0; i < table.size(); i++){
+            if(data.getMoves() < table.get(i).getMoves()){
+                return i+1;
+            }
+            if(data.getMoves() == table.get(i).getMoves() &&
+                    compare(data.getTime(),table.get(i).getTime())){
+                return i+1;
+            }
+        }
+        return table.size();
+    }
+
 
     /**
      * Сохраняет таблицу рекордов

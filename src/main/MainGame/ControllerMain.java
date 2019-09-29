@@ -214,7 +214,7 @@ public class ControllerMain{
 
                 try {
                     Parent recordRoot = recordLoader.load();
-                    recordStage.setScene(new Scene(recordRoot, 600, 400));
+                    recordStage.setScene(new Scene(recordRoot,600,400));
                 }catch (Exception ex){
                     ex.printStackTrace();
                 }
@@ -223,6 +223,7 @@ public class ControllerMain{
 
                 RecordTableController  controller = recordLoader.getController();
                 controller.Init(difficulty);
+                recordStage.setResizable(false);
                 recordStage.show();
 
                 Stage stage = new Stage();
@@ -231,13 +232,14 @@ public class ControllerMain{
 
                 try {
                     Parent root = loader.load();
-                    stage.setScene(new Scene(root, 300, 200));
+                    stage.setScene(new Scene(root, 280, 260));
                 }catch(Exception ex){
                     ex.printStackTrace();
                 }
 
                 WinnerController winController = loader.getController();
                 winController.Init(difficulty, moves,time, recordController);
+                stage.setResizable(false);
                 stage.show();
 
                 closeStage();
