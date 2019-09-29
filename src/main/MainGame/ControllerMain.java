@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
+import javafx.scene.control.Button;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -72,7 +73,10 @@ public class ControllerMain{
         stage.show();
         stage.setOnCloseRequest(event -> {
             try {
-                timer.cancel();
+                if(timeLabel.getText() != "0"){
+                    timer.cancel();
+                }
+
                 game.save(time, moves);
                 FileOutputStream fos = new FileOutputStream("save.ser");
                 ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -89,12 +93,6 @@ public class ControllerMain{
             }
             event.consume();
         });
-
-        timer = new Timer();
-        myTimerTask myTask = new myTimerTask();
-        timer.schedule(myTask, 0,9);
-
-
     }
 
     /**Группа со всеми элементами*/
@@ -102,6 +100,7 @@ public class ControllerMain{
 
     private Label timeLabel;
     private Label movesLabel;
+    private Button autoButton;
     /**
      * Создает AnchorPane и добавляет на него элементы
      * */
@@ -132,15 +131,21 @@ public class ControllerMain{
         pane.setLeftAnchor(timeLabel,10.0);
 
         movesLabel = new Label(Integer.toString(moves));
-
         movesLabel.setFont(f);
 
         pane.setTopAnchor(movesLabel, 0.0);
         pane.setRightAnchor(movesLabel,10.0);
 
+        autoButton = new Button("Автоматическая сборка");
+        autoButton.setOnAction((event-> game.auto()));
+
+        pane.setBottomAnchor(autoButton,10.0);
+        pane.setLeftAnchor(autoButton,10.0);
+
         pane.getChildren().add(sub);
         pane.getChildren().add(timeLabel);
         pane.getChildren().add(movesLabel);
+        pane.getChildren().add(autoButton);
 
         return  pane;
     }
@@ -175,6 +180,12 @@ public class ControllerMain{
         return camera;
     }
 
+    public void StartTimer(){
+        timer = new Timer();
+        myTimerTask myTask = new myTimerTask();
+        timer.schedule(myTask, 0,9);
+    }
+
     /**
      * Получает из класса game результат передвижения элемента:
      * 1 - Передвинуть можно. Просто передвигает элемент
@@ -193,7 +204,9 @@ public class ControllerMain{
             case 0:
                 moves++;
                 movesLabel.setText(String.valueOf(moves));
-                timer.cancel();
+                if(time.getSeconds() != 0 && time.getMseconds() != 0){
+                    timer.cancel();
+                }
 
                 Stage recordStage = new Stage();
                 recordStage.setTitle("Хайнойские башни");

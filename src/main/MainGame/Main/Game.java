@@ -1,9 +1,15 @@
 package main.MainGame.Main;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.input.PickResult;
 import javafx.scene.shape.Cylinder;
+import javafx.util.Duration;
 import main.MainGame.ControllerMain;
 import main.MainGame.Shapes.Toroid;
 import main.MainGame.Time.Time;
@@ -27,16 +33,13 @@ public class Game implements Serializable{
      * необходимо для сравнения колец*/
     private ArrayList<Integer>[] field = new ArrayList[3];
     /**Содержит стеки с кольцами, где номер стека соответствует левому, правому, и центральному шесту в такой последовательности в массиве*/
-    private transient Stack<Toroid>[] pField = new Stack[3];
+    private transient volatile Stack<Toroid>[] pField = new Stack[3];
     /**Содержит шесты*/
     private transient ArrayList<ArrayList<Cylinder>> stractField = new ArrayList<>();
 
 
     public Game(int difficulty){
 
-        MaterialsGenerator materialsGenerator= new MaterialsGenerator();
-
-        double yStart = 500+(difficulty+1.5)*blockSize/2+20;
         this.difficulty = difficulty;
 
         ArrayList<Integer> temp = new ArrayList<>();
@@ -61,11 +64,16 @@ public class Game implements Serializable{
         this.controllerMain = controllerMain;
     }
 
+    boolean first = true;
     /**
      * Метод вызывается при нажатии на игровые фигуры.
      * Определяется с какого и на какой шпиль переносятся кольца.
      * */
     private void clickHandler(Node node){
+        if(!auto && first){
+            first = false;
+            controllerMain.StartTimer();
+        }
 
         if(tempStackNumber == -1){
             Toroid toroid;
@@ -89,7 +97,7 @@ public class Game implements Serializable{
         }else{
             Toroid toroid;
             if(node instanceof Cylinder){
-                Move(tempStackNumber,returnStructNumber((Cylinder)node));
+                move(tempStackNumber,returnStructNumber((Cylinder)node));
                 tempStackNumber = -1;
                 return;
             }else{
@@ -97,14 +105,14 @@ public class Game implements Serializable{
             }
             System.out.println(tempStackNumber);
             if(pField[0].contains(toroid)){
-                Move(tempStackNumber,0);
+                move(tempStackNumber,0);
                 tempStackNumber = -1;
             }else{
                 if(pField[1].contains(toroid)){
-                    Move(tempStackNumber,1);
+                    move(tempStackNumber,1);
                     tempStackNumber = -1;
                 }else{
-                    Move(tempStackNumber,2);
+                    move(tempStackNumber,2);
                     tempStackNumber = -1;
                 }
             }
@@ -128,7 +136,7 @@ public class Game implements Serializable{
     }
 
 
-    /**Максимальный размер(размер низа шеста)*/
+    /**Максимальный размер в ширину(размер низа шеста)*/
     private final float maxSize = 200;
     /**Высота кольца(диаметр)*/
     private final float blockSize = 40;
@@ -223,57 +231,70 @@ public class Game implements Serializable{
      * если можно передвигает и передает в главный контроллер результат передвижения.
      * 1 - Передвинуть можно.
      * -1 - Передвинуть нельзя.
-     * 0 - Победа пользователя.
      * */
-    public void Move(int from, int to){
+    private void move(int from, int to){
 
         if(field[from].size() == 0){
             return;
         }
 
+        boolean win = false;
         if(field[to].size() == 0 || field[to].get(field[to].size()-1) > field[from].get(field[from].size()-1)){
             field[to].add(field[from].get(field[from].size()-1));
             field[from].remove(field[from].size()-1);
-            pMove(from, to);
 
             if(field[2].size() == difficulty){
                 System.out.println("win");
-                controllerMain.MoveHandler(0);
+                if(auto){
+                    Platform.runLater(() -> controllerMain.MoveHandler(1));
+                }
+                win = true;
             }
             else{
                 System.out.println("can");
-                controllerMain.MoveHandler(1);
+                if(auto){
+                    Platform.runLater(() -> controllerMain.MoveHandler(1));
+                }else{
+                    controllerMain.MoveHandler(1);
+                }
             }
+
+            pMove(from, to, win);
         }
         else{
             System.out.println("cannot");
-            controllerMain.MoveHandler(-1);
+            if(auto){
+                Platform.runLater(() -> controllerMain.MoveHandler(-1));
+            }else{
+                controllerMain.MoveHandler(-1);
+            }
         }
     }
 
     /**
      * Передвигает кольцо с одного шеста на другой
      * */
-    private void pMove(int from, int to){
+    private void pMove(int from, int to, boolean win){
 
         double yStart = 500+(difficulty+1.5)*blockSize/2+20;
 
         Toroid temp = pField[from].pop();
         pField[to].push(temp);
-
+        double x = xLeft;
         switch (to) {
             case 0:
-                temp.translateXProperty().set(xLeft);
+                x = xLeft;
                 break;
             case 1:
-                temp.translateXProperty().set(xCenter);
+                x = xCenter;
                 break;
             case 2:
-                temp.translateXProperty().set(xRight);
+                x = xRight;
                 break;
-            }
+        }
+        animate(temp,x,yStart-pField[to].size()*blockSize, win);
+        //temp.translateYProperty().set(yStart-pField[to].size()*blockSize);
 
-        temp.translateYProperty().set(yStart-pField[to].size()*blockSize);
     }
 
     /**Затраченное время (для сохранения)*/
@@ -379,5 +400,92 @@ public class Game implements Serializable{
         tempField[2] = temp2;
 
         pField = tempField;
+    }
+
+    volatile Boolean animationInProcces = false;
+    private void animate(Toroid toroid, double toX, double toY, boolean win){
+        double y = stractField.get(0).get(1).getTranslateY()-stractField.get(0).get(1).getHeight()/2-blockSize/2;
+        Thread animation = new Thread(()->{
+            Timeline goingUp = new Timeline();
+            Timeline goingDown = new Timeline();
+            Timeline goingToX = new Timeline();
+
+            goingUp.getKeyFrames().addAll(
+                    new KeyFrame(Duration.ZERO,
+                            new KeyValue(toroid.translateYProperty(), toroid.translateYProperty().getValue())),
+
+                    new KeyFrame(new Duration(400),
+                            new KeyValue(toroid.translateYProperty(), y)));
+
+            goingToX.getKeyFrames().addAll(
+                    new KeyFrame(Duration.ZERO,
+                            new KeyValue(toroid.translateXProperty(), toroid.getTranslateX())),
+
+                    new KeyFrame(new Duration(500),
+                            new KeyValue(toroid.translateXProperty(), toX)));
+
+            goingDown.getKeyFrames().addAll(
+                    new KeyFrame(Duration.ZERO,
+                            new KeyValue(toroid.translateYProperty(), y)),
+
+                    new KeyFrame(new Duration(400),
+                            new KeyValue(toroid.translateYProperty(), toY)));
+
+            goingUp.play();
+            while(goingUp.getStatus() == Animation.Status.RUNNING){
+                try{
+                    Thread.sleep(50);
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                }
+            }
+            goingToX.play();
+            while(goingToX.getStatus() == Animation.Status.RUNNING){
+                try{
+                    Thread.sleep(50);
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                }
+            }
+            goingDown.play();
+            while(goingDown.getStatus() == Animation.Status.RUNNING){
+                try{
+                    Thread.sleep(50);
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                }
+            }
+            if(win && !auto){
+                Platform.runLater(() -> controllerMain.MoveHandler(0));
+            }
+            animationInProcces = false;
+        });
+        animation.start();
+    }
+
+    Boolean auto = false;
+    public void auto(){
+        auto = true;
+        Thread thread = new Thread(() ->{
+            autoSolve(0,1,2,(int)difficulty);
+        });
+        thread.start();
+    }
+
+    private void autoSolve(int a, int b, int c, int n){
+            if(n>0) {
+                 autoSolve(a,c,b,n-1);
+                 move(a,c);
+                 animationInProcces = true;
+                 while(animationInProcces){
+                     try{
+                         Thread.sleep(50);
+                     }catch (Exception ex){
+                         ex.printStackTrace();
+                     }
+                 }
+                 autoSolve(b,a,c,n-1);
+            }
+
     }
 }

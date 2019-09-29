@@ -58,6 +58,14 @@ public class Time implements Serializable {
      * */
     public int getMseconds(){ return mseconds; }
 
+    public Boolean IsTimerStarted(){
+        if(minutes == 0 && seconds == 0 && mseconds == 0){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
     /**
      * Возвращает текстовое представление затраченного времени
      * */
