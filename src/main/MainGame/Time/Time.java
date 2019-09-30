@@ -19,10 +19,12 @@ public class Time implements Serializable {
 
     }
 
-
-    int minutes = 0;
-    int seconds = 0;
-    int mseconds = 0;
+    /**Хранит минуты*/
+    private int minutes = 0;
+    /**Хранит секунды*/
+    private int seconds = 0;
+    /**Хранит милисекунды*/
+    private int mseconds = 0;
     /**
      * Добавляет переданное время к общему затраченному времени
      * */
@@ -57,14 +59,6 @@ public class Time implements Serializable {
      * Возвращает количество затраченных милисекунд
      * */
     public int getMseconds(){ return mseconds; }
-
-    public Boolean IsTimerStarted(){
-        if(minutes == 0 && seconds == 0 && mseconds == 0){
-            return false;
-        }else{
-            return true;
-        }
-    }
 
     /**
      * Возвращает текстовое представление затраченного времени

@@ -21,14 +21,14 @@ public class RecordTableData {
                 Data cell = new Data(stringPlayer[0],Integer.parseInt(stringPlayer[1]),new Time(stringPlayer[2]));
                 table.add(cell);
             }
-        }catch (FileNotFoundException fileNotFoundException){ }
+        }catch (FileNotFoundException ignored){ }
         catch (IOException ioException){
             ioException.printStackTrace();
         }
     }
 
     /**Сложность*/
-    int difficulty;
+    private int difficulty;
     /**Лист для таблицы рекордов*/
     private ObservableList<Data> table = FXCollections.observableArrayList();
 
@@ -104,12 +104,9 @@ public class RecordTableData {
      * Сравнивает 2 времени, возвращает true, если первое больше второго
      * */
     private boolean compare(Time time1, Time time2){
-        if(time1.getMinutes()<time2.getMinutes() || time1.getMinutes()==time2.getMinutes() && time1.getSeconds() < time2.getSeconds()
-                || time1.getMinutes() == time2.getMinutes() && time1.getSeconds() == time2.getSeconds() && time1.getMseconds()<time2.getMseconds()){
-            return  true;
-        }else{
-            return false;
-        }
+        final boolean b = time1.getMinutes() < time2.getMinutes() || time1.getMinutes() == time2.getMinutes() && time1.getSeconds() < time2.getSeconds()
+                || time1.getMinutes() == time2.getMinutes() && time1.getSeconds() == time2.getSeconds() && time1.getMseconds() < time2.getMseconds();
+        return b;
     }
 
     /**
@@ -124,23 +121,23 @@ public class RecordTableData {
      * */
     @Override
     public String toString(){
-        String stringTable = "";
+        StringBuilder stringTable = new StringBuilder();
 
         if(table.size() == 0){
-            return stringTable;
+            return stringTable.toString();
         }
 
-        stringTable += table.get(0).getName() + "-";
-        stringTable += table.get(0).getMoves() + "-";
-        stringTable += table.get(0).getTime().toString();
+        stringTable.append(table.get(0).getName()).append("-");
+        stringTable.append(table.get(0).getMoves()).append("-");
+        stringTable.append(table.get(0).getTime().toString());
         for(int i = 1; i < table.size(); i++){
-            stringTable += "\n";
-            stringTable += table.get(i).getName() + "-";
-            stringTable += table.get(i).getMoves() + "-";
-            stringTable += table.get(i).getTime().toString();
+            stringTable.append("\n");
+            stringTable.append(table.get(i).getName()).append("-");
+            stringTable.append(table.get(i).getMoves()).append("-");
+            stringTable.append(table.get(i).getTime().toString());
         }
 
-        return stringTable;
+        return stringTable.toString();
     }
 
 

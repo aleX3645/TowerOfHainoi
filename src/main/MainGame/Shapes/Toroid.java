@@ -23,7 +23,6 @@
 package main.MainGame.Shapes;
 
 import javafx.geometry.Point3D;
-import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.CullFace;
@@ -36,45 +35,33 @@ import javafx.scene.shape.TriangleMesh;
  */
 public class Toroid extends MeshView {
 
-    // Default values
-
+    /**Количество ячеек в колецах по умолчанию*/
     private static int NBR_RING_SEGMENTS = 64;
+    /**Количество ячеек в трубе по умолчанию*/
     private static int NBR_TUBE_SEGMENTS = 32;
-    // Stores the number of segments which controls the surface 'smmothness'
+    /**Количество ячеек в колецах*/
     private final int nbrRingSegments;
+    /**Количество ячеек в трубах*/
     private final int nbrTubeSegments;
+    /**Количество ячеек в кольцах + 1, необходимо для подсчета квадратов*/
     private final int nbrRingSteps;
+    /**Количество ячеек в трубах + 1, необходимо для подсчета квадратов*/
     private final int nbrTubeSteps;
-    // The dimensions of the toroid
-    protected float ringRad;
-    protected float tubeRadX, tubeRadY;
-    protected float tubeZeroPos; // radians
+    /**Радиус кольца*/
+    private float ringRad;
+    /**Радиусы по x*/
+    private float tubeRadX;
+    /**Радиусы по y*/
+    private float tubeRadY;
+    /**Начальная позиция кольца*/
+    private float tubeZeroPos;
 
-    /**
-     * Create a Toroid using the default number of segments.
-     *
-     * @param ringRad the radius of the ring
-     * @param tubeRadX the radius of the tube along the X axis
-     * @param tubeRadY the radius of the tube along the Y axis
-     * @param zeroAngle rotates the zero-position round the tube (degrees)
-     */
     public Toroid(float ringRad, float tubeRadX, float tubeRadY, float zeroAngle) {
         this(NBR_RING_SEGMENTS, NBR_TUBE_SEGMENTS, // default 64 x 32
                 ringRad, tubeRadX, tubeRadY, zeroAngle
         );
     }
 
-    /**
-     * Create a Toroid with a user defined number of segments. Using small
-     * numbers can give a very angular toroid.
-     *
-     * @param nbrRingSegments number of segments round the ring
-     * @param nbrTubeSegments number of segments round the tube
-     * @param ringRad the radius of the ring
-     * @param tubeRadX the radius of the tube along the X axis
-     * @param tubeRadY the radius of the tube along the Y axis
-     * @param zeroAngle rotates the zero-position round the tube (degrees)
-     */
     public Toroid(int nbrRingSegments, int nbrTubeSegments, float ringRad, float tubeRadX, float tubeRadY, float zeroAngle) {
         this.nbrRingSegments = nbrRingSegments;
         this.nbrTubeSegments = nbrTubeSegments;
@@ -99,16 +86,14 @@ public class Toroid extends MeshView {
     }
 
     /**
-     * Calculate the vertex points based on toroid dimensions and the
-     * tube zero start angle.
+     * Рассчитывает точки вершин на основе размеров тороидов.
      */
     private void calcPoints() {
         Point3D[][] coord = new Point3D[nbrRingSteps][nbrTubeSteps];
-        // Calculate segment size in radians
+
         float ringDeltaAng = (float) (2 * Math.PI / nbrRingSegments);
         float tubeDeltaAng = (float) (2 * Math.PI / nbrTubeSegments);
 
-        // Calculate the XY coordinates of the tube in the Z=0 plane
         for (int t = 0; t < nbrTubeSteps; t++) {
             float angle = tubeZeroPos + t * tubeDeltaAng;
             coord[0][t] = new Point3D(
@@ -117,7 +102,7 @@ public class Toroid extends MeshView {
                     0
             );
         }
-        // Calculate all the points for all the other ring segments
+
         for (int r = 1; r < nbrRingSteps; r++) {
             float angle = r * ringDeltaAng;
             float sinA = (float) Math.sin(angle);
@@ -131,7 +116,7 @@ public class Toroid extends MeshView {
                 );
             }
         }
-        // Transfer to float array
+
         float[] points = new float[nbrRingSteps * nbrTubeSteps * 3];
         int idx = 0;
         for (int t = 0; t < nbrTubeSteps; t++) {
@@ -146,10 +131,7 @@ public class Toroid extends MeshView {
     }
 
     /**
-     * Calculate the texture coordinates based on number of texture repeats.
-     * 
-     * @param nbrRingRepeats number of texture repeats round the ring
-     * @param nbrTubeRepeats number of texture repeats round the tube
+     * Рассчитывает места для текстур
      */
     private void calcTexturePoints(float nbrRingRepeats, float nbrTubeRepeats) {
         float deltaU = nbrRingRepeats / nbrRingSegments;
@@ -167,8 +149,7 @@ public class Toroid extends MeshView {
     }
 
     /**
-     * Calculate the triangle data using vertex and texture coordinate array
-     * data.
+     * Рассчитывает грани колец
      */
     private void calcFacesPT() {
         int idx = 0;
@@ -195,6 +176,7 @@ public class Toroid extends MeshView {
                 faces[idx++] = idxTR;   // Texture
             }
         }
+
         TriangleMesh mesh = (TriangleMesh) getMesh();
         mesh.getFaces().setAll(faces);
     }

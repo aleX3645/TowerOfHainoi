@@ -1,7 +1,6 @@
 package main.MainGame;
 
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
 import javafx.scene.control.Button;
@@ -14,15 +13,17 @@ import javafx.scene.text.Font;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
+
 import main.Difficulty.DifficultyScene;
 import main.MainGame.Main.Game;
 import main.MainGame.Time.Time;
 import main.RecordTable.RecordTableController;
 import main.Winner.WinnerController;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -46,11 +47,11 @@ public class ControllerMain{
     /**Затраченные шаги*/
     private int moves = 0;
     /**Затраченное время*/
-    Timer timer;
+    private Timer timer;
     /**Главная сцена*/
-    Stage stage = new Stage();
+    private Stage stage = new Stage();
     /**Сложность, означает количество колец*/
-    int difficulty = 3;
+    private int difficulty = 3;
     /**
      * Инициализирует и создает view с полем по переданному количеству колец.
      * */
@@ -75,7 +76,7 @@ public class ControllerMain{
         stage.show();
         stage.setOnCloseRequest(event -> {
             try {
-                if(timeLabel.getText() != "0"){
+                if(!timeLabel.getText().equals("0")){
                     timer.cancel();
                 }
 
@@ -153,9 +154,9 @@ public class ControllerMain{
     }
 
     /**Камера для сцены*/
-    PerspectiveCamera camera;
+    private PerspectiveCamera camera;
     /**Точка вокруг которой вращается камера*/
-    Translate pivot = new Translate();
+    private Translate pivot = new Translate();
     /**Класс вращения вокруг Y*/
     private Rotate rotateY = new Rotate(0, Rotate.Y_AXIS);
     /**
@@ -259,7 +260,7 @@ public class ControllerMain{
 
                 Stage difStage = new Stage();
                 difStage.setTitle("Хайнойские башни");
-                difStage.setScene(new Scene(rootForWin, 600, 400));
+                difStage.setScene(new Scene(Objects.requireNonNull(rootForWin), 600, 400));
                 difStage.setResizable(false);
 
 
@@ -282,7 +283,7 @@ public class ControllerMain{
     /**Смещение мыши*/
     private double mouseDeltaX;
     private static double MOUSE_SPEED = 0.2;
-    int scrollCounter = 0;
+    private int scrollCounter = 0;
     /**
      * Добавляет события для мыши
      * */
@@ -321,7 +322,7 @@ public class ControllerMain{
     }
 
     /**Лист для таблицы рекордов*/
-    Time time = new Time();
+    private Time time = new Time();
     /**
      * Класс для потока секундамера
      * */

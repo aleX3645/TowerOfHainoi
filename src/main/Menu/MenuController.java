@@ -1,11 +1,11 @@
 package main.Menu;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+
 import main.Difficulty.DifficultyScene;
 import main.MainGame.ControllerMain;
 import main.MainGame.Main.Game;
@@ -75,7 +75,7 @@ public class MenuController {
      * Событие нажатия на "новая игра".
      * */
     @FXML
-    public void onClickNew(ActionEvent event) throws Exception{
+    public void onClickNew() throws Exception{
 
         Stage stage = new Stage();
         stage.setTitle("Хайнойские башни");
@@ -96,7 +96,7 @@ public class MenuController {
     /**
      * Закрывает окно
      * */
-    public void closeStage()
+    private void closeStage()
     {
         Stage stage = (Stage) newButton.getScene().getWindow();
         stage.close();

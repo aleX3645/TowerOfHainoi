@@ -13,28 +13,31 @@ public class Data {
         this.time = time;
     }
 
+    /**Имя поставившего рекорд*/
     private String name;
+    /**Затраченное время*/
     private Time time;
+    /**Затренные шаги*/
     private int moves;
 
     /**
      * Возвращает имя
      * */
-    public String getName() {
+    String getName() {
         return name;
     }
 
     /**
      * Возвращает количество шагов
      * */
-    public int getMoves(){
+    int getMoves(){
         return moves;
     }
 
     /**
      * Возвращает время затраченное на прохождение
      * */
-    public Time getTime(){
+    Time getTime(){
         return time;
     }
 }

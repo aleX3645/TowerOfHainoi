@@ -63,47 +63,45 @@ public class Game implements Serializable{
     public void setControllerMain(ControllerMain controllerMain){
         this.controllerMain = controllerMain;
     }
-
-    boolean first = true;
+    /**Определяет первый раз или не первый заходит в метод clickHandler*/
+    private boolean first = true;
     /**
      * Метод вызывается при нажатии на игровые фигуры.
      * Определяется с какого и на какой шпиль переносятся кольца.
      * */
     private void clickHandler(Node node){
+
         if(!auto && first){
+
             first = false;
+
             controllerMain.StartTimer();
         }
 
         if(tempStackNumber == -1){
+
             Toroid toroid;
             if(node instanceof Cylinder){
                 tempStackNumber = returnStructNumber((Cylinder)node);
                 return;
-            }else{
-                toroid = (Toroid) node;
-            }
+            }else{ toroid = (Toroid) node; }
 
-            System.out.println("here -1");
             if(pField[0].contains(toroid)){
                 tempStackNumber = 0;
             }else{
                 if(pField[1].contains(toroid)){
                     tempStackNumber = 1;
-                }else{
-                    tempStackNumber = 2;
-                }
+                }else{ tempStackNumber = 2; }
             }
         }else{
             Toroid toroid;
+
             if(node instanceof Cylinder){
                 move(tempStackNumber,returnStructNumber((Cylinder)node));
                 tempStackNumber = -1;
                 return;
-            }else{
-                toroid = (Toroid) node;
-            }
-            System.out.println(tempStackNumber);
+            }else{ toroid = (Toroid) node; }
+
             if(pField[0].contains(toroid)){
                 move(tempStackNumber,0);
                 tempStackNumber = -1;
@@ -124,6 +122,7 @@ public class Game implements Serializable{
      * Возвращает номер шеста на который нажимает пользователь
      * */
     private int returnStructNumber(Cylinder cylinder){
+
         if(stractField.get(0).contains(cylinder)){
             return 1;
         }else{
@@ -166,12 +165,10 @@ public class Game implements Serializable{
             bottom.translateXProperty().set(xCenter);
             bottom.translateYProperty().set(500.0+(difficulty+1.5)*blockSize/2+12);
             bottom.setMaterial(materialsGenerator.getFieldTexture());
-
             bottom.setOnMouseClicked(e->{
                 PickResult pr = e.getPickResult();
                 clickHandler(pr.getIntersectedNode());
             });
-
             temp.add(bottom);
 
             Cylinder top = new Cylinder();
@@ -180,12 +177,10 @@ public class Game implements Serializable{
             top.translateXProperty().set(xCenter);
             top.translateYProperty().set(500.0);
             top.setMaterial(materialsGenerator.getFieldTexture());
-
             top.setOnMouseClicked(e->{
                 PickResult pr = e.getPickResult();
                 clickHandler(pr.getIntersectedNode());
             });
-
             temp.add(top);
 
             stractField.add(temp);
@@ -352,7 +347,6 @@ public class Game implements Serializable{
             block.translateXProperty().set(xLeft);
             block.translateYProperty().set(yStart-(i+1)*blockSize);
             block.setMaterial(materialsGenerator.GetMAterialById((int)difficulty-field[0].get(i)));
-
             block.setOnMouseClicked(e->{
                 PickResult pr = e.getPickResult();
                 clickHandler(pr.getIntersectedNode());
@@ -371,7 +365,6 @@ public class Game implements Serializable{
             block.translateXProperty().set(xCenter);
             block.translateYProperty().set(yStart-(i+1)*blockSize);
             block.setMaterial(materialsGenerator.GetMAterialById((int)difficulty-field[1].get(i)));
-
             block.setOnMouseClicked(e->{
                 PickResult pr = e.getPickResult();
                 clickHandler(pr.getIntersectedNode());
@@ -390,7 +383,6 @@ public class Game implements Serializable{
             block.translateXProperty().set(xRight);
             block.translateYProperty().set(yStart-(i+1)*blockSize);
             block.setMaterial(materialsGenerator.GetMAterialById((int)difficulty-field[2].get(i)));
-
             block.setOnMouseClicked(e->{
                 PickResult pr = e.getPickResult();
                 clickHandler(pr.getIntersectedNode());
@@ -402,7 +394,11 @@ public class Game implements Serializable{
         pField = tempField;
     }
 
-    volatile Boolean animationInProcces = false;
+    /**Определяет идет ли анимация*/
+    private volatile Boolean animationInProcess = false;
+    /**
+     * Анимирует переход колец
+     * */
     private void animate(Toroid toroid, double toX, double toY, boolean win){
         double y = stractField.get(0).get(1).getTranslateY()-stractField.get(0).get(1).getHeight()/2-blockSize/2;
         Thread animation = new Thread(()->{
@@ -461,26 +457,33 @@ public class Game implements Serializable{
             if(win && auto){
                 Platform.runLater(() -> controllerMain.MoveHandler(2));
             }
-            animationInProcces = false;
+            animationInProcess = false;
         });
         animation.start();
     }
 
-    Boolean auto = false;
+    /**Определяет включен ли автоматический сбор*/
+    private Boolean auto = false;
+    /**
+     * Начинает автоматический сбор
+     * */
     public void auto(){
         auto = true;
-        Thread thread = new Thread(() ->{
-            autoSolve(0,1,2,(int)difficulty);
-        });
+        Thread thread = new Thread(() -> autoSolve(0,1,2,(int)difficulty));
         thread.start();
     }
 
+    /**
+     * Автоматический сбор
+     * */
     private void autoSolve(int a, int b, int c, int n){
+
             if(n>0) {
                  autoSolve(a,c,b,n-1);
                  move(a,c);
-                 animationInProcces = true;
-                 while(animationInProcces){
+
+                 animationInProcess = true;
+                 while(animationInProcess){
                      try{
                          Thread.sleep(50);
                      }catch (Exception ex){

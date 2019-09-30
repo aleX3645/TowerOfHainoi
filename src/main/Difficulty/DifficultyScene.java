@@ -1,5 +1,10 @@
 package main.Difficulty;
 
+
+import main.MainGame.ControllerMain;
+import java.io.IOException;
+import java.util.Objects;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -7,9 +12,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.stage.Stage;
-import main.MainGame.ControllerMain;
-
-import java.io.IOException;
 
 /**
  * Контроллер для определения сложности.
@@ -17,17 +19,9 @@ import java.io.IOException;
 public class DifficultyScene {
 
     @FXML
-    private RadioButton easyBtn;
+    private RadioButton easyBtn, midBtn, hardBtn, insaneBtn;
     @FXML
-    private RadioButton midBtn;
-    @FXML
-    private RadioButton hardBtn;
-    @FXML
-    private RadioButton insaneBtn;
-    @FXML
-    private Button playButton;
-    @FXML
-    private Button backButton;
+    private Button playButton, backButton;
 
     /**
      * Инициализирует класс и добавляет события кнопок.
@@ -37,9 +31,9 @@ public class DifficultyScene {
     }
 
     /**
-     * Сложность игры
+     * Сложность игры, где целое число означет количество колец
      * */
-    int difficulty = 3;
+    private int difficulty = 3;
     /**
      * Добавляет события кнопок.
      * */
@@ -101,7 +95,7 @@ public class DifficultyScene {
 
             Stage stage = new Stage();
             stage.setTitle("Хайнойские башни");
-            stage.setScene(new Scene(root, 310, 310));
+            stage.setScene(new Scene(Objects.requireNonNull(root), 310, 310));
             stage.setMinWidth(300);
             stage.setMinHeight(300);
             stage.show();

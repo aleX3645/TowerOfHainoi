@@ -14,6 +14,7 @@ import main.RecordTable.RecordData.RecordTableData;
 import main.RecordTable.RecordTableController;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Контроллер победного окна
@@ -36,14 +37,17 @@ public class WinnerController {
 
     /**Таблица рекордов*/
     private RecordTableData recordTableData = new RecordTableData(3);
-    /**Ссылка на контроллер таблицы ркордов*/
-    RecordTableController recordController;
 
     /**Количество ходов*/
-    int moves = 0;
-    Data data = new Data("0",0,new Time());
+    private int moves;
+    private Data data = new Data("0",0,new Time());
     /**Затраченное время*/
-    Time time;
+    private Time time;
+
+    public WinnerController() {
+        moves = 0;
+    }
+
     /**
      * инициализирует контроллер по сложности, количеству шагов и времени
      * */
@@ -51,7 +55,7 @@ public class WinnerController {
 
         this.moves = moves;
         this.time = time;
-        this.recordController = recordController;
+
         data = new Data(nameTextField.getText(),moves,time);
 
         System.out.println(difficulty);
@@ -83,7 +87,7 @@ public class WinnerController {
 
             Stage stage = new Stage();
             stage.setTitle("Хайнойские башни");
-            stage.setScene(new Scene(root, 310, 310));
+            stage.setScene(new Scene(Objects.requireNonNull(root), 310, 310));
             stage.setMinWidth(300);
             stage.setMinHeight(300);
             stage.show();
@@ -96,7 +100,7 @@ public class WinnerController {
     /**
      * Закрывает окно
      * */
-    public void closeStage()
+    private void closeStage()
     {
         Stage stage = (Stage) saveButton.getScene().getWindow();
         stage.close();

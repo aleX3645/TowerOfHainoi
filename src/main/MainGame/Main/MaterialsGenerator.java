@@ -9,11 +9,12 @@ import java.util.ArrayList;
 /**
  * Генератор материалов для колец
  * */
-public class MaterialsGenerator {
+class MaterialsGenerator {
 
-    /**Лист для материало*/
+    /**Лист для материалов*/
     ArrayList<PhongMaterial> materials = new ArrayList<>();
-    public MaterialsGenerator(){
+
+    MaterialsGenerator(){
 
         final PhongMaterial blackMaterial = new PhongMaterial();
         blackMaterial.setDiffuseColor(Color.MAROON);
@@ -94,7 +95,7 @@ public class MaterialsGenerator {
     /**
      * Возвращает элемент по id
      * */
-    public PhongMaterial GetMAterialById(int id){
+    PhongMaterial GetMAterialById(int id){
         if(id >= materials.size()){
             return materials.get(0);
         }
@@ -104,7 +105,7 @@ public class MaterialsGenerator {
     /**
      * Возвращает текстуру для шестов
      * */
-    public PhongMaterial getFieldTexture(){
+    PhongMaterial getFieldTexture(){
         PhongMaterial material = new PhongMaterial();
         material.setDiffuseMap(new Image(getClass().getResourceAsStream("/Resources/wooden-texture.jpg")));
         return material;

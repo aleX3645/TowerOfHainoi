@@ -2,7 +2,6 @@ package main.RecordTable;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,11 +12,12 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import main.Difficulty.DifficultyScene;
+
 import main.RecordTable.RecordData.Data;
 import main.RecordTable.RecordData.RecordTableData;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Контроллер таблицы рекордов
@@ -39,12 +39,12 @@ public class RecordTableController {
 
 
     /**Таблица рекордов*/
-    RecordTableData recordTableData = new RecordTableData(3);
+    private RecordTableData recordTableData = new RecordTableData(3);
     /**Лист со словестным выбором сложности для ChoiceBox*/
-    final ObservableList<String> forChoiceBox = FXCollections.observableArrayList("Легкий", "Средний", "Сложный", "Очень сложный");
+    private final ObservableList<String> forChoiceBox = FXCollections.observableArrayList("Легкий", "Средний", "Сложный", "Очень сложный");
 
     /**Сложность*/
-    int difficulty = 0;
+    private int difficulty = 0;
     /**
      * Загружает нужную таблицу по сложности.
      * */
@@ -66,7 +66,7 @@ public class RecordTableController {
      * Событие нажатия на меню
      * */
     @FXML
-    public void onClickToMenu(ActionEvent event) throws Exception{
+    public void onClickToMenu(){
 
         Parent root = null;
 
@@ -78,7 +78,7 @@ public class RecordTableController {
 
         Stage stage = new Stage();
         stage.setTitle("Хайнойские башни");
-        stage.setScene(new Scene(root, 310, 310));
+        stage.setScene(new Scene(Objects.requireNonNull(root), 310, 310));
         stage.setMinWidth(300);
         stage.setMinHeight(300);
         stage.show();
