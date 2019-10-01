@@ -333,7 +333,7 @@ public class Game implements Serializable{
         tempStackNumber = -1;
 
         MaterialsGenerator materialsGenerator= new MaterialsGenerator();
-        double yStart = 500+(difficulty+1.5)*blockSize/2+20;
+        double yStart = 500+(difficulty+1.5)*blockSize/2+blockSize/2;
 
         Stack<Toroid>[] tempField = new Stack[3];
 
