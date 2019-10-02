@@ -23,21 +23,21 @@ public class Data {
     /**
      * Возвращает имя
      * */
-    String getName() {
+    public String getName() {
         return name;
     }
 
     /**
      * Возвращает количество шагов
      * */
-    int getMoves(){
+    public int getMoves(){
         return moves;
     }
 
     /**
      * Возвращает время затраченное на прохождение
      * */
-    Time getTime(){
+    public Time getTime(){
         return time;
     }
 }

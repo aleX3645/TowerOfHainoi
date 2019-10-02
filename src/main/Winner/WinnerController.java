@@ -2,12 +2,15 @@ package main.Winner;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import main.BuildPane.GamePane;
+import main.MainGame.Main.Game;
 import main.MainGame.Time.Time;
 import main.RecordTable.RecordData.Data;
 import main.RecordTable.RecordData.RecordTableData;
@@ -51,14 +54,12 @@ public class WinnerController {
     /**
      * инициализирует контроллер по сложности, количеству шагов и времени
      * */
-    public void Init(int difficulty, int moves, Time time, RecordTableController recordController){
+    public void Init(int moves, Time time,int difficulty, RecordTableController recordController){
 
         this.moves = moves;
         this.time = time;
 
         data = new Data(nameTextField.getText(),moves,time);
-
-        System.out.println(difficulty);
 
         recordTableData = new RecordTableData(difficulty);
 
@@ -76,25 +77,7 @@ public class WinnerController {
             closeStage();
         });
 
-        toMenuButton.setOnAction(event -> {
-            Parent root = null;
-
-            try {
-                root = FXMLLoader.load(getClass().getResource("/main/Menu/Menu.fxml"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            Stage stage = new Stage();
-            stage.setTitle("Хайнойские башни");
-            stage.setScene(new Scene(Objects.requireNonNull(root), 310, 310));
-            stage.setMinWidth(300);
-            stage.setMinHeight(300);
-            stage.show();
-
-            recordController.CloseStage();
-            closeStage();
-        });
+        toMenuButton.setOnAction(event -> closeStage());
     }
 
     /**

@@ -4,8 +4,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
 import javafx.scene.control.Button;
+import javafx.scene.effect.GaussianBlur;
 import javafx.stage.Stage;
 
+import main.BuildPane.GamePane;
 import main.Difficulty.DifficultyScene;
 import main.MainGame.ControllerMain;
 import main.MainGame.Main.Game;
@@ -29,20 +31,10 @@ public class MenuController {
     @FXML
     public void onClickContinue(){
 
-        Game game;
-        try{
-            FileInputStream fis = new FileInputStream("save.ser");
-            ObjectInputStream oin = new ObjectInputStream(fis);
-            game = (Game) oin.readObject();
-            game.buildTorus();
-        }catch(Exception ex){
-            ex.printStackTrace();
-            game = new Game(3);
-        }
+        gamePane.clearPain();
 
-        ControllerMain controller = new ControllerMain(game);
-        controller.Init(game.getDifficulty());
-        closeStage();
+        ControllerMain controller = new ControllerMain(primaryStage,gamePane);
+        controller.Init(gamePane.returnGame().getDifficulty());
     }
 
     /**
@@ -50,19 +42,15 @@ public class MenuController {
      * */
     @FXML
     public void onClickTable() throws IOException {
-        Stage stage = new Stage();
-        stage.setTitle("Хайнойские башни");
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/main/RecordTable/RecordTable.fxml"));
         Parent root = loader.load();
-        stage.setScene(new Scene(root, 600, 400));
+
+        gamePane.clearPain();
+        gamePane.setRoot(root);
 
         RecordTableController controller = loader.getController();
-        controller.Init(3);
-
-        stage.setResizable(false);
-        stage.show();
-
-        closeStage();
+        controller.Init(3,primaryStage,gamePane);
     }
 
     /**
@@ -77,29 +65,23 @@ public class MenuController {
     @FXML
     public void onClickNew() throws Exception{
 
-        Stage stage = new Stage();
-        stage.setTitle("Хайнойские башни");
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/main/Difficulty/difficultyScene.fxml"));
         Parent root = loader.load();
-        stage.setScene(new Scene(root, 600, 400));
-        stage.setResizable(false);
 
+        gamePane.clearPain();
+        gamePane.setRoot(root);
 
         DifficultyScene controller = loader.getController();
-        controller.Init();
-        stage.show();
-
-        closeStage();
-
+        controller.Init(primaryStage,gamePane);
     }
 
-    /**
-     * Закрывает окно
-     * */
-    private void closeStage()
-    {
-        Stage stage = (Stage) newButton.getScene().getWindow();
-        stage.close();
+    private GamePane gamePane = new GamePane();
+    public void setGamePain(GamePane gamePain) {
+        this.gamePane = gamePain;
     }
 
+    private Stage primaryStage = new Stage();
+    public void setPrimaryStage(Stage primaryStage){
+        this.primaryStage = primaryStage;
+    }
 }

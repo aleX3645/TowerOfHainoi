@@ -1,6 +1,8 @@
 package main.Difficulty;
 
 
+import javafx.scene.Group;
+import main.BuildPane.GamePane;
 import main.MainGame.ControllerMain;
 import java.io.IOException;
 import java.util.Objects;
@@ -12,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.stage.Stage;
+import main.Menu.MenuController;
 
 /**
  * Контроллер для определения сложности.
@@ -23,11 +26,15 @@ public class DifficultyScene {
     @FXML
     private Button playButton, backButton;
 
+    Stage primaryStage;
+    GamePane gamePane;
     /**
      * Инициализирует класс и добавляет события кнопок.
      * */
-    public void Init(){
+    public void Init(Stage primaryStage, GamePane gamePane){
         addButtonEvents();
+        this.primaryStage = primaryStage;
+        this.gamePane = gamePane;
     }
 
     /**
@@ -77,40 +84,29 @@ public class DifficultyScene {
 
         playButton.setOnAction(event -> {
 
-            ControllerMain controller = new ControllerMain();
+            ControllerMain controller = new ControllerMain(primaryStage);
             controller.Init(difficulty);
 
-            closeStage();
         });
 
         backButton.setOnAction(event -> {
 
-            Parent root = null;
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/main/Menu/Menu.fxml"));
 
+            Parent root = new Group();
             try {
-                root = FXMLLoader.load(getClass().getResource("/main/Menu/Menu.fxml"));
-            } catch (IOException e) {
-                e.printStackTrace();
+                root = loader.load();
+            }catch (Exception ex){
+                ex.printStackTrace();
             }
 
-            Stage stage = new Stage();
-            stage.setTitle("Хайнойские башни");
-            stage.setScene(new Scene(Objects.requireNonNull(root), 310, 310));
-            stage.setMinWidth(300);
-            stage.setMinHeight(300);
-            stage.show();
+            MenuController menuController = loader.getController();
+            menuController.setPrimaryStage(primaryStage);
+            menuController.setGamePain(gamePane);
 
-            closeStage();
+            gamePane.clearPain();
+            gamePane.setRoot(root);
         });
 
-    }
-
-    /**
-     * Закрывает сцену.
-     * */
-    private void closeStage()
-    {
-        Stage stage = (Stage) playButton.getScene().getWindow();
-        stage.close();
     }
 }

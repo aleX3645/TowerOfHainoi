@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -13,6 +14,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
+import main.BuildPane.GamePane;
+import main.Menu.MenuController;
 import main.RecordTable.RecordData.Data;
 import main.RecordTable.RecordData.RecordTableData;
 
@@ -45,11 +48,16 @@ public class RecordTableController {
 
     /**Сложность*/
     private int difficulty = 0;
+    Stage primaryStage;
+    GamePane gamePane;
     /**
      * Загружает нужную таблицу по сложности.
      * */
-    public void Init(int difficulty){
+    public void Init(int difficulty, Stage primaryStage, GamePane gamePane){
         this.difficulty = difficulty;
+        this.primaryStage = primaryStage;
+        this.gamePane = gamePane;
+
         recordTableData = new RecordTableData(this.difficulty);
 
         choiceBox.setItems(forChoiceBox);
@@ -68,22 +76,21 @@ public class RecordTableController {
     @FXML
     public void onClickToMenu(){
 
-        Parent root = null;
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/main/Menu/Menu.fxml"));
 
+        Parent root = new Group();
         try {
-            root = FXMLLoader.load(getClass().getResource("/main/Menu/Menu.fxml"));
-        } catch (IOException e) {
-            e.printStackTrace();
+            root = loader.load();
+        }catch (Exception ex){
+            ex.printStackTrace();
         }
 
-        Stage stage = new Stage();
-        stage.setTitle("Хайнойские башни");
-        stage.setScene(new Scene(Objects.requireNonNull(root), 310, 310));
-        stage.setMinWidth(300);
-        stage.setMinHeight(300);
-        stage.show();
-        CloseStage();
+        MenuController menuController = loader.getController();
+        menuController.setPrimaryStage(primaryStage);
+        menuController.setGamePain(gamePane);
 
+        gamePane.clearPain();
+        gamePane.setRoot(root);
     }
 
     /**

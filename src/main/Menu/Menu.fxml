@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -8,14 +9,18 @@
 
 <AnchorPane id="AnchorPane" maxHeight="327.0" maxWidth="500" minHeight="260.0" minWidth="237.0" prefHeight="262.0" prefWidth="238.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Menu.MenuController">
 
-      <VBox alignment="CENTER" layoutX="46.0" layoutY="51.0" maxHeight="1.7976931348623157E308" maxWidth="300.0" minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="51.0" AnchorPane.leftAnchor="46.0" AnchorPane.rightAnchor="46.0" AnchorPane.topAnchor="51.0">
+      <VBox alignment="CENTER" layoutX="30.0" layoutY="51.0" maxHeight="1.7976931348623157E308" maxWidth="300.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="160.0" prefWidth="179.0" spacing="2.0" AnchorPane.bottomAnchor="51.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="29.0" AnchorPane.topAnchor="51.0">
+         <Label id="mainLabel" alignment="CENTER" prefHeight="27.0" prefWidth="170.0" text="Хайнойские башни" textAlignment="CENTER">
+            <font>
+               <Font size="18.0" />
+            </font>
+         <padding>
+            <Insets bottom="2.0" />
+         </padding>
+      </Label>
             <Button fx:id="newButton" maxHeight="1.7976931348623157E308" maxWidth="500.0" mnemonicParsing="false" onAction="#onClickNew" prefHeight="40.0" text="Новая игра" />
             <Button maxHeight="1.7976931348623157E308" maxWidth="500.0" mnemonicParsing="false" onAction="#onClickContinue" prefHeight="40.0" text="Продолжить игру" />
             <Button maxHeight="1.7976931348623157E308" maxWidth="500.0" mnemonicParsing="false" onAction="#onClickTable" prefHeight="40.0" text="Таблица рекордов" />
             <Button maxHeight="1.7976931348623157E308" maxWidth="500.0" mnemonicParsing="false" onAction="#onClickExit" prefHeight="40.0" text="Выйти из игры" />
       </VBox>
-      <Label id="mainLabel" alignment="CENTER" layoutX="34.0" layoutY="14.0" prefHeight="27.0" prefWidth="170.0" text="Хайнойские башни" textAlignment="CENTER" AnchorPane.bottomAnchor="221.0" AnchorPane.leftAnchor="34.0" AnchorPane.rightAnchor="34.0" AnchorPane.topAnchor="14.0">
-         <font>
-            <Font size="18.0" />
-         </font></Label>
 </AnchorPane>

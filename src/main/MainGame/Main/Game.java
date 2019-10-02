@@ -9,6 +9,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.input.PickResult;
 import javafx.scene.shape.Cylinder;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import main.MainGame.ControllerMain;
 import main.MainGame.Shapes.Toroid;
@@ -56,7 +57,7 @@ public class Game implements Serializable{
     }
 
     /**Содержит контроллер игры*/
-    private transient ControllerMain controllerMain = new ControllerMain();
+    private transient ControllerMain controllerMain = new ControllerMain(new Stage());
     /**
      * Передает ссылку на контроллер игры.
      * */
@@ -64,7 +65,7 @@ public class Game implements Serializable{
         this.controllerMain = controllerMain;
     }
     /**Определяет первый раз или не первый заходит в метод clickHandler*/
-    private boolean first = true;
+    transient private boolean first = true;
     /**
      * Метод вызывается при нажатии на игровые фигуры.
      * Определяется с какого и на какой шпиль переносятся кольца.
@@ -331,6 +332,7 @@ public class Game implements Serializable{
      * */
     public void buildTorus(){
         tempStackNumber = -1;
+        first = true;
 
         MaterialsGenerator materialsGenerator= new MaterialsGenerator();
         double yStart = 500+(difficulty+1.5)*blockSize/2+blockSize/2;
