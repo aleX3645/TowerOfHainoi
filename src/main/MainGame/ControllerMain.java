@@ -7,7 +7,9 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.*;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
@@ -30,6 +32,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -52,7 +55,10 @@ public class ControllerMain{
 
         time = game.getTime();
         moves = game.getMoves();
+
+        startTime = game.getTime().toString();
     }
+    String startTime = "";
 
     GamePane gamePane;
     /**Класс игры*/
@@ -95,8 +101,34 @@ public class ControllerMain{
         }
 
         primaryStage.setOnCloseRequest(event -> {
+
+            System.out.println(timeLabel.getText().equals(startTime.toString()));
+            if(!timeLabel.getText().equals(startTime)){
+                timer.cancel();
+            }
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Внимание");
+            alert.setHeaderText("Вы уверены, что хотите выйти? Игра будет сохранена.");
+            ButtonType yes = new ButtonType("Выйти");
+            ButtonType no = new ButtonType("Отмена");
+            alert.getButtonTypes().clear();
+            alert.getButtonTypes().addAll(yes,no);
+            Optional<ButtonType> option = alert.showAndWait();
+            if(option.get() == no && !timeLabel.getText().equals(startTime.toString())){
+                timer = new Timer();
+                myTimerTask myTask = new myTimerTask();
+                timer.schedule(myTask, 0,9);
+                event.consume();
+                return;
+            }
+            if(option.get() == no){
+                event.consume();
+                return;
+            }
+
             try {
-                if(!timeLabel.getText().equals("0")){
+                if(!timeLabel.getText().equals(startTime)){
                     timer.cancel();
                 }
 
@@ -114,6 +146,7 @@ public class ControllerMain{
             }catch(Exception ex){
                 ex.printStackTrace();
             }
+
             event.consume();
         });
         gamePane.UnBlur();
@@ -310,13 +343,4 @@ public class ControllerMain{
             });
         }
     }
-
-    /**
-     * Закрывает окно
-     * */
-    private void closeStage()
-    {
-        primaryStage.close();
-    }
-
 }

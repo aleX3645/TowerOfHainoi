@@ -2,10 +2,13 @@ package main.Difficulty;
 
 
 import javafx.scene.Group;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import main.BuildPane.GamePane;
 import main.MainGame.ControllerMain;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.Optional;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -83,6 +86,20 @@ public class DifficultyScene {
         });
 
         playButton.setOnAction(event -> {
+
+            if(gamePane.returnGame().getTime().getMinutes() != 0 ||
+                    gamePane.returnGame().getTime().getSeconds() != 0 ||
+                    gamePane.returnGame().getTime().getMseconds() != 0){
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Внимание");
+                alert.setHeaderText("Вы уверены, что хотите начать новую игру, прогресс прошлой игры будет утеренен");
+                ButtonType yes = new ButtonType("Начать");
+                ButtonType no = new ButtonType("Отмена");
+                alert.getButtonTypes().clear();
+                alert.getButtonTypes().addAll(yes,no);
+                Optional<ButtonType> option = alert.showAndWait();
+                if(option.get() == no){return;}
+            }
 
             ControllerMain controller = new ControllerMain(primaryStage);
             controller.Init(difficulty);
