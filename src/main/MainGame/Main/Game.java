@@ -7,6 +7,7 @@ import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.PickResult;
 import javafx.scene.shape.Cylinder;
 import javafx.stage.Stage;
@@ -165,8 +166,13 @@ public class Game implements Serializable{
             bottom.setHeight(24.0);
             bottom.translateXProperty().set(xCenter);
             bottom.translateYProperty().set(500.0+(difficulty+1.5)*blockSize/2+12);
-            bottom.setMaterial(materialsGenerator.getFieldTexture());
+            if(i == 2){
+                bottom.setMaterial(materialsGenerator.getFieldWinTexture());
+            }else{
+                bottom.setMaterial(materialsGenerator.getFieldTexture());
+            }
             bottom.setOnMouseClicked(e->{
+                if(e.getButton() != MouseButton.PRIMARY || auto || inPause){return;}
                 PickResult pr = e.getPickResult();
                 clickHandler(pr.getIntersectedNode());
             });
@@ -177,8 +183,13 @@ public class Game implements Serializable{
             top.setHeight((difficulty+1.5)*blockSize);
             top.translateXProperty().set(xCenter);
             top.translateYProperty().set(500.0);
-            top.setMaterial(materialsGenerator.getFieldTexture());
+            if(i == 2){
+                top.setMaterial(materialsGenerator.getFieldWinTexture());
+            }else{
+                top.setMaterial(materialsGenerator.getFieldTexture());
+            }
             top.setOnMouseClicked(e->{
+                if(e.getButton() != MouseButton.PRIMARY  || auto || inPause){return;}
                 PickResult pr = e.getPickResult();
                 clickHandler(pr.getIntersectedNode());
             });
@@ -350,6 +361,7 @@ public class Game implements Serializable{
             block.translateYProperty().set(yStart-(i+1)*blockSize);
             block.setMaterial(materialsGenerator.GetMAterialById((int)difficulty-field[0].get(i)));
             block.setOnMouseClicked(e->{
+                if(e.getButton() != MouseButton.PRIMARY  || auto || inPause){return;}
                 PickResult pr = e.getPickResult();
                 clickHandler(pr.getIntersectedNode());
             });
@@ -368,6 +380,7 @@ public class Game implements Serializable{
             block.translateYProperty().set(yStart-(i+1)*blockSize);
             block.setMaterial(materialsGenerator.GetMAterialById((int)difficulty-field[1].get(i)));
             block.setOnMouseClicked(e->{
+                if(e.getButton() != MouseButton.PRIMARY  || auto || inPause){return;}
                 PickResult pr = e.getPickResult();
                 clickHandler(pr.getIntersectedNode());
             });
@@ -386,6 +399,7 @@ public class Game implements Serializable{
             block.translateYProperty().set(yStart-(i+1)*blockSize);
             block.setMaterial(materialsGenerator.GetMAterialById((int)difficulty-field[2].get(i)));
             block.setOnMouseClicked(e->{
+                if(e.getButton() != MouseButton.PRIMARY  || auto || inPause){return;}
                 PickResult pr = e.getPickResult();
                 clickHandler(pr.getIntersectedNode());
             });
@@ -464,8 +478,14 @@ public class Game implements Serializable{
         animation.start();
     }
 
+    private Boolean inPause = false;
+    public void setInPause(Boolean b){
+        inPause = b;
+    }
+
     /**Определяет включен ли автоматический сбор*/
     private Boolean auto = false;
+
     /**
      * Начинает автоматический сбор
      * */

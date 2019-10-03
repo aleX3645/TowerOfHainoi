@@ -15,6 +15,7 @@ import main.MainGame.ControllerMain;
 import main.MainGame.Main.Game;
 import main.RecordTable.RecordTableController;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -26,7 +27,15 @@ import java.util.Optional;
 public class MenuController {
 
     @FXML
-    private Button newButton;
+    private Button continueButton;
+
+    @FXML
+    public void initialize() {
+        File f = new File("save.ser");
+        if(!f.exists() || f.isDirectory()) {
+            continueButton.setDisable(true);
+        }
+    }
 
     /**
      * Событие нажатия на продолжить, десериализует класс game и отправляет в контроллер

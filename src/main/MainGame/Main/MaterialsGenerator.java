@@ -107,7 +107,13 @@ class MaterialsGenerator {
      * */
     PhongMaterial getFieldTexture(){
         PhongMaterial material = new PhongMaterial();
-        material.setDiffuseMap(new Image(getClass().getResourceAsStream("/Resources/wooden-texture.jpg")));
+        material.setDiffuseMap(new Image(getClass().getResourceAsStream("/Resources/wooden-texture1.jpg")));
+        return material;
+    }
+
+    PhongMaterial getFieldWinTexture(){
+        PhongMaterial material = new PhongMaterial();
+        material.setDiffuseMap(new Image(getClass().getResourceAsStream("/Resources/wooden-texture2.jpg")));
         return material;
     }
 }

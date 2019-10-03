@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane id="AnchorPane" maxHeight="327.0" maxWidth="500" minHeight="260.0" minWidth="237.0" prefHeight="262.0" prefWidth="238.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.PauseMenu.PauseMenuController">
+
+    <VBox alignment="CENTER" layoutX="30.0" layoutY="51.0" maxHeight="1.7976931348623157E308" maxWidth="300.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="160.0" prefWidth="179.0" spacing="5.0" AnchorPane.bottomAnchor="51.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="29.0" AnchorPane.topAnchor="51.0">
+        <Button fx:id="newButton" maxHeight="1.7976931348623157E308" maxWidth="500.0" mnemonicParsing="false" onAction="#onClickContinue" prefHeight="40.0" text="Продолжить" />
+        <Button maxHeight="1.7976931348623157E308" maxWidth="500.0" mnemonicParsing="false" onAction="#onClickToMenu" prefHeight="40.0" text="Выйти в меню" />
+    </VBox>
+</AnchorPane>

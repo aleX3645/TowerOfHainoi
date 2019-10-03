@@ -6,6 +6,7 @@ import javafx.animation.Timeline;
 import javafx.scene.*;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
@@ -26,13 +27,10 @@ public class GamePane {
             game = (Game) oin.readObject();
             game.buildTorus();
         } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
             game = new Game(5);
         } catch (IOException ex) {
-            ex.printStackTrace();
             game = new Game(5);
         } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
             game = new Game(5);
         }
 
@@ -143,9 +141,20 @@ public class GamePane {
                 new KeyFrame(Duration.ZERO,
                         new KeyValue(gb.radiusProperty(), gb.getRadius())),
 
-                new KeyFrame(new Duration(1500),
+                new KeyFrame(new Duration(1300),
                         new KeyValue(gb.radiusProperty(), 0)));
         unBlur.play();
+    }
+
+    public void Blur(){
+        Timeline blur = new Timeline();
+        blur.getKeyFrames().addAll(
+                new KeyFrame(Duration.ZERO,
+                        new KeyValue(gb.radiusProperty(),gb.getRadius())),
+
+                new KeyFrame(new Duration(1300),
+                        new KeyValue(gb.radiusProperty(), 30)));
+        blur.play();
     }
 
     public void setRoot(Parent root){

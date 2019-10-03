@@ -1,8 +1,5 @@
 package main.MainGame;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -10,7 +7,9 @@ import javafx.scene.*;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.effect.GaussianBlur;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -20,18 +19,18 @@ import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 
-import javafx.util.Duration;
 import main.BuildPane.GamePane;
 import main.Difficulty.DifficultyScene;
 import main.MainGame.Main.Game;
 import main.MainGame.Time.Time;
+import main.PauseMenu.PauseMenuController;
 import main.RecordTable.RecordTableController;
 import main.Winner.WinnerController;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -58,7 +57,7 @@ public class ControllerMain{
 
         startTime = game.getTime().toString();
     }
-    String startTime = "";
+    String startTime = "00:00.00";
 
     GamePane gamePane;
     /**Класс игры*/
@@ -85,6 +84,8 @@ public class ControllerMain{
             camera = gamePane.getCamera();
             rotateY = gamePane.getRotateY();
             scene = new Scene(gamePane.returnPane());
+            scene.getStylesheets().add("/Resources/SpecialButton.css");
+
             primaryStage.setScene(scene);
 
             game.setControllerMain(this);
@@ -102,8 +103,7 @@ public class ControllerMain{
 
         primaryStage.setOnCloseRequest(event -> {
 
-            System.out.println(timeLabel.getText().equals(startTime.toString()));
-            if(!timeLabel.getText().equals(startTime)){
+            if(!timeLabel.getText().equals(startTime) && !auto){
                 timer.cancel();
             }
 
@@ -115,6 +115,7 @@ public class ControllerMain{
             alert.getButtonTypes().clear();
             alert.getButtonTypes().addAll(yes,no);
             Optional<ButtonType> option = alert.showAndWait();
+
             if(option.get() == no && !timeLabel.getText().equals(startTime.toString())){
                 timer = new Timer();
                 myTimerTask myTask = new myTimerTask();
@@ -128,7 +129,7 @@ public class ControllerMain{
             }
 
             try {
-                if(!timeLabel.getText().equals(startTime)){
+                if(!timeLabel.getText().equals(startTime) && !auto){
                     timer.cancel();
                 }
 
@@ -151,10 +152,10 @@ public class ControllerMain{
         });
         gamePane.UnBlur();
     }
+    Boolean auto = false;
 
     private Label timeLabel;
     private Label movesLabel;
-    private Button autoButton;
     /**
      * Добавляет элементы на AnchorPane
      * */
@@ -165,7 +166,7 @@ public class ControllerMain{
         Font f = new Font(40);
         Background background= new Background(new BackgroundFill(Color.AQUAMARINE, CornerRadii.EMPTY, Insets.EMPTY));
 
-        timeLabel = new Label("0");
+        timeLabel = new Label("00:00.00");
         timeLabel.setFont(f);
         timeLabel.setBackground(background);
 
@@ -179,16 +180,7 @@ public class ControllerMain{
         pane.setTopAnchor(movesLabel, 0.0);
         pane.setRightAnchor(movesLabel,10.0);
 
-        autoButton = new Button("Автоматическая сборка");
-        autoButton.setOnAction((event-> game.auto()));
-
-        pane.setBottomAnchor(autoButton,10.0);
-        pane.setLeftAnchor(autoButton,10.0);
-
-        pane.getChildren().add(timeLabel);
-        pane.getChildren().add(movesLabel);
-        pane.getChildren().add(autoButton);
-
+        pane.getChildren().addAll(timeLabel,movesLabel);
         return pane;
     }
 
@@ -225,6 +217,7 @@ public class ControllerMain{
                     timer.cancel();
                 }
 
+
                 FXMLLoader recordLoader = new FXMLLoader(getClass().getResource("/main/RecordTable/RecordTable.fxml"));
                 GamePane gamePane = new GamePane(5);
 
@@ -237,12 +230,17 @@ public class ControllerMain{
                 gamePane.setRoot(recordRoot);
 
                 Scene scene = new Scene(gamePane.returnPane());
+                scene.getStylesheets().add("/Resources/SpecialButton.css");
                 primaryStage.setScene(scene);
 
                 RecordTableController recordController = recordLoader.getController();
 
                 RecordTableController  controller = recordLoader.getController();
                 controller.Init(difficulty,primaryStage,gamePane);
+
+
+                File file = new File("save.ser");
+                file.delete();
 
 
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/main/Winner/WinnerScene.fxml"));
@@ -255,7 +253,9 @@ public class ControllerMain{
                 }
 
                 Stage stage = new Stage();
-                stage.setScene(new Scene(root, 400, 270));
+                Scene tempScene = new Scene(root);
+                tempScene.getStylesheets().add("/Resources/SpecialButton.css");
+                stage.setScene(tempScene);
 
                 WinnerController winController = loader.getController();
                 winController.Init(moves, time, difficulty, recordController);
@@ -275,6 +275,9 @@ public class ControllerMain{
                 }
                 gamePane1.setRoot(rootForAuto);
 
+                Scene tempScene1 = new Scene(rootForAuto);
+                tempScene1.getStylesheets().add("/Resources/SpecialButton.css");
+                primaryStage.setScene(tempScene1);
 
                 DifficultyScene controller1 = load.getController();
                 controller1.Init(primaryStage,gamePane1);
@@ -302,11 +305,12 @@ public class ControllerMain{
         });
 
         scene.setOnMouseDragged(me -> {
+            if(me.getButton() != MouseButton.SECONDARY || inPause){return;}
             mouseOldX = mousePosX;
             mousePosX = me.getSceneX();
             mouseDeltaX = (mousePosX - mouseOldX);
 
-            if (me.isPrimaryButtonDown()) {
+            if (me.isSecondaryButtonDown()) {
                 rotateY.angleProperty().setValue(rotateY.angleProperty().getValue() + mouseDeltaX * MOUSE_SPEED);
             }
         });
@@ -326,6 +330,84 @@ public class ControllerMain{
                 );
             }
         });
+
+        scene.setOnKeyPressed(ke -> {
+            if (ke.getCode() == KeyCode.ESCAPE) {
+
+                if(inPause){
+                    inPause = false;
+                    game.setInPause(false);
+
+                    gamePane.clearPain();
+                    StartTimer();
+
+                    gamePane.UnBlur();
+                    return;
+                }
+
+                gamePane.Blur();
+
+                if(!timeLabel.getText().equals(startTime) && !auto){
+                    timer.cancel();
+                }
+
+                inPause = true;
+                game.setInPause(true);
+
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/main/PauseMenu/PauseMenu.fxml"));
+
+                Parent root = new Group();
+                try {
+                    root = loader.load();
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                }
+
+                gamePane.setRoot(root);
+                PauseMenuController controller = loader.getController();
+                controller.Init(gamePane,primaryStage,this);
+            }
+            if(ke.getCode() == KeyCode.F2){
+                if(timeLabel.getText().equals("00:00.00")){
+                    auto = true;
+                    game.auto();
+                }
+            }
+        });
+
+
+    }
+
+    private Boolean inPause = false;
+    public void ContinueGame(){
+        if(!timeLabel.getText().equals(startTime) && !auto){
+            inPause = false;
+            StartTimer();
+        }
+    }
+
+    public void Save(){
+
+        game.save(time,moves);
+
+        try {
+            if(!timeLabel.getText().equals(startTime) && !auto){
+                timer.cancel();
+            }
+
+            game.save(time, moves);
+            FileOutputStream fos = new FileOutputStream("save.ser");
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+
+            oos.writeObject(game);
+
+            oos.flush();
+            oos.close();
+            fos.close();
+
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
     }
 
     /**Лист для таблицы рекордов*/
