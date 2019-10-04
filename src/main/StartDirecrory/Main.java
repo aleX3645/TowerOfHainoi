@@ -35,8 +35,8 @@ public class Main extends Application {
 
         primaryStage.setTitle("Хайнойские башни");
         primaryStage.setScene(scene);
-        primaryStage.setMinWidth(310);
-        primaryStage.setMinHeight(310);
+        primaryStage.setMinWidth(800);
+        primaryStage.setMinHeight(600);
         primaryStage.setMaximized(true);
         primaryStage.show();
 

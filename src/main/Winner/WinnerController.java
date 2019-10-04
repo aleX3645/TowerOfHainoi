@@ -45,6 +45,7 @@ public class WinnerController {
 
     /**Количество ходов*/
     private int moves;
+    /**Ячейка таблицы*/
     private Data data = new Data("0",0,new Time());
     /**Затраченное время*/
     private Time time;

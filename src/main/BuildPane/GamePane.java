@@ -6,7 +6,6 @@ import javafx.animation.Timeline;
 import javafx.scene.*;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
@@ -90,14 +89,14 @@ public class GamePane {
         pane.getChildren().add(sub);
     }
 
-    Game game;
+    private Game game;
 
-    AnchorPane pane;
-    Parent root;
+    private AnchorPane pane;
+    private Parent root;
 
-    GaussianBlur gb = new GaussianBlur(30);
+    private GaussianBlur gb = new GaussianBlur(30);
 
-    PerspectiveCamera camera;
+    private PerspectiveCamera camera;
     private Rotate rotateY = new Rotate(0, Rotate.Y_AXIS);
     private PerspectiveCamera setCamera(){
         camera = new PerspectiveCamera(true);

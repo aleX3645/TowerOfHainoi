@@ -12,9 +12,9 @@ import main.Menu.MenuController;
 
 public class PauseMenuController {
 
-    GamePane gamePane;
-    Stage primaryStage;
-    ControllerMain controllerMain;
+    private GamePane gamePane;
+    private Stage primaryStage;
+    private ControllerMain controllerMain;
 
 
     public void Init(GamePane gamePane, Stage primaryStage, ControllerMain controllerMain){
