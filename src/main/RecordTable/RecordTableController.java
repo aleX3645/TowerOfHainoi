@@ -96,19 +96,15 @@ public class RecordTableController {
      * */
     @FXML
     public void onClickReset(){
-        if(gamePane.returnGame().getTime().getMinutes() != 0 ||
-                gamePane.returnGame().getTime().getSeconds() != 0 ||
-                gamePane.returnGame().getTime().getMseconds() != 0){
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Внимание");
-            alert.setHeaderText("Вы уверены, что хотите сбросить таблицу рекордов?");
-            ButtonType yes = new ButtonType("Сбросить");
-            ButtonType no = new ButtonType("Отмена");
-            alert.getButtonTypes().clear();
-            alert.getButtonTypes().addAll(yes,no);
-            Optional<ButtonType> option = alert.showAndWait();
-            if(option.get() == no || option.get() == null){return;}
-        }
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Внимание");
+        alert.setHeaderText("Вы уверены, что хотите сбросить таблицу рекордов?");
+        ButtonType yes = new ButtonType("Сбросить");
+        ButtonType no = new ButtonType("Отмена");
+        alert.getButtonTypes().clear();
+        alert.getButtonTypes().addAll(yes,no);
+        Optional<ButtonType> option = alert.showAndWait();
+        if(option.get() == no || option.get() == null){return;}
 
         recordTableData.Reset();
         Refresh();
