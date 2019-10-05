@@ -10,9 +10,9 @@
 <AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: TRANSPARENT;" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Difficulty.DifficultyScene">
    <children>
       <Button fx:id="playButton" layoutX="223.0" layoutY="332.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="139.0" text="Играть" AnchorPane.bottomAnchor="58.0" AnchorPane.leftAnchor="223.0" AnchorPane.rightAnchor="238.0" />
-      <Label layoutX="201.0" layoutY="64.0" maxWidth="300.0" text="Правила игры: Для победы в игре необходимо переместить диски с одной крайней пирамидки на другую крайнюю пирамидку. Перекладывать можно только по одному диску за ход. Складывать диски можно только меньший на больший." textAlignment="CENTER" textFill="WHITE" wrapText="true" AnchorPane.bottomAnchor="200.0" AnchorPane.leftAnchor="201.0" AnchorPane.rightAnchor="199.0" AnchorPane.topAnchor="64.0">
+      <Label layoutX="201.0" layoutY="64.0" maxWidth="300.0" prefHeight="136.0" prefWidth="230.0" text="Правила игры: Для победы в игре необходимо переместить диски с одной крайней пирамидки на другую крайнюю пирамидку. Перекладывать можно только по одному диску за ход. Складывать диски можно только меньший на больший." textAlignment="CENTER" textFill="WHITE" wrapText="true" AnchorPane.bottomAnchor="200.0" AnchorPane.leftAnchor="169.0" AnchorPane.rightAnchor="169.0" AnchorPane.topAnchor="64.0">
          <font>
-            <Font size="18.0" />
+            <Font size="17.0" />
          </font></Label>
       <Label alignment="CENTER" layoutX="201.0" layoutY="234.0" maxWidth="200.0" text="Выберите сложность" textAlignment="CENTER" textFill="WHITE" wrapText="true" AnchorPane.bottomAnchor="166.0" AnchorPane.leftAnchor="201.0" AnchorPane.rightAnchor="199.0" />
       <HBox alignment="TOP_CENTER" layoutX="100.0" layoutY="250.0" prefHeight="25.0" prefWidth="443.0" style="-fx-background-color: TRANSPARENT; -fx-spacing: 5;" AnchorPane.bottomAnchor="141.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="57.0">
