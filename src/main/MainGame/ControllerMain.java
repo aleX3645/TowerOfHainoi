@@ -381,6 +381,7 @@ public class ControllerMain{
     public void ContinueGame(){
         if(!timeLabel.getText().equals(startTime) && !auto){
             inPause = false;
+            gamePane.UnBlur();
             StartTimer();
         }
     }

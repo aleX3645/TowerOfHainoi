@@ -45,7 +45,9 @@ public class PauseMenuController {
 
         newGamePane.setRoot(root);
 
-        primaryStage.setScene(new Scene(newGamePane.returnPane()));
+        Scene scene = new Scene(newGamePane.returnPane());
+        scene.getStylesheets().add("/Resources/StyleClass.css");
+        primaryStage.setScene(scene);
 
 
         MenuController menuController = loader.getController();
