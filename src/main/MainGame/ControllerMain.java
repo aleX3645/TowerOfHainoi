@@ -254,6 +254,7 @@ public class ControllerMain{
                 Scene tempScene = new Scene(root);
                 tempScene.getStylesheets().add("/Resources/StyleClass.css");
                 stage.setScene(tempScene);
+                stage.setResizable(false);
 
                 WinnerController winController = loader.getController();
                 winController.Init(moves, time, difficulty, recordController);
