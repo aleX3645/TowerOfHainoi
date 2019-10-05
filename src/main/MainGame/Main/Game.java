@@ -9,6 +9,8 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.PickResult;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Cylinder;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -349,7 +351,6 @@ public class Game implements Serializable{
         double yStart = 500+(difficulty+1.5)*blockSize/2+blockSize/2;
 
         Stack<Toroid>[] tempField = new Stack[3];
-
         Stack<Toroid> temp = new Stack<>();
         for (int i = 0; i< field[0].size(); i++){
             Toroid block = new Toroid((maxSize-(difficulty-field[0].get(i)+1)*(maxSize-topR)/(difficulty+1)-topR)/2+topR,
@@ -365,6 +366,7 @@ public class Game implements Serializable{
                 PickResult pr = e.getPickResult();
                 clickHandler(pr.getIntersectedNode());
             });
+
             temp.push(block);
         }
         tempField[0] = temp;

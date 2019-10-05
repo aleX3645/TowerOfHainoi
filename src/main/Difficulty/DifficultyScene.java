@@ -1,11 +1,18 @@
 package main.Difficulty;
 
 
+import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.paint.Color;
 import main.BuildPane.GamePane;
 import main.MainGame.ControllerMain;
+
+import java.awt.*;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.Optional;
@@ -40,6 +47,7 @@ public class DifficultyScene {
         this.gamePane = gamePane;
     }
 
+    Background background= new Background(new BackgroundFill(Color.web("00c482"), CornerRadii.EMPTY, Insets.EMPTY));
     /**
      * Сложность игры, где целое число означет количество колец
      * */

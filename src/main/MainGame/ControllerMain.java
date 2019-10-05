@@ -5,11 +5,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.*;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -84,7 +82,7 @@ public class ControllerMain{
             camera = gamePane.getCamera();
             rotateY = gamePane.getRotateY();
             scene = new Scene(gamePane.returnPane());
-            scene.getStylesheets().add("/Resources/SpecialButton.css");
+            scene.getStylesheets().add("/Resources/StyleClass.css");
 
             primaryStage.setScene(scene);
 
@@ -164,7 +162,7 @@ public class ControllerMain{
         AnchorPane pane = gamePane.returnPane();
 
         Font f = new Font(40);
-        Background background= new Background(new BackgroundFill(Color.AQUAMARINE, CornerRadii.EMPTY, Insets.EMPTY));
+        Background background= new Background(new BackgroundFill(Color.web("00c482"), CornerRadii.EMPTY, Insets.EMPTY));
 
         timeLabel = new Label("00:00.00");
         timeLabel.setFont(f);
@@ -230,7 +228,7 @@ public class ControllerMain{
                 gamePane.setRoot(recordRoot);
 
                 Scene scene = new Scene(gamePane.returnPane());
-                scene.getStylesheets().add("/Resources/SpecialButton.css");
+                scene.getStylesheets().add("/Resources/StyleClass.css");
                 primaryStage.setScene(scene);
 
                 RecordTableController recordController = recordLoader.getController();
@@ -254,7 +252,7 @@ public class ControllerMain{
 
                 Stage stage = new Stage();
                 Scene tempScene = new Scene(root);
-                tempScene.getStylesheets().add("/Resources/SpecialButton.css");
+                tempScene.getStylesheets().add("/Resources/StyleClass.css");
                 stage.setScene(tempScene);
 
                 WinnerController winController = loader.getController();
@@ -276,7 +274,7 @@ public class ControllerMain{
                 gamePane1.setRoot(rootForAuto);
 
                 Scene tempScene1 = new Scene(rootForAuto);
-                tempScene1.getStylesheets().add("/Resources/SpecialButton.css");
+                tempScene1.getStylesheets().add("/Resources/StyleClass.css");
                 primaryStage.setScene(tempScene1);
 
                 DifficultyScene controller1 = load.getController();

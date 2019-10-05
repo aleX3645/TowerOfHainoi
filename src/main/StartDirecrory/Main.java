@@ -31,7 +31,7 @@ public class Main extends Application {
         menuController.setPrimaryStage(primaryStage);
 
         Scene scene = new Scene(gamePane.returnPane(), 310, 310);
-        scene.getStylesheets().add("/Resources/SpecialButton.css");
+        scene.getStylesheets().add("/Resources/StyleClass.css");
 
         primaryStage.setTitle("Хайнойские башни");
         primaryStage.setScene(scene);

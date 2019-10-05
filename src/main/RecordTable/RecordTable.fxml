@@ -9,11 +9,11 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.RecordTable.RecordTableController">
    <children>
-      <TableView fx:id="recordTable" layoutX="44.0" layoutY="24.0" minHeight="298.0" minWidth="513.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="298.0" prefWidth="532.0" AnchorPane.bottomAnchor="72.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0">
+      <TableView fx:id="recordTable" fixedCellSize="30.0" layoutX="44.0" layoutY="24.0" minHeight="298.0" minWidth="513.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="298.0" prefWidth="532.0" style="-fx-background-color: linear-gradient(#a1f2d1, #5A8088);" AnchorPane.bottomAnchor="72.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0">
         <columns>
-          <TableColumn fx:id="nameColumn" prefWidth="304.0" text="Имя" />
-          <TableColumn fx:id="movesColumn" minWidth="2.0" prefWidth="126.0" text="Количество &#10;     ходов" />
-            <TableColumn fx:id="timeColumn" minWidth="0.0" prefWidth="109.0" text="Время" />
+          <TableColumn fx:id="nameColumn" prefWidth="304.0" style="-fx-border-color: BLACK; -fx-border-width: 0.3;" styleClass="/Resources/SpecialButton.css" text="Имя" />
+          <TableColumn fx:id="movesColumn" minWidth="2.0" prefWidth="126.0" style="-fx-border-color: BLACK; -fx-border-width: 0.3;" styleClass="/Resources/SpecialButton.css" text="Количество &#10;     ходов" />
+            <TableColumn fx:id="timeColumn" minWidth="0.0" prefWidth="109.0" style="-fx-border-color: BLACK; -fx-border-width: 0.3;" styleClass="/Resources/SpecialButton.css" text="Время" />
         </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -25,6 +25,6 @@
             <Button fx:id="toMenuButton" mnemonicParsing="false" onAction="#onClickToMenu" prefHeight="26.0" prefWidth="420.0" text="В меню" />
          </children>
       </VBox>
-      <ChoiceBox fx:id="choiceBox" layoutX="420.0" layoutY="334.0" onAction="#onClickChoice" prefWidth="150.0" AnchorPane.bottomAnchor="41.0" AnchorPane.rightAnchor="30.0" />
+      <ChoiceBox fx:id="choiceBox" layoutX="420.0" layoutY="334.0" onAction="#onClickChoice" prefWidth="150.0" style="-fx-background-color: linear-gradient(#71c2a1, #2A5058);" styleClass="/Resources/SpecialButton.css" AnchorPane.bottomAnchor="41.0" AnchorPane.rightAnchor="30.0" />
    </children>
 </AnchorPane>

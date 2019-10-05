@@ -39,7 +39,7 @@ public class GamePane {
 
         SubScene sub = new SubScene(root3d,1920,1080,true, SceneAntialiasing.BALANCED);
         sub.setCamera(camera);
-        sub.setFill(Color.AQUAMARINE);
+        sub.setFill(Color.web("00c482"));
         sub.setEffect(gb);
 
         sub.heightProperty().bind(pane.heightProperty());

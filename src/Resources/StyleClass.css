@@ -1,0 +1,32 @@
+.button {
+    -fx-text-fill: white;
+    -fx-font-family: "Arial Narrow";
+    -fx-font-weight: bold;
+    -fx-background-color: linear-gradient(#71c2a1, #2A5058);
+}
+
+.button:hover {
+    -fx-background-color: linear-gradient(#2A5058, #61a2b1);
+}
+
+.choice-box .label {
+    -fx-text-fill: white;
+}
+
+.choice-box .context-menu { -fx-background-color: linear-gradient(#71c2a1, #2A5058); }
+
+.table-view .column-header-background .label{
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+}
+.table-view .table-cell{
+    -fx-text-fill: white;
+    -fx-background-color: #2A5058;
+    -fx-font-size:  20;
+}
+
+.table-view .column-header,
+.table-view .column-header .filler,
+.table-view .column-header-background .filler {
+    -fx-background-color: linear-gradient(#71c2a1, #2A5058);
+}
