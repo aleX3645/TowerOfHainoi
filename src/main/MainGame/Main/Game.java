@@ -346,6 +346,8 @@ public class Game implements Serializable{
     public void buildTorus(){
         tempStackNumber = -1;
         first = true;
+        auto = false;
+        inPause = false;
 
         MaterialsGenerator materialsGenerator= new MaterialsGenerator();
         double yStart = 500+(difficulty+1.5)*blockSize/2+blockSize/2;

@@ -274,7 +274,12 @@ public class ControllerMain{
                 }
                 gamePane1.setRoot(rootForAuto);
 
-                Scene tempScene1 = new Scene(rootForAuto);
+                File f = new File("save.ser");
+                if(!f.exists() || f.isDirectory()) {
+                    f.delete();
+                }
+
+                Scene tempScene1 = new Scene(gamePane1.returnPane());
                 tempScene1.getStylesheets().add("/Resources/StyleClass.css");
                 primaryStage.setScene(tempScene1);
 
@@ -377,7 +382,7 @@ public class ControllerMain{
 
     }
 
-    private Boolean inPause = false;
+    private volatile Boolean inPause = false;
     public void ContinueGame(){
         if(!timeLabel.getText().equals(startTime) && !auto){
             inPause = false;

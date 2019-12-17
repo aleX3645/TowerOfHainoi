@@ -6,7 +6,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
@@ -16,8 +15,6 @@ import main.Menu.MenuController;
 import main.RecordTable.RecordData.Data;
 import main.RecordTable.RecordData.RecordTableData;
 
-import java.io.IOException;
-import java.util.Objects;
 import java.util.Optional;
 
 /**

@@ -2,24 +2,17 @@ package main.Winner;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
-import main.BuildPane.GamePane;
-import main.MainGame.Main.Game;
+
 import main.MainGame.Time.Time;
 import main.RecordTable.RecordData.Data;
 import main.RecordTable.RecordData.RecordTableData;
 import main.RecordTable.RecordTableController;
 
-import java.io.IOException;
-import java.util.Objects;
 
 /**
  * Контроллер победного окна

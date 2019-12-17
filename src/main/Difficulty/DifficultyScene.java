@@ -13,6 +13,7 @@ import main.BuildPane.GamePane;
 import main.MainGame.ControllerMain;
 
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.Optional;
@@ -107,6 +108,11 @@ public class DifficultyScene {
                 alert.getButtonTypes().addAll(yes,no);
                 Optional<ButtonType> option = alert.showAndWait();
                 if(option.get() == no){return;}
+            }
+
+            File f = new File("save.ser");
+            if(!f.exists() || f.isDirectory()) {
+                f.delete();
             }
 
             ControllerMain controller = new ControllerMain(primaryStage);

@@ -3,23 +3,17 @@ package main.Menu;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.effect.GaussianBlur;
 import javafx.stage.Stage;
 
 import main.BuildPane.GamePane;
 import main.Difficulty.DifficultyScene;
 import main.MainGame.ControllerMain;
-import main.MainGame.Main.Game;
 import main.RecordTable.RecordTableController;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.util.Optional;
+
 
 /**
  * Контроллер для меню
